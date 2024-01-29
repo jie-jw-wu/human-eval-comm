@@ -1,0 +1,1 @@
+{"HumanEval/0": {"syntatic_similarity": {"same_output_between_5": 0.0, "same_output_between_5_correct": 0.0, "same_output_between_5_timeout": 0.0, "same_output_between_5_exception": 0.0, "same_output_between_5_execution_error": 0.0, "Levenshtein_edit_distance": [83, 0, 2, 50]}, "test_case_pass_rate": [0.0, 0.0, 0.0, 0.0, 1.0], "LCS": [0, 0, 0, 0]}}

@@ -1,0 +1,2 @@
+./script_randRemove_30_temp_0_topn_5.bat
+./script_randRemoveGPT4_50_temp_1_topn_5.bat
