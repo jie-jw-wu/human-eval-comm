@@ -12,7 +12,7 @@ import random
 import string
 from nltk.corpus import stopwords
 
-openai.api_key = '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'
+openai.api_key = ''
 MAX_NUM_PROBLEMS = 0 # limit the number of problems to be run and call ChatGPT. -1 means no such limit
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
