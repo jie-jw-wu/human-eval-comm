@@ -229,6 +229,8 @@ def analyze_process_HumanEval(log_file, original_prompt_file):
                 content = json.loads(line)
                 names.append(content['name'])
     problem_list = []
+    # TODO(jwu): we can read from HumanEval.jsonl instead of HumanEval_new.jsonl, and delete all about HumanEval_new 
+    # with open('HumanEval/HumanEval.jsonl', 'r') as f:
     with open('HumanEval/HumanEval_new.jsonl', 'r') as f:
         for line in f.readlines():
             problem_list.append(json.loads(line))
