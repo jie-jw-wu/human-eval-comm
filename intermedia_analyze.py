@@ -8,8 +8,18 @@ import nltk
 import pycode_similar
 from nltk.translate.bleu_score import sentence_bleu
 
+# TODO(jwu): bug this code return last triple code snippet. 
 def response_2_code(response):
     code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
+    code = code_template.findall(response)
+    if len(code) > 0:
+        return code[-1]
+    else:
+        return ''
+
+# returns code only if the response consists solely of code with markups
+def response_2_code_if_no_text(response):
+    code_template = re.compile('^```.*\n([\s\S]+?)\n```$', re.M)
     code = code_template.findall(response)
     if len(code) > 0:
         return code[-1]
