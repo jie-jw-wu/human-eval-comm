@@ -25,6 +25,8 @@ def create_prompt(description, option='original', percentage=0):
         return prompt + description
     elif option.startswith('randRemove'):
         return PROMPT_START_3 + split_and_remove_chunk(description, percentage)
+    elif option.startswith('manualRemove'): # TODO(jwu): WIP
+        return PROMPT_START_3 + description
     else:
         return PROMPT_START_3 + split_and_replace_with_random_words(description, percentage)
 
@@ -170,98 +172,6 @@ def description_2_code(prompt, model, topn, temperature):
         # return code_list, response_list
         return response_list
 
-def code_contest_experiment(dataset, option, model, sequence, topn=1, temperature=1.0):
-    if option == 'original':
-        log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (dataset, model, topn, temperature, sequence)
-    else:
-        log_file = './log/%s_dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (option, dataset, model, topn, temperature, sequence)
-
-    with open('./tmp2/code_contests_test.json', 'r') as f:
-    # with open('./dataset/code_contests_test.json', 'r') as f:
-        problem_list = json.load(f)
-    names = set()
-    if os.path.exists(log_file):
-        with open(log_file, 'r') as f:
-            for line in f:
-                content = json.loads(line)
-                names.add(content['name'])
-
-    for problem in problem_list:
-        if problem['name'] in names:
-            continue
-        print('----------------------problem name: %s--------------------------------' % (problem['name']), flush=True)
-        print('using %s to generate response' % (model), flush=True)
-        description = problem['description']
-        try:
-            prompt = create_prompt(description, option)
-            response_list = description_2_code(prompt, model, topn, temperature)
-        except Exception as e:
-            print('%s---------%s' % (problem['name'], e), flush=True)
-            continue
-        for i in range(len(response_list)):
-            res = {
-                'name': problem['name'],
-                'index': i,
-                'response': response_list[i],
-            }
-            print('response %s is writting into file' % (i), flush=True)
-            json_str = json.dumps(res)
-            with open(log_file, 'a') as f:
-                f.write(json_str+'\n')
-        print('%s finish!' % (problem['name']), flush=True)
-    print('Done!', flush=True)
-
-def APPS_experiment(dataset, option, model, sequence, topn=1, temperature=1.0):
-    path = './APPS/test/'
-
-    if option == 'original':
-        log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (dataset, model, topn, temperature, sequence)
-    else:
-        log_file = './log/%s_dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (option, dataset, model, topn, temperature, sequence)
-
-    names = set()
-    if os.path.exists(log_file):
-        with open(log_file, 'r') as f:
-            for line in f:
-                content = json.loads(line)
-                names.add(content['name'])
-
-    # better, worse description
-    for dirpath, dirnames, filenames in os.walk(path):
-        # iterating for every problem
-        for dirname in dirnames[:500]:
-            if dirname in names:
-                continue
-            print('----------------------problem name: %s--------------------------------' % (dirname),
-                  flush=True)
-            print('using %s to generate code' % (model), flush=True)
-            # description
-            with open(path + dirname + '/question.txt', 'r', encoding='utf-8') as f:
-                description = f.read()
-            try:
-                prompt = create_prompt(description, option)
-                response_list = description_2_code(prompt, model, topn, temperature)
-
-            except Exception as e:
-                print('%s---------%s' % (dirname, e), flush=True)
-                # response_list = ['', '', '', '', '']
-            for i in range(len(response_list)):
-                res = {
-                    'name': dirname,
-                    'index': i,
-                    'response': response_list[i],
-                }
-                print('response %s is writting into file' % (i), flush=True)
-                json_str = json.dumps(res)
-                with open(log_file, 'a') as f:
-                    f.write(json_str + '\n')
-            print('%s finish!' % (dirname), flush=True)
-    print('Done!', flush=True)
-
 def get_ith_element(input_string, i):
     # Split the input string by '_' to create a list of elements
     elements = input_string.split('_')
@@ -280,7 +190,6 @@ def string_to_int(input_string):
         return None  # Return None if the string cannot be converted to an integer
 
 def HumanEval_experiment(dataset, option, model, sequence, topn=1, temperature=1.0):
-    
     remove_percentage = 0
     if option == 'original':
         log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
@@ -337,6 +246,9 @@ def HumanEval_experiment(dataset, option, model, sequence, topn=1, temperature=1
         print('%s finish!' % (problem['task_id']), flush=True)
     print('Done!', flush=True)
 
+# call LLM to generate results from problems
+# input: HumanEval.jsonl
+# output: file in folder log/
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -385,9 +297,5 @@ if __name__ == "__main__":
         default='0'
     )
     args = parser.parse_args()
-    if args.dataset == 'code_contest':
-        code_contest_experiment(args.dataset, args.option, args.model, args.sequence, args.topn, args.temperature)
-    elif args.dataset == 'APPS':
-        APPS_experiment(args.dataset, args.option, args.model, args.sequence, args.topn, args.temperature)
-    elif args.dataset == 'HumanEval':
+    if args.dataset == 'HumanEval':
         HumanEval_experiment(args.dataset, args.option, args.model, args.sequence, args.topn, args.temperature)
