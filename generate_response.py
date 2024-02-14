@@ -12,12 +12,13 @@ import random
 import string
 from nltk.corpus import stopwords
 
-openai.api_key = ''
-MAX_NUM_PROBLEMS = 0 # limit the number of problems to be run and call ChatGPT. -1 means no such limit
+openai.api_key = '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'
+MAX_NUM_PROBLEMS = 1 # limit the number of problems to be run and call ChatGPT. -1 means no such limit
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
+PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
 def create_prompt(description, option='original', percentage=0):
     if option == 'original':
@@ -26,7 +27,7 @@ def create_prompt(description, option='original', percentage=0):
     elif option.startswith('randRemove'):
         return PROMPT_START_3 + split_and_remove_chunk(description, percentage)
     elif option.startswith('manualRemove'): # TODO(jwu): WIP
-        return PROMPT_START_3 + description
+        return PROMPT_START_3_v2 + description
     else:
         return PROMPT_START_3 + split_and_replace_with_random_words(description, percentage)
 
@@ -189,7 +190,7 @@ def string_to_int(input_string):
     except ValueError:
         return None  # Return None if the string cannot be converted to an integer
 
-def HumanEval_experiment(dataset, option, model, sequence, topn=1, temperature=1.0):
+def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, temperature=1.0):
     remove_percentage = 0
     if option == 'original':
         log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
@@ -200,7 +201,7 @@ def HumanEval_experiment(dataset, option, model, sequence, topn=1, temperature=1
         remove_percentage = string_to_int(get_ith_element(option, 1))
     problem_list = []
     line_cnt = 0
-    with open('./HumanEval/HumanEval.jsonl', 'r') as f:
+    with open(dataset_loc, 'r') as f:
         for line in f.readlines():
             problem_list.append(json.loads(line))
             # added by JW
@@ -220,30 +221,38 @@ def HumanEval_experiment(dataset, option, model, sequence, topn=1, temperature=1
             continue
         print('----------------------problem name: %s--------------------------------' % (problem['task_id']), flush=True)
         print('using %s to generate response' % (model), flush=True)
-        description = problem['prompt']
-        try:
-            prompt = create_prompt(description, option, remove_percentage)
-            #print('!!!original prompt!!!')
-            #print(description)
-            #print('!!!new prompt!!!')
-            #print(prompt)
-            response_list = description_2_code(prompt, model, topn, temperature)
-        except Exception as e:
-            print('%s---------%s' % (problem['task_id'], e), flush=True)
-            continue
-        for i in range(len(response_list)):
-            res = {
-                'name': problem['task_id'],
-                'index': i,
-                'response': response_list[i],
-                'original_prompt': description,
-                'modified_prompt': prompt,
-            }
-            print('response %s is writting into file' % (i), flush=True)
-            json_str = json.dumps(res)
-            with open(log_file, 'a') as f:
-                f.write(json_str + '\n')
-        print('%s finish!' % (problem['task_id']), flush=True)
+        
+        if dataset == "HumanEvalComm":
+            input_prompt_fields = ['prompt1a','prompt1c','prompt1p','prompt2ac','prompt2ap','prompt2cp','prompt3acp']
+        else:  
+            input_prompt_fields = ['prompt']
+        
+        for input_prompt in input_prompt_fields:
+            description = problem[input_prompt]
+            try:
+                prompt = create_prompt(description, option, remove_percentage)
+                #print('!!!original prompt!!!')
+                #print(description)
+                #print('!!!new prompt!!!')
+                #print(prompt)
+                response_list = description_2_code(prompt, model, topn, temperature)
+            except Exception as e:
+                print('%s---------%s' % (problem['task_id'], e), flush=True)
+                continue
+            for i in range(len(response_list)):
+                res = {
+                    'name': problem['task_id'],
+                    'index': i,
+                    'response': response_list[i],
+                    'original_prompt': description,
+                    'modified_prompt': prompt,
+                    'prompt_type': input_prompt,
+                }
+                print('response %s is writting into file' % (i), flush=True)
+                json_str = json.dumps(res)
+                with open(log_file, 'a') as f:
+                    f.write(json_str + '\n')
+            print('%s finish!' % (problem['task_id']), flush=True)
     print('Done!', flush=True)
 
 # call LLM to generate results from problems
@@ -255,7 +264,7 @@ if __name__ == "__main__":
         "-d",
         "--dataset",
         type=str,
-        choices=['APPS', 'code_contest', 'HumanEval'],
+        choices=['APPS', 'code_contest', 'HumanEval', 'HumanEvalComm'],
         help="Choose dataset",
         required=True,
     )
@@ -297,5 +306,5 @@ if __name__ == "__main__":
         default='0'
     )
     args = parser.parse_args()
-    if args.dataset == 'HumanEval':
-        HumanEval_experiment(args.dataset, args.option, args.model, args.sequence, args.topn, args.temperature)
+    if args.dataset.startswith('HumanEval'):
+        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature)
