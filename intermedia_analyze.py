@@ -9,7 +9,8 @@ import nltk
 import pycode_similar
 from nltk.translate.bleu_score import sentence_bleu
 
-PROMPT_EVALUATE_QUESTIONS = 'Some information is removed from the original problem description. Questions are expected to get the information. Given the missing information, problem description, evaluate the quality of the questions. Return only an integer: 3 (Good), 2 (Fair), or 1 (Bad). ### Questions: {clarifying_questions} ### Problem Description: {problem} ### original description(includes missing information): {missing_information} \n'
+#PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Return only an integer: 3 (Good), 2 (Fair), or 1 (Bad). ### Questions: {clarifying_questions} ### Problem Description: {problem} ### original description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. Explanation: [...] \n RESULT=[int] \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
 
 # TODO(jwu): adjust prompt
 def evaluate_clarifying_questions(
@@ -33,11 +34,13 @@ def evaluate_clarifying_questions(
             )
         }]
     )
-    response_list = []
-    for i in completion['choices']:
-        response_list.append(i['message']['content'])
+    result = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
+    return result
+    #response_list = []
+    #for i in completion['choices']:
+    #    response_list.append(i['message']['content'])
     # assume the result has only one element (n=1) which is only int
-    return ''.join(filter(str.isdigit, response_list[0]))
+    #return ''.join(filter(str.isdigit, response_list[0]))
 
 # TODO(jwu): bug this code return last triple code snippet. 
 def response_2_code(response):
@@ -156,7 +159,6 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
     demo_file = 'demo.py'
     call_demo_file = 'call_demo.py'
     count = 0
-    problem_dic = {}
     while os.path.exists(demo_file) or os.path.exists(call_demo_file):
         demo_file = 'demo_%s.py' % count
         call_demo_file = 'call_demo_%s.py' % count
@@ -171,7 +173,9 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 content = json.loads(line)
                 names.append(content['name'])
     problem_list = []
-    # TODO(jwu): we can read from HumanEval.jsonl instead of HumanEval_new.jsonl, and delete all about HumanEval_new 
+    
+    # TODO(jwu): we can read from HumanEval.jsonl instead of HumanEval_new.jsonl, and delete all about HumanEval_new. 
+    # Update: no need because HumanEval_new has 'test_case' field, which is essential.
     # with open('HumanEval/HumanEval.jsonl', 'r') as f:
     with open('HumanEval/HumanEval_new.jsonl', 'r') as f:
         for line in f.readlines():
@@ -179,9 +183,10 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             # added by JW. not needed since it's just loading HumanEval problems.
             #break
 
+    problem_info = {}
     for i in range(len(problem_list)):
         if not problem_list[i]['name'] in names:
-            problem_dic[problem_list[i]['name']] = {
+            problem_info[problem_list[i]['name']] = {
                 'name': problem_list[i]['name'],
                 'index_num': i,
                 'time_limit': int(3) # by default
@@ -196,9 +201,9 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 content = json.loads(line)
                 name = content['name']
                 original_prompt_dic[name] = content['code_candidates']
-
     #JW: for each response in log, construct `problem_dic`
-
+    
+    problem_dic = {}
     with open(log_file, 'r') as f:
         for line in f.readlines():
             content = json.loads(line)
@@ -209,22 +214,34 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             response = content['response']
             original_prompt = content['original_prompt']
             modified_prompt = content['modified_prompt']
+            prompt_type = content['prompt_type']
+            
             if index == 0:
                 print('----------------------problem name: %s--------------------------------' % (name),
                       flush=True)
+            
+            if 'HumanEvalComm' in args.file:
+                problem_key = name + '_' + prompt_type
+            else:
+                problem_key = name
             # initialize
-            if 'code_candidates' not in problem_dic[name]:
-                problem_dic[name]['response_candidates'] = []
-                problem_dic[name]['code_candidates'] = []
+            if problem_key not in problem_dic:
+                problem_dic[problem_key] = {}
+            if 'code_candidates' not in problem_dic[problem_key]:
+                problem_dic[problem_key]['response_candidates'] = []
+                problem_dic[problem_key]['code_candidates'] = []
             print('generate code from response', flush=True)
             # load from code_contest dataset
-            problem = problem_list[problem_dic[name]['index_num']]
+            problem = problem_list[problem_info[name]['index_num']]
             test_set = problem['test_case']
             reference_code = []
             reference_code.append(problem['solution'])
 
             # get code from response
-            code = response_2_code(response)
+            if 'HumanEvalComm' in log_file:
+                code = response_2_code_if_no_text(response)
+            else:
+                code = response_2_code(response)
             # default weight: weights=(0.25, 0.25, 0.25, 0.25)
             # if reference_code == []:
             #     BLEU_score_correct = -1
@@ -232,12 +249,14 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             #     BLEU_score_correct = sentence_bleu(reference_code, code.split())
 
             # use code to run test cases
-            time_limit = problem_dic[name]['time_limit']
+            time_limit = problem_info[name]['time_limit']
             question_quality_result = '0'
-            if original_prompt_file != '' and code == '':
+            test_case_solved = ['','']
+            if code == '':
+                if original_prompt_file != '':
                 # response is asking questions. communication success. use original prompt results in this case
                 # TODO(jwu): we should continue to provide answers to the quetions, and ask to generate code again. Then compute test pass rate.
-                test_case_solved = [original_prompt_dic[name][index]['passed_case'], original_prompt_dic[name][index]['case_status']]
+                    test_case_solved = [original_prompt_dic[name][index]['passed_case'], original_prompt_dic[name][index]['case_status']]
                 # evaluate clarifying questions
                 question_quality_result = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
             else:
@@ -250,16 +269,18 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 'question_quality': question_quality_result, 
                 # 'BlEU_score_correct': BLEU_score_correct
             }
-            problem_dic[name]['response_candidates'].append(response)
-            problem_dic[name]['code_candidates'].append(res)
+            problem_dic[problem_key]['response_candidates'].append(response)
+            problem_dic[problem_key]['code_candidates'].append(res)
             if index == topn - 1:
                 print('%s stability analyze' % (name), flush=True)
                 print('writing in %s' % (name), flush=True)
                 # write in
-                json_str = json.dumps(problem_dic[name])
+                json_str = json.dumps(problem_dic[problem_key])
                 with open('./log/record/%s' % (log_file.split('/')[1]), 'a') as f:
                     f.write(json_str + '\n')
-                problem_dic.pop(name)
+                problem_dic.pop(problem_key)
+
+
 
 # extract code and run test cases
 # input: file in log/
