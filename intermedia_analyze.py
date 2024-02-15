@@ -152,7 +152,7 @@ def solution_evaluation_HumanEval(solution, test_cases, demo_file, call_demo_fil
     print('%s/%s pass.' % (pass_num, len(test_cases)), flush=True)
     return passed_case, case_status
 
-def analyze_process_HumanEval(log_file, original_prompt_file):
+def analyze_process_HumanEval(log_file, original_prompt_file, topn):
     demo_file = 'demo.py'
     call_demo_file = 'call_demo.py'
     count = 0
@@ -236,6 +236,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file):
             question_quality_result = '0'
             if original_prompt_file != '' and code == '':
                 # response is asking questions. communication success. use original prompt results in this case
+                # TODO(jwu): we should continue to provide answers to the quetions, and ask to generate code again. Then compute test pass rate.
                 test_case_solved = [original_prompt_dic[name][index]['passed_case'], original_prompt_dic[name][index]['case_status']]
                 # evaluate clarifying questions
                 question_quality_result = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
@@ -251,7 +252,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file):
             }
             problem_dic[name]['response_candidates'].append(response)
             problem_dic[name]['code_candidates'].append(res)
-            if index == 4:
+            if index == topn - 1:
                 print('%s stability analyze' % (name), flush=True)
                 print('writing in %s' % (name), flush=True)
                 # write in
@@ -282,6 +283,14 @@ if __name__ == "__main__":
         default="",
     )
 
+    parser.add_argument(
+        "-n",
+        "--topn",
+        type=int,
+        help="Top N candidates",
+        default=5,
+    )
+
     args = parser.parse_args()
     if 'HumanEval' in args.file:
-        analyze_process_HumanEval(args.file, args.originalFile)
+        analyze_process_HumanEval(args.file, args.originalFile, args.topn)
