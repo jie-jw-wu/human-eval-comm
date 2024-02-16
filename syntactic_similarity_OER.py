@@ -142,7 +142,7 @@ def analyze_among_top0_5(experiment, model, temperature):
     with open(save_dir+'intermediate_result_top0_5.json', 'w') as f:
         f.write(json_str)
 
-def analyze_among_among5(experiment, model, temperature):
+def analyze_among_among5(experiment, model, temperature, topn):
     save_dir = './result_data/%s_%s_%s/' % (experiment, model, temperature)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -223,13 +223,12 @@ def analyze_among_among5(experiment, model, temperature):
         return tmp_test_case_pass_rate
 
     problem_dic = {}
-    with open('log/record/%s_model_%s_topn_5_temperature_%s.0.log_%s' % (experiment, model, temperature, 0), 'r') as f:
+    with open('log/record/%s_model_%s_topn_%s_temperature_%s.0.log_%s' % (experiment, model, topn, temperature, 0), 'r') as f:
         for line in f.readlines():
             content = json.loads(line)
             name = content['name']
             if name not in problem_dic:
                 problem_dic[name] = {'code_candidates': []}
-            index_num = content['index_num']
             code_candidates = content['code_candidates']
             # code = code_candidates[0]
             for code in code_candidates:
@@ -239,11 +238,13 @@ def analyze_among_among5(experiment, model, temperature):
             code_reference = []
             case_status_list = []
             ask_question_rate = []
+            question_quality = []
             for code_res in problem_dic[name]['code_candidates']:
                 code_candidates.append(code_res['code'].split())
                 code_reference.append(code_res['code'])
                 case_status_list.append(code_res['case_status'])
-                ask_question_rate.append(get_ask_question_rate(code_res['code']))   
+                ask_question_rate.append(get_ask_question_rate(code_res['code'])) 
+                question_quality.append(int(code_res['question_quality']))
             test_case_pass_rate = test_case_pass_rate_among5(problem_dic[name]['code_candidates'])
             syntatic_similarity_res = syntatic_similarity(problem_dic, name, code_candidates, case_status_list)
             problem_dic[name]['syntatic_similarity'] = syntatic_similarity_res
@@ -260,6 +261,7 @@ def analyze_among_among5(experiment, model, temperature):
             problem_dic[name]['test_case_pass_rate'] = test_case_pass_rate
             problem_dic[name]['LCS'] = LCS_list
             problem_dic[name]['ask_question_rate'] = ask_question_rate
+            problem_dic[name]['question_quality'] = question_quality
             problem_dic[name].pop('code_candidates')
 
         json_str = json.dumps(problem_dic)
@@ -299,9 +301,16 @@ if __name__ == "__main__":
         required=True,
         # default='original'
     )
+    parser.add_argument(
+        "-n",
+        "--topn",
+        type=int,
+        help="Top N candidates",
+        default=5,
+    )
     args = parser.parse_args()
     if args.option == 'R1':
-        analyze_among_among5(args.experiment, args.model, args.temperature)
+        analyze_among_among5(args.experiment, args.model, args.temperature, args.topn)
     elif args.option == 'R2':
         analyze_among_top0_5(args.experiment, args.model, args.temperature)
 

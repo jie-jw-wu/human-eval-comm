@@ -208,25 +208,29 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
         for line in f.readlines():
             content = json.loads(line)
             name = content['name']
-            if name in names:
-                continue
+            prompt_type = content['prompt_type']
             index = content['index']
             response = content['response']
             original_prompt = content['original_prompt']
             modified_prompt = content['modified_prompt']
-            prompt_type = content['prompt_type']
-            
-            if index == 0:
-                print('----------------------problem name: %s--------------------------------' % (name),
-                      flush=True)
             
             if 'HumanEvalComm' in args.file:
                 problem_key = name + '_' + prompt_type
             else:
                 problem_key = name
+            
+            if problem_key in names:
+                continue
+
+            if index == 0:
+                print('----------------------problem name: %s--------------------------------' % (name),
+                      flush=True)
+            
             # initialize
             if problem_key not in problem_dic:
-                problem_dic[problem_key] = {}
+                problem_dic[problem_key] = {
+                'name': problem_key,
+                }
             if 'code_candidates' not in problem_dic[problem_key]:
                 problem_dic[problem_key]['response_candidates'] = []
                 problem_dic[problem_key]['code_candidates'] = []
