@@ -20,6 +20,40 @@ PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
+#PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Return only an integer: 3 (Good), 2 (Fair), or 1 (Bad). ### Questions: {clarifying_questions} ### Problem Description: {problem} ### original description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. Explanation: [...] \n RESULT=[int] \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
+
+# TODO(jwu): adjust prompt
+def evaluate_clarifying_questions(
+    missing_information='',
+    clarifying_questions='',
+    problem=''
+):
+    topn = 1
+    temperature = 1.0
+    model = 'gpt-3.5-turbo'
+    completion = openai.ChatCompletion.create(
+        model=model,
+        n=topn,
+        temperature=temperature,
+        messages=[{
+            "role": "user",
+            "content": PROMPT_EVALUATE_QUESTIONS.format(
+                missing_information=missing_information,
+                clarifying_questions=clarifying_questions,
+                problem=problem
+            )
+        }]
+    )
+    result = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
+    return result
+    #response_list = []
+    #for i in completion['choices']:
+    #    response_list.append(i['message']['content'])
+    # assume the result has only one element (n=1) which is only int
+    #return ''.join(filter(str.isdigit, response_list[0]))
+
+
 def create_prompt(description, option='original', percentage=0):
     if option == 'original':
         prompt = PROMPT_START_3
@@ -120,7 +154,8 @@ def calculate_percentage_integer(value, percentage):
     
     return rounded_result
 
-def description_2_code(prompt, model, topn, temperature):
+# TODO(jwu): add whether it's one-round (legacy code) or two-round
+def description_2_code_one_round(prompt, model, topn, temperature):
     if model=='comm':
         completion = openai.ChatCompletion.create(
             model='gpt-3.5-turbo',
@@ -149,7 +184,6 @@ def description_2_code(prompt, model, topn, temperature):
         for i in completion['choices']:
             response_list.append(i['message']['content'])
 
-        return response_list
     else:
         completion = openai.ChatCompletion.create(
             model=model,
@@ -171,7 +205,63 @@ def description_2_code(prompt, model, topn, temperature):
         #     else:
         #         code_list.append('')
         # return code_list, response_list
-        return response_list
+    code_list = []
+    qq_list = []
+    for i in range(len(response_list)):
+        code = response_2_code(response)
+        code_list.append(code)
+        qq_list.append('0')
+    return response_list, code_list, qq_list
+
+def description_2_code_multi_rounds(prompt, model, topn, temperature):
+    ## 1st round: initial code generation
+    completion = openai.ChatCompletion.create(
+        model=model,
+        n=topn,
+        temperature=temperature,
+        messages=[{"role": "user",
+                    "content": prompt},
+                    ]
+    )
+    response_list = []
+    # code_list = []
+    for i in completion['choices']:
+        response_list.append(i['message']['content'])
+    # code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
+    # for response in response_list:
+    #     code = code_template.findall(response)
+    #     if len(code) > 0:
+    #         code_list.append(code[-1])
+    #     else:
+    #         code_list.append('')
+    # return code_list, response_list
+    
+    code_list = []
+    qq_list = []
+    for i in range(len(response_list)):
+        response = response_list[i]
+        code = ''
+        if dataset == 'HumanEvalComm':
+            code = response_2_code_if_no_text(response)
+        else:
+            code = response_2_code(response)
+        
+        question_quality = '0'
+        if code == '':
+            ## 2nd round: question & answer round
+            
+            # TODO(jwu): use LLM-based Evaluator to  
+            # 1) generate new code and
+            # 2) evaluate quality of clarifying questions
+            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
+            
+            ## 3rd round: generate final code
+            # TODO(jwu): generate code with chat history
+            code = generate_code_2nd_round()
+        qq_list.append(question_quality)
+        code_list.append(code)
+    return response_list, code_list, qq_list
+    
 
 def get_ith_element(input_string, i):
     # Split the input string by '_' to create a list of elements
@@ -190,6 +280,24 @@ def string_to_int(input_string):
     except ValueError:
         return None  # Return None if the string cannot be converted to an integer
 
+# TODO(jwu): bug this code return last triple code snippet. 
+def response_2_code(response):
+    code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
+    code = code_template.findall(response)
+    if len(code) > 0:
+        return code[-1]
+    else:
+        return ''
+
+# returns code only if the response consists solely of code with markups
+def response_2_code_if_no_text(response):
+    code_template = re.compile('^```.*\n([\s\S]+?)\n```$', re.M)
+    code = code_template.findall(response)
+    if len(code) > 0:
+        return code[-1]
+    else:
+        return ''
+        
 def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, temperature=1.0):
     remove_percentage = 0
     if option == 'original':
@@ -231,15 +339,16 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, 
             description = problem[input_prompt]
             try:
                 prompt = create_prompt(description, option, remove_percentage)
-                #print('!!!original prompt!!!')
-                #print(description)
-                #print('!!!new prompt!!!')
-                #print(prompt)
-                response_list = description_2_code(prompt, model, topn, temperature)
+                if option.startswith('randRemove'):
+                    # legacy part
+                    response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature)
+                else:
+                    response_list, code_list, qq_list = description_2_code_multi_rounds(prompt, model, topn, temperature)
             except Exception as e:
                 print('%s---------%s' % (problem['task_id'], e), flush=True)
                 continue
             for i in range(len(response_list)):
+            
                 res = {
                     'name': problem['task_id'],
                     'index': i,
@@ -247,6 +356,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, 
                     'original_prompt': description,
                     'modified_prompt': prompt,
                     'prompt_type': input_prompt,
+                    'code': code_list[i],
+                    'question_quality': qq_list[i],
                 }
                 print('response %s is writting into file' % (i), flush=True)
                 json_str = json.dumps(res)
