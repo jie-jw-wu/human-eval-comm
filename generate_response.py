@@ -21,7 +21,7 @@ PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (c
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
 #PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Return only an integer: 3 (Good), 2 (Fair), or 1 (Bad). ### Questions: {clarifying_questions} ### Problem Description: {problem} ### original description: {missing_information} \n'
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. Explanation: [...] \n RESULT=[int] \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result.  Explanation: [...] \n RESULT=[int] \n Please also provide answers to the questions \n ANSWERS=[...] \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
 
 # TODO(jwu): adjust prompt
 def evaluate_clarifying_questions(
@@ -45,14 +45,14 @@ def evaluate_clarifying_questions(
             )
         }]
     )
-    result = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
-    return result
+    answers = re.findall(r'ANSWERS=(\d+)', completion.choices[0].text)
+    qq = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
+    return answers, qq
     #response_list = []
     #for i in completion['choices']:
     #    response_list.append(i['message']['content'])
     # assume the result has only one element (n=1) which is only int
     #return ''.join(filter(str.isdigit, response_list[0]))
-
 
 def create_prompt(description, option='original', percentage=0):
     if option == 'original':
@@ -154,7 +154,7 @@ def calculate_percentage_integer(value, percentage):
     
     return rounded_result
 
-# TODO(jwu): add whether it's one-round (legacy code) or two-round
+# legacy code (randRemove) where only one-round evaluation is enabled
 def description_2_code_one_round(prompt, model, topn, temperature):
     if model=='comm':
         completion = openai.ChatCompletion.create(
@@ -240,24 +240,20 @@ def description_2_code_multi_rounds(prompt, model, topn, temperature):
     qq_list = []
     for i in range(len(response_list)):
         response = response_list[i]
-        code = ''
-        if dataset == 'HumanEvalComm':
-            code = response_2_code_if_no_text(response)
-        else:
-            code = response_2_code(response)
-        
+        code = response_2_code_if_no_text(response)
         question_quality = '0'
         if code == '':
             ## 2nd round: question & answer round
             
-            # TODO(jwu): use LLM-based Evaluator to  
-            # 1) generate new code and
-            # 2) evaluate quality of clarifying questions
+            # TODO(jwu): use LLM-based Evaluator to
+            # 1) generate answer,
+            # 2) evaluate quality of clarifying questions,
+            # 3) generate new code with q&a
             answer, question_quality = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
             
             ## 3rd round: generate final code
-            # TODO(jwu): generate code with chat history
-            code = generate_code_2nd_round()
+            # TODO(jwu): generate_code_2nd_round: generate code with chat history
+            code = ...
         qq_list.append(question_quality)
         code_list.append(code)
     return response_list, code_list, qq_list
