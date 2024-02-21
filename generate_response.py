@@ -213,29 +213,23 @@ def description_2_code_one_round(prompt, model, topn, temperature):
         qq_list.append('0')
     return response_list, code_list, qq_list
 
-def description_2_code_multi_rounds(prompt, model, topn, temperature):
-    ## 1st round: initial code generation
+def generate_response(model, msgs, topn, temperature):
     completion = openai.ChatCompletion.create(
         model=model,
         n=topn,
         temperature=temperature,
-        messages=[{"role": "user",
-                    "content": prompt},
-                    ]
+        messages=msgs
     )
     response_list = []
-    # code_list = []
     for i in completion['choices']:
         response_list.append(i['message']['content'])
-    # code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
-    # for response in response_list:
-    #     code = code_template.findall(response)
-    #     if len(code) > 0:
-    #         code_list.append(code[-1])
-    #     else:
-    #         code_list.append('')
-    # return code_list, response_list
-    
+    return response_list
+
+def description_2_code_multi_rounds(prompt, model, topn, temperature):
+    ## 1st round: initial code generation
+    messages=[{"role": "user","content": prompt}]
+    response_list = generate_response(model, messages, topn, temperature)
+
     code_list = []
     qq_list = []
     for i in range(len(response_list)):
@@ -253,11 +247,14 @@ def description_2_code_multi_rounds(prompt, model, topn, temperature):
             
             ## 3rd round: generate final code
             # TODO(jwu): generate_code_2nd_round: generate code with chat history
-            code = ...
+            msgs_i = messages.copy()
+            msgs_i.append({"role":"assistant","content": response})
+            msgs_i.append({"role":"user","content": answer})
+            response_2nd = generate_response(model, msgs_i, 1, temperature)
+            code = response_2_code_if_no_text(response_2nd)
         qq_list.append(question_quality)
         code_list.append(code)
     return response_list, code_list, qq_list
-    
 
 def get_ith_element(input_string, i):
     # Split the input string by '_' to create a list of elements
