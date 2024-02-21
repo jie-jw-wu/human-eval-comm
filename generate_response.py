@@ -20,10 +20,8 @@ PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
-#PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Return only an integer: 3 (Good), 2 (Fair), or 1 (Bad). ### Questions: {clarifying_questions} ### Problem Description: {problem} ### original description: {missing_information} \n'
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result.  Explanation: [...] \n RESULT=[int] \n Please also provide answers to the questions \n ANSWERS=[...] \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result.  Explanation: [...] \n RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
 
-# TODO(jwu): adjust prompt
 def evaluate_clarifying_questions(
     missing_information='',
     clarifying_questions='',
@@ -45,9 +43,9 @@ def evaluate_clarifying_questions(
             )
         }]
     )
-    answers = re.findall(r'ANSWERS=(\d+)', completion.choices[0].text)
-    qq = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
-    return answers, qq
+    question_quality = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
+    answers = re.findall(r'ANSWERS="(.+?)"', completion.choices[0].text)
+    return answers, question_quality
     #response_list = []
     #for i in completion['choices']:
     #    response_list.append(i['message']['content'])
