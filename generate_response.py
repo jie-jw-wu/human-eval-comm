@@ -21,6 +21,7 @@ PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (c
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
 PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result.  Explanation: [...] \n RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
+PROMPT_2ND_ROUND = '\n Given above conversations, generate Python3 code directly (Markdown):\n'
 
 def evaluate_clarifying_questions(
     missing_information='',
@@ -46,11 +47,6 @@ def evaluate_clarifying_questions(
     question_quality = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
     answers = re.findall(r'ANSWERS="(.+?)"', completion.choices[0].text)
     return answers, question_quality
-    #response_list = []
-    #for i in completion['choices']:
-    #    response_list.append(i['message']['content'])
-    # assume the result has only one element (n=1) which is only int
-    #return ''.join(filter(str.isdigit, response_list[0]))
 
 def create_prompt(description, option='original', percentage=0):
     if option == 'original':
@@ -237,17 +233,16 @@ def description_2_code_multi_rounds(prompt, model, topn, temperature):
         if code == '':
             ## 2nd round: question & answer round
             
-            # TODO(jwu): use LLM-based Evaluator to
+            # use LLM-based Evaluator to
             # 1) generate answer,
             # 2) evaluate quality of clarifying questions,
-            # 3) generate new code with q&a
+            # 3) generate new code with Q&A
             answer, question_quality = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
             
-            ## 3rd round: generate final code
-            # TODO(jwu): generate_code_2nd_round: generate code with chat history
+            ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
             msgs_i = messages.copy()
             msgs_i.append({"role":"assistant","content": response})
-            msgs_i.append({"role":"user","content": answer})
+            msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             response_2nd = generate_response(model, msgs_i, 1, temperature)
             code = response_2_code_if_no_text(response_2nd)
         qq_list.append(question_quality)
