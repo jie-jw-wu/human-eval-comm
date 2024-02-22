@@ -20,7 +20,7 @@ PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result.  Explanation: [...] \n RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n Please follow the format RESULT=[int] and ANSWERS="..." in the response!  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python3 code directly (Markdown):\n'
 
 def evaluate_clarifying_questions(
@@ -28,25 +28,37 @@ def evaluate_clarifying_questions(
     clarifying_questions='',
     problem=''
 ):
+    print('evaluate_clarifying_questions. ')
     topn = 1
     temperature = 1.0
-    model = 'gpt-3.5-turbo'
+    model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
+    content = PROMPT_EVALUATE_QUESTIONS.format(
+                missing_information=missing_information,
+                clarifying_questions=clarifying_questions,
+                problem=problem
+            )
     completion = openai.ChatCompletion.create(
         model=model,
         n=topn,
         temperature=temperature,
         messages=[{
             "role": "user",
-            "content": PROMPT_EVALUATE_QUESTIONS.format(
-                missing_information=missing_information,
-                clarifying_questions=clarifying_questions,
-                problem=problem
-            )
+            "content": content,
         }]
     )
-    question_quality = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
-    answers = re.findall(r'ANSWERS="(.+?)"', completion.choices[0].text)
-    return answers, question_quality
+    print('PROMPT_EVALUATE_QUESTIONS='+content)
+    print('Completion='+completion['choices'][0]['message']['content'])
+    # Convert completion content to a string if it's not already a string
+    completion_content = str(completion['choices'][0]['message']['content'])
+
+    # Use re.findall() with the completion content
+    question_quality = re.findall(r'RESULT=(\d+)', completion_content)
+    answers = re.findall(r'ANSWERS="(.+?)"', completion_content)
+    answer_str = answers[0] if answers else ""
+    question_quality_str = question_quality[0] if question_quality else ""
+    print('answer_str',answer_str)
+    print('question_quality_str',question_quality_str)
+    return answer_str, question_quality_str
 
 def create_prompt(description, option='original', percentage=0):
     if option == 'original':
@@ -58,7 +70,6 @@ def create_prompt(description, option='original', percentage=0):
         return PROMPT_START_3_v2 + description
     else:
         return PROMPT_START_3 + split_and_replace_with_random_words(description, percentage)
-
 
 # A larger vocabulary of common English words
 common_words = [
@@ -219,16 +230,18 @@ def generate_response(model, msgs, topn, temperature):
         response_list.append(i['message']['content'])
     return response_list
 
-def description_2_code_multi_rounds(prompt, model, topn, temperature):
+def description_2_code_multi_rounds(prompt, original_prompt, model, topn, temperature):
     ## 1st round: initial code generation
+    print('!!! prompt:' + prompt)
     messages=[{"role": "user","content": prompt}]
     response_list = generate_response(model, messages, topn, temperature)
-
     code_list = []
     qq_list = []
     for i in range(len(response_list)):
         response = response_list[i]
         code = response_2_code_if_no_text(response)
+        print('!!! response:' + response)
+        print('!!! code:' + code)
         question_quality = '0'
         if code == '':
             ## 2nd round: question & answer round
@@ -237,14 +250,17 @@ def description_2_code_multi_rounds(prompt, model, topn, temperature):
             # 1) generate answer,
             # 2) evaluate quality of clarifying questions,
             # 3) generate new code with Q&A
-            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
+            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,prompt)
             
             ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
             msgs_i = messages.copy()
             msgs_i.append({"role":"assistant","content": response})
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
+            print('!start 2nd generation!')
             response_2nd = generate_response(model, msgs_i, 1, temperature)
-            code = response_2_code_if_no_text(response_2nd)
+            code = response_2_code_if_no_text(response_2nd[0])
+            print('msg_i:',msgs_i)
+            print('response_2nd:',response_2nd)
         qq_list.append(question_quality)
         code_list.append(code)
     return response_list, code_list, qq_list
@@ -277,12 +293,12 @@ def response_2_code(response):
 
 # returns code only if the response consists solely of code with markups
 def response_2_code_if_no_text(response):
-    code_template = re.compile('^```.*\n([\s\S]+?)\n```$', re.M)
+     # adding optional spaces (`\s*`) allowed surrounding the markup. Was using ^```.*\n([\s\S]+?)\n```$ 
+    code_template = re.compile(r'^\s*```.*?\n([\s\S]+?)\n```\s*$', re.M)
     code = code_template.findall(response)
     if len(code) > 0:
         return code[-1]
-    else:
-        return ''
+    return ''
         
 def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, temperature=1.0):
     remove_percentage = 0
@@ -322,6 +338,9 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, 
             input_prompt_fields = ['prompt']
         
         for input_prompt in input_prompt_fields:
+            if input_prompt not in problem:
+                continue
+            print('!!!!!input_prompt:'+input_prompt)
             description = problem[input_prompt]
             try:
                 prompt = create_prompt(description, option, remove_percentage)
@@ -329,7 +348,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, 
                     # legacy part
                     response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature)
                 else:
-                    response_list, code_list, qq_list = description_2_code_multi_rounds(prompt, model, topn, temperature)
+                    original_prompt = PROMPT_START_3_v2 + problem['prompt']
+                    response_list, code_list, qq_list = description_2_code_multi_rounds(prompt, original_prompt, model, topn, temperature)
             except Exception as e:
                 print('%s---------%s' % (problem['task_id'], e), flush=True)
                 continue
