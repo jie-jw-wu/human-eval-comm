@@ -22,3 +22,44 @@
     "modified_prompt": "You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \nfrom typing import List\n\n\ndef has_close_elements(numbers: List[float], threshold: float) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n",
     "prompt_type": "prompt1p"
 }
+
+{
+    "name": "HumanEval/0",
+    "index": 0,
+    "response": "Could you please provide more specific requirements on what criteria should be checked for each number in the list? This will help in writing the code that meets your exact needs.",
+    "original_prompt": "from typing import List\n\n\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n",
+    "modified_prompt": "You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\n\n\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n",
+    "prompt_type": "prompt1p",
+    "code": "from typing import List\n\ndef candidate(numbers: List[int]) -> bool:\n    \"\"\"\n    Checks if all numbers in the given list are positive integers greater than 0.\n    \n    Args:\n        numbers (List[int]): List of numbers to be checked.\n        \n    Returns:\n        bool: True if all numbers are positive integers greater than 0, False otherwise.\n    \"\"\"\n    \n    for num in numbers:\n        if not isinstance(num, int) or num <= 0:\n            return False\n    return True",
+    "question_quality": ""
+}
+{
+    "name": "HumanEval/0",
+    "index": 0,
+    "response": "```python\ndef candidate(numbers: List[float], x: float) -> bool:\n    return x in numbers\n```",
+    "original_prompt": "from typing import List\n\n\ndef candidate(numbers: List[float], x: float) -> bool:\n \"\"\" given a list of number.\"\"\"\n",
+    "modified_prompt": "You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\n\n\ndef candidate(numbers: List[float], x: float) -> bool:\n \"\"\" given a list of number.\"\"\"\n",
+    "prompt_type": "prompt2ap",
+    "code": "def candidate(numbers: List[float], x: float) -> bool:\n    return x in numbers",
+    "question_quality": "0"
+}
+{
+    "name": "HumanEval/0",
+    "index": 0,
+    "response": "### Clarifying Questions:\n1. What specific criteria or conditions should be checked for in the list of numbers?\n  \n### Python3 Code:\n```python\nfrom typing import List\n\ndef candidate(numbers: List[int]) -> bool:\n    \"\"\"\n    Check if a given list of numbers meets a certain criteria or condition.\n    \n    Add your specific criteria or condition checking logic here and return True or False accordingly.\n    \"\"\"\n    # Example criteria: Check if all numbers in the list are even\n    return all(num % 2 == 0 for num in numbers)\n\n# Usage example:\nnumbers = [2, 4, 6, 8, 10]\nresult = candidate(numbers)\nprint(result)  # Output should be True in this example\n```",
+    "original_prompt": "from typing import List\n\n\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n",
+    "modified_prompt": "You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\n\n\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n",
+    "prompt_type": "prompt1p",
+    "code": "from typing import List\n\ndef candidate(numbers: List[int]) -> bool:\n    \"\"\"\n    Check if a given list of numbers meets a certain criteria or condition.\n    \n    Add your specific criteria or condition checking logic here and return True or False accordingly.\n    \"\"\"\n    # Example criteria: Check if all numbers in the list are even\n    return all(num % 2 == 0 for num in numbers)\n\n# Usage example:\nnumbers = [2, 4, 6, 8, 10]\nresult = candidate(numbers)\nprint(result)  # Output should be True in this example",
+    "question_quality": "0"
+}
+{
+    "name": "HumanEval/0",
+    "index": 0,
+    "response": "I will need some clarification on the requirements for the code. \n1. What is the specific condition that determines whether a number in the list is a candidate or not based on the value of x?\n2. Should the function return True if any number in the list meets the condition, or should all numbers in the list satisfy the condition for the function to return True?\n3. Are there any constraints or edge cases I should be aware of when writing the code?",
+    "original_prompt": "from typing import List\n\n\ndef candidate(numbers: List[float], x: float) -> bool:\n \"\"\" given a list of number.\"\"\"\n",
+    "modified_prompt": "You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\n\n\ndef candidate(numbers: List[float], x: float) -> bool:\n \"\"\" given a list of number.\"\"\"\n",
+    "prompt_type": "prompt2ap",
+    "code": "",
+    "question_quality": "2"
+}

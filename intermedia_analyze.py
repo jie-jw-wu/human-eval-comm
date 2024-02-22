@@ -9,57 +9,6 @@ import nltk
 import pycode_similar
 from nltk.translate.bleu_score import sentence_bleu
 
-#PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Return only an integer: 3 (Good), 2 (Fair), or 1 (Bad). ### Questions: {clarifying_questions} ### Problem Description: {problem} ### original description: {missing_information} \n'
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. Explanation: [...] \n RESULT=[int] \n  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### original description: {missing_information} \n'
-
-# TODO(jwu): adjust prompt
-def evaluate_clarifying_questions(
-    missing_information='',
-    clarifying_questions='',
-    problem=''
-):
-    topn = 1
-    temperature = 1.0
-    model = 'gpt-3.5-turbo'
-    completion = openai.ChatCompletion.create(
-        model=model,
-        n=topn,
-        temperature=temperature,
-        messages=[{
-            "role": "user",
-            "content": PROMPT_EVALUATE_QUESTIONS.format(
-                missing_information=missing_information,
-                clarifying_questions=clarifying_questions,
-                problem=problem
-            )
-        }]
-    )
-    result = re.findall(r'RESULT=(\d+)', completion.choices[0].text)
-    return result
-    #response_list = []
-    #for i in completion['choices']:
-    #    response_list.append(i['message']['content'])
-    # assume the result has only one element (n=1) which is only int
-    #return ''.join(filter(str.isdigit, response_list[0]))
-
-# TODO(jwu): bug this code return last triple code snippet. 
-def response_2_code(response):
-    code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
-    code = code_template.findall(response)
-    if len(code) > 0:
-        return code[-1]
-    else:
-        return ''
-
-# returns code only if the response consists solely of code with markups
-def response_2_code_if_no_text(response):
-    code_template = re.compile('^```.*\n([\s\S]+?)\n```$', re.M)
-    code = code_template.findall(response)
-    if len(code) > 0:
-        return code[-1]
-    else:
-        return ''
-
 def solution_evaluation(solution, test_cases, demo_file, time_limit):
     passed_case = []
     case_status = []
@@ -213,6 +162,8 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             response = content['response']
             original_prompt = content['original_prompt']
             modified_prompt = content['modified_prompt']
+            code = content['code']
+            question_quality = content['question_quality']
             
             if 'HumanEvalComm' in args.file:
                 problem_key = name + '_' + prompt_type
@@ -241,11 +192,6 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             reference_code = []
             reference_code.append(problem['solution'])
 
-            # get code from response
-            if 'HumanEvalComm' in log_file:
-                code = response_2_code_if_no_text(response)
-            else:
-                code = response_2_code(response)
             # default weight: weights=(0.25, 0.25, 0.25, 0.25)
             # if reference_code == []:
             #     BLEU_score_correct = -1
@@ -261,8 +207,6 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 # response is asking questions. communication success. use original prompt results in this case
                 # TODO(jwu): we should continue to provide answers to the quetions, and ask to generate code again. Then compute test pass rate.
                     test_case_solved = [original_prompt_dic[name][index]['passed_case'], original_prompt_dic[name][index]['case_status']]
-                # evaluate clarifying questions
-                question_quality_result = evaluate_clarifying_questions(original_prompt,response,modified_prompt)
             else:
                 test_case_solved = solution_evaluation_HumanEval(code, test_set, demo_file, call_demo_file, problem['entry_point'], time_limit)
             res = {
@@ -270,7 +214,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 'index': index,
                 'passed_case': test_case_solved[0],
                 'case_status': test_case_solved[1],
-                'question_quality': question_quality_result, 
+                'question_quality': question_quality, 
                 # 'BlEU_score_correct': BLEU_score_correct
             }
             problem_dic[problem_key]['response_candidates'].append(response)
