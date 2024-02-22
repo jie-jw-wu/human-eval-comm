@@ -268,7 +268,8 @@ def analyze_among_among5(experiment, model, temperature, topn):
         with open(save_dir+'intermediate_result_among5.json', 'w') as f:
             f.write(json_str)
 
-
+# input: file in ./log/record/
+# output: file in ./result_data/
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
