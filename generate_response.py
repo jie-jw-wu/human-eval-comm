@@ -692,7 +692,7 @@ def description_2_code_one_round(prompt, model, topn, temperature, args, open_so
 
     else:
         messages=[{"role": "user", "content": prompt}]
-        response_list = generate_response(model, messages, topn, temperature)
+        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
     code_list = []
     qq_list = []
     for i in range(len(response_list)):
@@ -701,23 +701,26 @@ def description_2_code_one_round(prompt, model, topn, temperature, args, open_so
         qq_list.append('0')
     return response_list, code_list, qq_list
 
-def generate_response(model, msgs, topn, temperature):
-    completion = openai.ChatCompletion.create(
-        model=model,
-        n=topn,
-        temperature=temperature,
-        messages=msgs
-    )
-    response_list = []
-    for i in completion['choices']:
-        response_list.append(i['message']['content'])
-    return response_list
+def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer):
+    if model == 'CodeLlama':
+        return get_completion_codellama('', msgs, model, tokenizer, args)
+    else:
+        completion = openai.ChatCompletion.create(
+            model=model,
+            n=topn,
+            temperature=temperature,
+            messages=msgs
+        )
+        response_list = []
+        for i in completion['choices']:
+            response_list.append(i['message']['content'])
+        return response_list
 
 def description_2_code_multi_rounds(prompt, original_prompt, model, topn, temperature, args, open_source_model, tokenizer):
     ## 1st round: initial code generation
     print('!!! prompt:' + prompt)
     messages=[{"role": "user","content": prompt}]
-    response_list = generate_response(model, messages, topn, temperature)
+    response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
     code_list = []
     qq_list = []
     for i in range(len(response_list)):
@@ -740,7 +743,7 @@ def description_2_code_multi_rounds(prompt, original_prompt, model, topn, temper
             msgs_i.append({"role":"assistant","content": response})
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             print('!start 2nd generation!')
-            response_2nd = generate_response(model, msgs_i, 1, temperature)
+            response_2nd = generate_response(model, msgs_i, 1, temperature, args, open_source_model, tokenizer)
             code = response_2_code_if_no_text(response_2nd[0])
             print('msg_i:',msgs_i)
             print('response_2nd:',response_2nd)
