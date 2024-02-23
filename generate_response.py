@@ -786,7 +786,7 @@ def response_2_code_if_no_text(response):
         return code[-1]
     return ''
         
-def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn=1, temperature=1.0,args, open_source_model, tokenizer):
+def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, temperature, args, open_source_model, tokenizer):
     remove_percentage = 0
     if option == 'original':
         log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
@@ -884,6 +884,7 @@ if __name__ == "__main__":
         type=int,
         help="Top N candidates",
         required=True,
+        default=1,
     )
     parser.add_argument(
         "-t",
@@ -891,6 +892,7 @@ if __name__ == "__main__":
         type=float,
         help="Set the temperature",
         required=True,
+        default='1',
     )
     parser.add_argument(
         "-o",
@@ -939,6 +941,7 @@ if __name__ == "__main__":
 
     # set huggingface cache directory
     HF_HOME = args.hf_dir
+    offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
     print("Loading model...")
     # if specified, use int8 quantization
     if args.use_int8:
@@ -950,6 +953,7 @@ if __name__ == "__main__":
             load_in_8bit=True,
             device_map="auto",
             cache_dir=HF_HOME,
+            offload_folder=offload_folder,     
         )
     # if specified, use fp16 precision
     elif args.use_fp16:
@@ -961,6 +965,7 @@ if __name__ == "__main__":
             device_map="auto",
             torch_dtype=torch.float16,
             cache_dir=HF_HOME,
+            offload_folder=offload_folder,     
         )
     # otherwise, use default precision
     else:
@@ -968,6 +973,7 @@ if __name__ == "__main__":
             args.model_name_or_path,
             device_map="auto",
             cache_dir=HF_HOME,
+            offload_folder=offload_folder,            
         )
 
     # configure tokenizer
@@ -978,7 +984,8 @@ if __name__ == "__main__":
         use_fast=False,
         trust_remote_code=True,
         cache_dir=HF_HOME,
+        offload_folder=offload_folder,
     )
 
     if args.dataset.startswith('HumanEval'):
-        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature)
+        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
