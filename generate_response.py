@@ -23,6 +23,22 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 set_seed(42)
 
 
+openai.api_key = os.environ['OPENAI_KEY']
+MAX_NUM_PROBLEMS = 1 # limit the number of problems to be run and call ChatGPT. -1 means no such limit
+PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
+PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
+PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
+PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
+PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
+
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n Please follow the format RESULT=[int] and ANSWERS="..." in the response!  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
+OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n "
+OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n"
+    + "If no need to ask clarifying questions, return an empty space only. Otherwise, return the clarifying questions. \n\n "
+    #+ "### Problem Description: {problem} \n"
+    #+ "### Generated Code: {code} \n"
+
 # Instruction-tuned Models and Foundation Models have different nl_2_pl/pl_2_nl prompts and functions
 INSTRUCTION_MODELS = [
     "codellama/CodeLlama-7b-Instruct-hf",
@@ -513,16 +529,7 @@ def get_completion_starcoder_fim(
     print(completion)
     return completion
 
-openai.api_key = os.environ['OPENAI_KEY']
-MAX_NUM_PROBLEMS = 1 # limit the number of problems to be run and call ChatGPT. -1 means no such limit
-PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
-PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
-PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
-PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
-PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n Please follow the format RESULT=[int] and ANSWERS="..." in the response!  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
-PROMPT_2ND_ROUND = '\n Given above conversations, generate Python3 code directly (Markdown):\n'
 
 def evaluate_clarifying_questions(
     missing_information='',
@@ -701,9 +708,17 @@ def description_2_code_one_round(prompt, model, topn, temperature, args, open_so
         qq_list.append('0')
     return response_list, code_list, qq_list
 
+def generate_response_str(model, msgs, temperature, args, open_source_model, tokenizer):
+    response_list = generate_response(model, msgs, 1, temperature, args, open_source_model, tokenizer)
+    return response_list[0]
+    
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer):
-    if model == 'CodeLlama':
-        return get_completion_codellama('', msgs, model, tokenizer, args)
+    if model == 'OpenSourceModel':
+        user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
+        response_list = []
+        for i in range(topn):
+            response_list.append(get_completion_starcoder('', user_input, model, tokenizer, args))
+        return response_list        
     else:
         completion = openai.ChatCompletion.create(
             model=model,
@@ -716,11 +731,28 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(i['message']['content'])
         return response_list
 
-def description_2_code_multi_rounds(prompt, original_prompt, model, topn, temperature, args, open_source_model, tokenizer):
+def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer):
     ## 1st round: initial code generation
-    print('!!! prompt:' + prompt)
-    messages=[{"role": "user","content": prompt}]
-    response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
+    full_prompt = prompt + user_input
+    print('!!! prompt:' + full_prompt)
+    messages = []
+    response_list = []
+    if model == 'Okanagan':
+        # this code assume topn=1
+        messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
+        coder_response = generate_response_str(model, messages, temperature, args, open_source_model, tokenizer)
+        messages.append({"role": "assistant","content": coder_response})
+        messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
+        # Reflection
+        communicator_response = generate_response_str(model, messages, temperature, args, open_source_model, tokenizer)
+        messages.append({"role": "assistant","content": communicator_response})
+        if communicator_response.isspace():
+            response_list.append(coder_response)
+        else:
+            response_list.append(communicator_response)
+    else:
+        messages.append({"role": "user","content": full_prompt})
+        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
     code_list = []
     qq_list = []
     for i in range(len(response_list)):
@@ -736,7 +768,7 @@ def description_2_code_multi_rounds(prompt, original_prompt, model, topn, temper
             # 1) generate answer,
             # 2) evaluate quality of clarifying questions,
             # 3) generate new code with Q&A
-            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,prompt)
+            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
             
             ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
             msgs_i = messages.copy()
@@ -835,7 +867,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
                     response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature, args, open_source_model, tokenizer)
                 else:
                     original_prompt = PROMPT_START_3_v2 + problem['prompt']
-                    response_list, code_list, qq_list = description_2_code_multi_rounds(prompt, original_prompt, model, topn, temperature, args, open_source_model, tokenizer)
+                    response_list, code_list, qq_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer)
             except Exception as e:
                 print('%s---------%s' % (problem['task_id'], e), flush=True)
                 continue
@@ -938,54 +970,56 @@ if __name__ == "__main__":
     parser.add_argument('--version', type=str, default='v1', help='version of the identity chain')
 
     args = parser.parse_args()
+    model = None
+    tokenizer = None
+    if args.model == 'OpenSourceModel':
+        # set huggingface cache directory
+        HF_HOME = args.hf_dir
+        offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
+        print("Loading model...")
+        # if specified, use int8 quantization
+        if args.use_int8:
+            print("**********************************")
+            print("**** Using 8-bit quantization ****")
+            print("**********************************")
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path,
+                load_in_8bit=True,
+                device_map="auto",
+                cache_dir=HF_HOME,
+                offload_folder=offload_folder,     
+            )
+        # if specified, use fp16 precision
+        elif args.use_fp16:
+            print("**********************************")
+            print("****** Using fp16 precision ******")
+            print("**********************************")
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path,
+                device_map="auto",
+                torch_dtype=torch.float16,
+                cache_dir=HF_HOME,
+                offload_folder=offload_folder,     
+            )
+        # otherwise, use default precision
+        else:
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path,
+                device_map="auto",
+                cache_dir=HF_HOME,
+                offload_folder=offload_folder,            
+            )
 
-    # set huggingface cache directory
-    HF_HOME = args.hf_dir
-    offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
-    print("Loading model...")
-    # if specified, use int8 quantization
-    if args.use_int8:
-        print("**********************************")
-        print("**** Using 8-bit quantization ****")
-        print("**********************************")
-        model = AutoModelForCausalLM.from_pretrained(
+        # configure tokenizer
+        tokenizer = AutoTokenizer.from_pretrained(
             args.model_name_or_path,
-            load_in_8bit=True,
-            device_map="auto",
+            model_max_length=args.seq_length,
+            padding_side="right",
+            use_fast=False,
+            trust_remote_code=True,
             cache_dir=HF_HOME,
-            offload_folder=offload_folder,     
+            offload_folder=offload_folder,
         )
-    # if specified, use fp16 precision
-    elif args.use_fp16:
-        print("**********************************")
-        print("****** Using fp16 precision ******")
-        print("**********************************")
-        model = AutoModelForCausalLM.from_pretrained(
-            args.model_name_or_path,
-            device_map="auto",
-            torch_dtype=torch.float16,
-            cache_dir=HF_HOME,
-            offload_folder=offload_folder,     
-        )
-    # otherwise, use default precision
-    else:
-        model = AutoModelForCausalLM.from_pretrained(
-            args.model_name_or_path,
-            device_map="auto",
-            cache_dir=HF_HOME,
-            offload_folder=offload_folder,            
-        )
-
-    # configure tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(
-        args.model_name_or_path,
-        model_max_length=args.seq_length,
-        padding_side="right",
-        use_fast=False,
-        trust_remote_code=True,
-        cache_dir=HF_HOME,
-        offload_folder=offload_folder,
-    )
 
     if args.dataset.startswith('HumanEval'):
         HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
