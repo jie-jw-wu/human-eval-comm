@@ -535,7 +535,8 @@ def evaluate_clarifying_questions(
     clarifying_questions='',
     problem=''
 ):
-    print('evaluate_clarifying_questions. ')
+    print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print('!!!!!!! 2nd evaluate_clarifying_questions START !!!!!!!!!!!')
     topn = 1
     temperature = 1.0
     model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
@@ -553,8 +554,8 @@ def evaluate_clarifying_questions(
             "content": content,
         }]
     )
-    print('PROMPT_EVALUATE_QUESTIONS='+content)
-    print('Completion='+completion['choices'][0]['message']['content'])
+    print('!!!!!!!PROMPT_EVALUATE_QUESTIONS='+content)
+    print('!!!!!!!Completion='+completion['choices'][0]['message']['content'])
     # Convert completion content to a string if it's not already a string
     completion_content = str(completion['choices'][0]['message']['content'])
 
@@ -563,8 +564,11 @@ def evaluate_clarifying_questions(
     answers = re.findall(r'ANSWERS="(.+?)"', completion_content)
     answer_str = answers[0] if answers else ""
     question_quality_str = question_quality[0] if question_quality else ""
-    print('answer_str',answer_str)
-    print('question_quality_str',question_quality_str)
+    print('!!!!!!!answer_str',answer_str)
+    print('!!!!!!!question_quality_str',question_quality_str)
+    
+    print('!!!!!!! 2nd evaluate_clarifying_questions END !!!!!!!!!!!')
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
     return answer_str, question_quality_str
 
 def create_prompt(description, option='original', percentage=0):
@@ -720,7 +724,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         return response_list        
     else:
         completion = openai.ChatCompletion.create(
-            model=open_source_model,
+            model=model,
             n=topn,
             temperature=temperature,
             messages=msgs
@@ -733,7 +737,9 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
 def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer):
     ## 1st round: initial code generation
     full_prompt = prompt + user_input
-    print('!!! prompt:' + full_prompt)
+    print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print('!!!!!!!!!!!!! prompt:\n' + full_prompt)
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
     messages = []
     response_list = []
     if model == 'Okanagan':
@@ -757,8 +763,11 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
     for i in range(len(response_list)):
         response = response_list[i]
         code = response_2_code_if_no_text(response)
-        print('!!! response:' + response)
-        print('!!! code:' + code)
+        
+        print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print('!!!!!!!!!!!!! 1st CodeLLM response:\n' + response)
+        print('!!!!!!!!!!!!! 1st CodeLLM response code:\n' + code)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
         question_quality = '0'
         if code == '':
             ## 2nd round: question & answer round
@@ -773,11 +782,14 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             msgs_i = messages.copy()
             msgs_i.append({"role":"assistant","content": response})
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
-            print('!start 2nd generation!')
+            
             response_2nd = generate_response(model, msgs_i, 1, temperature, args, open_source_model, tokenizer)
             code = response_2_code_if_no_text(response_2nd[0])
-            print('msg_i:',msgs_i)
-            print('response_2nd:',response_2nd)
+            
+            print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd)
+            print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
         qq_list.append(question_quality)
         code_list.append(code)
     return response_list, code_list, qq_list
@@ -857,7 +869,10 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
         for input_prompt in input_prompt_fields:
             if input_prompt not in problem:
                 continue
-            print('!!!!!input_prompt:'+input_prompt)
+            
+            print("********************************************************************")
+            print("****** new problem (input_prompt="+input_prompt+") ******")
+            print("********************************************************************\n\n")
             description = problem[input_prompt]
             try:
                 prompt = create_prompt(description, option, remove_percentage)
@@ -1013,7 +1028,7 @@ if __name__ == "__main__":
         tokenizer = AutoTokenizer.from_pretrained(
             args.model_name_or_path,
             model_max_length=args.seq_length,
-            padding_side="right",
+            padding_side="left",#"right",
             use_fast=False,
             trust_remote_code=True,
             cache_dir=HF_HOME,
