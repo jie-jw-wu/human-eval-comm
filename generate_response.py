@@ -716,11 +716,11 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
-            response_list.append(get_completion_starcoder('', user_input, model, tokenizer, args))
+            response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
         return response_list        
     else:
         completion = openai.ChatCompletion.create(
-            model=model,
+            model=open_source_model,
             n=topn,
             temperature=temperature,
             messages=msgs
