@@ -33,9 +33,8 @@ PROMPT_START_3_v2 = 'You are an expert software developer who writes high qualit
 
 PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some questions are raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an explanation along with an integer (3: Good, 2: Fair, or 1: Bad) representing the result. RESULT=[int] \n Please also provide answers to the questions \n ANSWERS="..." \n Please follow the format RESULT=[int] and ANSWERS="..." in the response!  ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
-OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n "
-OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n"
-    + "If no need to ask clarifying questions, return an empty space only. Otherwise, return the clarifying questions. \n\n "
+OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
+OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return an empty space only. Otherwise, return the clarifying questions. \n\n'
     #+ "### Problem Description: {problem} \n"
     #+ "### Generated Code: {code} \n"
 
