@@ -845,7 +845,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             problem_list.append(json.loads(line))
             # added by JW
             line_cnt += 1
-            if MAX_NUM_PROBLEMS >= 0 and line_cnt==MAX_NUM_PROBLEMS:
+            if args.max_num_problems >= 0 and line_cnt==args.max_num_problems:
                 break
     names = set()
     if os.path.exists(log_file):
@@ -956,6 +956,14 @@ if __name__ == "__main__":
         help="Choose the order of the experiment",
         default='0'
     )
+    parser.add_argument(
+        "-maxp",
+        "--max_num_problems",
+        type=int,
+        help="Max number of problems to run",
+        required=True,
+        default=-1,
+    )
     
     # args from open sources models
 
@@ -1028,7 +1036,8 @@ if __name__ == "__main__":
         tokenizer = AutoTokenizer.from_pretrained(
             args.model_name_or_path,
             model_max_length=args.seq_length,
-            padding_side="left",#"right",
+            # Bug: A decoder-only architecture is being used, but right-padding was detected! For correct generation results, please set `padding_side='left'` when initializing the tokenizer.
+            padding_side="right",
             use_fast=False,
             trust_remote_code=True,
             cache_dir=HF_HOME,
