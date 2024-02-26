@@ -1037,6 +1037,7 @@ if __name__ == "__main__":
             args.model_name_or_path,
             model_max_length=args.seq_length,
             # Bug: A decoder-only architecture is being used, but right-padding was detected! For correct generation results, please set `padding_side='left'` when initializing the tokenizer.
+            # setting padding_side='left' doesn't fix the issue.
             padding_side="right",
             use_fast=False,
             trust_remote_code=True,
