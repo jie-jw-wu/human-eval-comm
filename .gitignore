@@ -1,3 +1,7 @@
 APPS/*
 tmp/*
 APPS.tar.gz
+call_demo*.py
+demo*.py
+__pycache__/*
+tables/*
