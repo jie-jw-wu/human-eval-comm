@@ -904,6 +904,19 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             print('%s finish!' % (problem['task_id']), flush=True)
     print('Done!', flush=True)
 
+def test_starcoder(tokenizer, model):
+    device = 'cpu'
+    inputs = tokenizer.encode(
+        "def helloworld():",
+        # compute a + b 
+        #"def print_hello_world():", 
+        return_tensors="pt"
+        ).to(device)
+    outputs = model.generate(inputs)
+    print('!!!!!!!!!!')
+    print(tokenizer.decode(outputs[0]))
+    print('!!!!!!!!!!')
+
 # call LLM to generate results from problems
 # input: HumanEval.jsonl
 # output: file in folder log/
@@ -1045,5 +1058,7 @@ if __name__ == "__main__":
             offload_folder=offload_folder,
         )
 
+    # test_starcoder(tokenizer, model)
+    
     if args.dataset.startswith('HumanEval'):
         HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
