@@ -34,7 +34,7 @@ PROMPT_START_3_v2 = 'You are an expert software developer who writes high qualit
 PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requriements become inconsistent, incomplete or ambiguous. Given the modifed description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or totally irrelevent content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! \n ANSWERS=```[your answer]``` \n Please strictly follow the format RESULT=[the int] and ANSWERS=```[the answer]``` in the response! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
-OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return an empty space only. Otherwise, return the clarifying questions. \n\n'
+OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
     #+ "### Problem Description: {problem} \n"
     #+ "### Generated Code: {code} \n"
 
@@ -742,16 +742,20 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
     messages = []
     response_list = []
+    model_2nd_round = model
     if model == 'Okanagan':
         # this code assume topn=1
+        # set the real model used by Okanagan
+        ok_model = 'gpt-3.5-turbo-0125'
+        model_2nd_round = ok_model
         messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
-        coder_response = generate_response_str(model, messages, temperature, args, open_source_model, tokenizer)
+        coder_response = generate_response_str(ok_model, messages, temperature, args, open_source_model, tokenizer)
         messages.append({"role": "assistant","content": coder_response})
         messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
         # Reflection
-        communicator_response = generate_response_str(model, messages, temperature, args, open_source_model, tokenizer)
+        communicator_response = generate_response_str(ok_model, messages, temperature, args, open_source_model, tokenizer)
         messages.append({"role": "assistant","content": communicator_response})
-        if communicator_response.isspace():
+        if  re.search('no_questions', communicator_response, re.IGNORECASE):
             response_list.append(coder_response)
         else:
             response_list.append(communicator_response)
@@ -783,7 +787,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             msgs_i.append({"role":"assistant","content": response})
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
-            response_2nd = generate_response(model, msgs_i, 1, temperature, args, open_source_model, tokenizer)
+            response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
             code = response_2_code_if_no_text(response_2nd[0])
             
             print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
