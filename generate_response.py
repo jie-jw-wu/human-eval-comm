@@ -24,7 +24,6 @@ set_seed(42)
 
 
 openai.api_key = os.environ['OPENAI_KEY']
-MAX_NUM_PROBLEMS = 1 # limit the number of problems to be run and call ChatGPT. -1 means no such limit
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -35,8 +34,6 @@ PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is mod
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
 OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
-    #+ "### Problem Description: {problem} \n"
-    #+ "### Generated Code: {code} \n"
 
 # Instruction-tuned Models and Foundation Models have different nl_2_pl/pl_2_nl prompts and functions
 INSTRUCTION_MODELS = [
@@ -977,7 +974,7 @@ if __name__ == "__main__":
         "-maxp",
         "--max_num_problems",
         type=int,
-        help="Max number of problems to run",
+        help="Max number of problems to run", # limit the number of problems to be run and call ChatGPT. -1 means no such limit
         required=True,
         default=-1,
     )
