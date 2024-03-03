@@ -30,7 +30,7 @@ PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! \n ANSWERS=```[your answer]``` \n Please strictly follow the format RESULT=[the int] and ANSWERS=```[the answer]``` in the response! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! \n ANSWERS=```[your answer]``` \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
 OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
@@ -761,6 +761,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
     code_list = []
     qq_list = []
+    ans_list = []
     for i in range(len(response_list)):
         response = response_list[i]
         code = response_2_code_if_no_text(response)
@@ -770,6 +771,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         print('!!!!!!!!!!!!! 1st CodeLLM response code:\n' + code)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
         question_quality = '0'
+        answer = ''
         if code == '':
             ## 2nd round: question & answer round
             
@@ -793,7 +795,8 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
         qq_list.append(question_quality)
         code_list.append(code)
-    return response_list, code_list, qq_list
+        ans_list.append(answer)
+    return response_list, code_list, qq_list, ans_list
 
 def get_ith_element(input_string, i):
     # Split the input string by '_' to create a list of elements
@@ -882,7 +885,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
                     response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature, args, open_source_model, tokenizer)
                 else:
                     original_prompt = PROMPT_START_3_v2 + problem['prompt']
-                    response_list, code_list, qq_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer)
+                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer)
             except Exception as e:
                 print('%s---------%s' % (problem['task_id'], e), flush=True)
                 continue
@@ -897,6 +900,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
                     'prompt_type': input_prompt,
                     'code': code_list[i],
                     'question_quality': qq_list[i],
+                    'answer': ans_list[i],
                 }
                 print('response %s is writting into file' % (i), flush=True)
                 json_str = json.dumps(res)
