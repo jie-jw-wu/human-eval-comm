@@ -1103,13 +1103,10 @@
     "name": "HumanEval/32",
     "entry_point": "find_zero",
     "prompt": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef candidate(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    candidate find x such that poly(x) is negative or 0.\n    candidate returns only only zero point, even if there are many.\n    Moreover, candidate only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(candidate([1, 2]), 2) # f(x) = 1 + 2x\n    -1.0\n    >>> round(candidate([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    0.0\n    \"\"\"\n",
+    "prompt1c": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -2.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    3.0\n    \"\"\"\n",
+    "prompt1p": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x.\n    \"\"\"\n",
+    "prompt2ac": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef candidate(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    candidate find x such that poly(x) is negative or 0.\n    candidate returns only only zero point, even if there are many.\n    Moreover, candidate only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(candidate([1, 2]), 2) # f(x) = 1 + 2x\n    -2.5\n    >>> round(candidate([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    3.0\n    \"\"\"\n",
     "solution": "import math\n\n\ndef poly(xs: list, x: float):\n    \"\"\"\n    Evaluates polynomial with coefficients xs at point x.\n    return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n    \"\"\"\n    return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n\n\ndef find_zero(xs: list):\n    \"\"\" xs are coefficients of a polynomial.\n    find_zero find x such that poly(x) = 0.\n    find_zero returns only only zero point, even if there are many.\n    Moreover, find_zero only takes list xs having even number of coefficients\n    and largest non zero coefficient as it guarantees\n    a solution.\n    >>> round(find_zero([1, 2]), 2) # f(x) = 1 + 2x\n    -0.5\n    >>> round(find_zero([-6, 11, -6, 1]), 2) # (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    1.0\n    \"\"\"\n    begin, end = -1., 1.\n    while poly(xs, begin) * poly(xs, end) > 0:\n        begin *= 2.0\n        end *= 2.0\n    while end - begin > 1e-10:\n        center = (begin + end) / 2.0\n        if poly(xs, center) * poly(xs, begin) > 0:\n            begin = center\n        else:\n            end = center\n    return begin\n",
     "test_case": [
         {
@@ -2179,11 +2176,15 @@
             "relation": "from $demo$ import poly\nimport math\nsolution = find_zero($input$)\nprint(math.fabs(poly($input$, solution)) < 1e-4)"
         }
     ]
-}
+};
 {
     "name": "HumanEval/33",
     "entry_point": "sort_third",
     "prompt": "\n\ndef sort_third(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the indicies that are not divisible by three, while its values at the indicies that are divisible by three are equal\n    to the values of the corresponding indicies of l, but sorted.\n    >>> sort_third([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_third([5, 6, 3, 4, 8, 9, 2])\n    [2, 6, 3, 4, 8, 9, 5]\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the indicies that are not divisible by three, while its values at the indicies that are divisible by three are equal\n    to the values of the corresponding indicies of l, but sorted descendingly or ascendingly.\n    >>> candidate([1, 2, 3])\n    [1, 2, 3]\n    >>> candidate([5, 6, 3, 4, 8, 9, 2])\n    [2, 6, 3, 4, 8, 9, 5]\n    \"\"\"\n",
+    "prompt1c": "\n\ndef sort_third(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the indicies that are not divisible by three, while its values at the indicies that are divisible by three are equal\n    to the values of the corresponding indicies of l, but sorted.\n    >>> sort_third([1, 2, 3])\n    [3, 2, 1]\n    >>> sort_third([5, 6, 3, 4, 8, 9, 2])\n    [9, 8, 6, 5, 4, 3, 2]\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the indicies that are not divisible by three, while its values at the indicies that are divisible by three are equal\n    to the values of the corresponding indicies of l.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the indicies that are not divisible by three, while its values at the indicies that are divisible by three are equal\n    to the values of the corresponding indicies of l, but sorted descendingly or ascendingly.\n    >>> sort_third([1, 2, 3])\n    [3, 2, 1]\n    >>> sort_third([5, 6, 3, 4, 8, 9, 2])\n    [9, 8, 6, 5, 4, 3, 2]\n    \"\"\"\n",
     "solution": "\n\ndef sort_third(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the indicies that are not divisible by three, while its values at the indicies that are divisible by three are equal\n    to the values of the corresponding indicies of l, but sorted.\n    >>> sort_third([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_third([5, 6, 3, 4, 8, 9, 2])\n    [2, 6, 3, 4, 8, 9, 5]\n    \"\"\"\n    l = list(l)\n    l[::3] = sorted(l[::3])\n    return l\n",
     "test_case": [
         {
@@ -2207,11 +2208,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/34",
     "entry_point": "unique",
     "prompt": "\n\ndef unique(l: list):\n    \"\"\"Return sorted unique elements in a list\n    >>> unique([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [0, 2, 3, 5, 9, 123]\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"Return descending or ascending sorted unique elements in a list\n    >>> candidate([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [0, 2, 3, 5, 9, 123]\n    \"\"\"\n",
+    "prompt1c": "\n\ndef unique(l: list):\n    \"\"\"Return sorted unique elements in a list\n    >>> unique([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [2, 0, 5, 3, 123, 9]\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"Return elements in a list\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"Return descending or ascending sorted unique elements in a list\n    >>> candidate([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [2, 0, 5, 3, 123, 9]\n    \"\"\"\n",
     "solution": "\n\ndef unique(l: list):\n    \"\"\"Return sorted unique elements in a list\n    >>> unique([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [0, 2, 3, 5, 9, 123]\n    \"\"\"\n    return sorted(list(set(l)))\n",
     "test_case": [
         {
@@ -2220,11 +2225,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/35",
     "entry_point": "max_element",
     "prompt": "\n\ndef max_element(l: list):\n    \"\"\"Return maximum element in the list.\n    >>> max_element([1, 2, 3])\n    3\n    >>> max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n    123\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"Return minimum or maximum element in the list.\n    >>> candidate([1, 2, 3])\n    3\n    >>> candidate([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n    123\n    \"\"\"\n",
+    "prompt1c": "\n\ndef max_element(l: list):\n    \"\"\"Return maximum element in the list.\n    >>> max_element([1, 2, 3])\n    1\n    >>> max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n    -10\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"Return element in the list.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"Return maximum element in the list.\n    >>> candidate([1, 2, 3])\n    1\n    >>> candidate([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n    -10\n    \"\"\"\n",
     "solution": "\n\ndef max_element(l: list):\n    \"\"\"Return maximum element in the list.\n    >>> max_element([1, 2, 3])\n    3\n    >>> max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n    123\n    \"\"\"\n    m = l[0]\n    for e in l:\n        if e > m:\n            m = e\n    return m\n",
     "test_case": [
         {
@@ -2243,6 +2252,10 @@
     "name": "HumanEval/36",
     "entry_point": "fizz_buzz",
     "prompt": "\n\ndef fizz_buzz(n: int):\n    \"\"\"Return the number of times the digit 7 appears in integers less than n which are divisible by 11 or 13.\n    >>> fizz_buzz(50)\n    0\n    >>> fizz_buzz(78)\n    2\n    >>> fizz_buzz(79)\n    3\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(n: int):\n    \"\"\"Return the number of times the digit 7 appears in integers less than n which are divisible by 7 or 9 or 11 or 13.\n    >>> candidate(50)\n    0\n    >>> candidate(78)\n    2\n    >>> candidate(79)\n    3\n    \"\"\"\n",
+    "prompt1c": "\n\ndef fizz_buzz(n: int):\n    \"\"\"Return the number of times the digit 7 appears in integers less than n which are divisible by 11 or 13.\n    >>> fizz_buzz(50)\n    2\n    >>> fizz_buzz(78)\n    1\n    >>> fizz_buzz(79)\n    2\n    \"\"\"\n",
+    "prompt1p": "\n\ndef fizz_buzz(n: int):\n    \"\"\"Return the number of times the digit 7 appears in integers less than n which are divisible.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(n: int):\n    \"\"\"Return the number of times the digit 7 appears in integers less than n which are divisible by 7 or 9 or 11 or 13.\n    >>> candidate(50)\n    2\n    >>> candidate(78)\n    1\n    >>> candidate(79)\n    2\n    \"\"\"\n",
     "solution": "\n\ndef fizz_buzz(n: int):\n    \"\"\"Return the number of times the digit 7 appears in integers less than n which are divisible by 11 or 13.\n    >>> fizz_buzz(50)\n    0\n    >>> fizz_buzz(78)\n    2\n    >>> fizz_buzz(79)\n    3\n    \"\"\"\n    ns = []\n    for i in range(n):\n        if i % 11 == 0 or i % 13 == 0:\n            ns.append(i)\n    s = ''.join(list(map(str, ns)))\n    ans = 0\n    for c in s:\n        ans += (c == '7')\n    return ans\n",
     "test_case": [
         {
@@ -2286,11 +2299,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/37",
     "entry_point": "sort_even",
     "prompt": "\n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted descendingly or ascendingly.\n    >>> candidate([1, 2, 3])\n    [1, 2, 3]\n    >>> candidate([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n",
+    "prompt1c": "\n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [3, 2, 1]\n    >>> sort_even([5, 6, 3, 4])\n    [5, 4, 3, 6]\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted descendingly or ascendingly.\n    >>> sort_even([1, 2, 3])\n    [3, 2, 1]\n    >>> sort_even([5, 6, 3, 4])\n    [5, 4, 3, 6]\n    \"\"\"\n",
     "solution": "\n\ndef sort_even(l: list):\n    \"\"\"This function takes a list l and returns a list l' such that\n    l' is identical to l in the odd indicies, while its values at the even indicies are equal\n    to the values of the even indicies of l, but sorted.\n    >>> sort_even([1, 2, 3])\n    [1, 2, 3]\n    >>> sort_even([5, 6, 3, 4])\n    [3, 6, 5, 4]\n    \"\"\"\n    evens = l[::2]\n    odds = l[1::2]\n    evens.sort()\n    ans = []\n    for e, o in zip(evens, odds):\n        ans.extend([e, o])\n    if len(evens) > len(odds):\n        ans.append(evens[-1])\n    return ans\n",
     "test_case": [
         {
@@ -2314,6 +2331,10 @@
     "name": "HumanEval/38",
     "entry_point": "decode_cyclic",
     "prompt": "\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef decode_cyclic(s: str):\n    \"\"\"\n    takes as input string encoded with encode_cyclic function. Returns decoded string.\n    \"\"\"\n",
+    "prompt1a": "\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string encoded with encode_cyclic function. Returns encoded or decoded string.\n    \"\"\"\n",
+    "prompt1c": "\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef decode_cyclic(s: str):\n    \"\"\"\n    takes as input string decoded with encode_cyclic function. Returns encoded string.\n    \"\"\"\n",
+    "prompt1p": "\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string encoded with encode_cyclic function. \n    \"\"\"\n",
+    "prompt2ac": "\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string decoded with encode_cyclic function. Returns encoded or decoded string.\n    \"\"\"\n",
     "solution": "\n\ndef encode_cyclic(s: str):\n    \"\"\"\n    returns encoded string by cycling groups of three characters.\n    \"\"\"\n    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n\n\ndef decode_cyclic(s: str):\n    \"\"\"\n    takes as input string encoded with encode_cyclic function. Returns decoded string.\n    \"\"\"\n    return encode_cyclic(encode_cyclic(s))\n",
     "test_case": [
         {
@@ -2817,11 +2838,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/39",
     "entry_point": "prime_fib",
     "prompt": "\n\ndef prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    2\n    >>> prime_fib(2)\n    3\n    >>> prime_fib(3)\n    5\n    >>> prime_fib(4)\n    13\n    >>> prime_fib(5)\n    89\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(n: int):\n    \"\"\"\n    candidate returns n-th number that is a Fibonacci number and it's also prime or composite.\n    >>> candidate(1)\n    2\n    >>> candidate(2)\n    3\n    >>> candidate(3)\n    5\n    >>> candidate(4)\n    13\n    >>> candidate(5)\n    89\n    \"\"\"\n",
+    "prompt1c": "\n\ndef prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    20\n    >>> prime_fib(2)\n    30\n    >>> prime_fib(3)\n    50\n    >>> prime_fib(4)\n    130\n    >>> prime_fib(5)\n    890\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(n: int):\n    \"\"\"\n    candidate returns n-th number that is a Fibonacci number.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(n: int):\n    \"\"\"\n    candidate returns n-th number that is a Fibonacci number and it's also prime or composite.\n    >>> candidate(1)\n    20\n    >>> candidate(2)\n    30\n    >>> candidate(3)\n    50\n    >>> candidate(4)\n    130\n    >>> candidate(5)\n    890\n    \"\"\"\n",
     "solution": "\n\ndef prime_fib(n: int):\n    \"\"\"\n    prime_fib returns n-th number that is a Fibonacci number and it's also prime.\n    >>> prime_fib(1)\n    2\n    >>> prime_fib(2)\n    3\n    >>> prime_fib(3)\n    5\n    >>> prime_fib(4)\n    13\n    >>> prime_fib(5)\n    89\n    \"\"\"\n    import math\n\n    def is_prime(p):\n        if p < 2:\n            return False\n        for k in range(2, min(int(math.sqrt(p)) + 1, p - 1)):\n            if p % k == 0:\n                return False\n        return True\n    f = [0, 1]\n    while True:\n        f.append(f[-1] + f[-2])\n        if is_prime(f[-1]):\n            n -= 1\n        if n == 0:\n            return f[-1]\n",
     "test_case": [
         {
@@ -2880,6 +2905,10 @@
     "name": "HumanEval/40",
     "entry_point": "triples_sum_to_zero",
     "prompt": "\n\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    True\n    >>> triples_sum_to_zero([1])\n    False\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"\n    candidate takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> candidate([1, 3, 5, 0])\n    False\n    >>> candidate([1, 3, -2, 1])\n    True\n    >>> candidate([1, 2, 3, 7])\n    False\n    >>> candidate([2, 4, -5, 3, 9, 7])\n    True\n    >>> candidate([1])\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    False\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    True\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    False\n    >>> triples_sum_to_zero([1])\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"\n    candidate takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list,\n    and False otherwise.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"\n    candidate takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> candidate([1, 3, 5, 0])\n    True\n    >>> candidate([1, 3, -2, 1])\n    False\n    >>> candidate([1, 2, 3, 7])\n    True\n    >>> candidate([2, 4, -5, 3, 9, 7])\n    False\n    >>> candidate([1])\n    True\n    \"\"\"\n",
     "solution": "\n\ndef triples_sum_to_zero(l: list):\n    \"\"\"\n    triples_sum_to_zero takes a list of integers as an input.\n    it returns True if there are three distinct elements in the list that\n    sum to zero, and False otherwise.\n\n    >>> triples_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> triples_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> triples_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\n    True\n    >>> triples_sum_to_zero([1])\n    False\n    \"\"\"\n    for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n",
     "test_case": [
         {
@@ -2933,6 +2962,13 @@
     "name": "HumanEval/41",
     "entry_point": "car_race_collision",
     "prompt": "\n\ndef car_race_collision(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef car_race_collision(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n    return n**2\n",
     "test_case": [
         {
@@ -2966,6 +3002,13 @@
     "name": "HumanEval/42",
     "entry_point": "incr_list",
     "prompt": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 1.\n    >>> incr_list([1, 2, 3])\n    [2, 3, 4]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [6, 4, 6, 3, 4, 4, 10, 1, 124]\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 1.\n    >>> incr_list([1, 2, 3])\n    [2, 3, 4]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [6, 4, 6, 3, 4, 4, 10, 1, 124]\n    \"\"\"\n    return [(e + 1) for e in l]\n",
     "test_case": [
         {
@@ -2989,6 +3032,13 @@
     "name": "HumanEval/43",
     "entry_point": "pairs_sum_to_zero",
     "prompt": "\n\ndef pairs_sum_to_zero(l):\n    \"\"\"\n    pairs_sum_to_zero takes a list of integers as an input.\n    it returns True if there are two distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> pairs_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> pairs_sum_to_zero([1, 3, -2, 1])\n    False\n    >>> pairs_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> pairs_sum_to_zero([2, 4, -5, 3, 5, 7])\n    True\n    >>> pairs_sum_to_zero([1])\n    False\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef pairs_sum_to_zero(l):\n    \"\"\"\n    pairs_sum_to_zero takes a list of integers as an input.\n    it returns True if there are two distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> pairs_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> pairs_sum_to_zero([1, 3, -2, 1])\n    False\n    >>> pairs_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> pairs_sum_to_zero([2, 4, -5, 3, 5, 7])\n    True\n    >>> pairs_sum_to_zero([1])\n    False\n    \"\"\"\n    for i, l1 in enumerate(l):\n        for j in range(i + 1, len(l)):\n            if l1 + l[j] == 0:\n                return True\n    return False\n",
     "test_case": [
         {
@@ -3042,6 +3092,13 @@
     "name": "HumanEval/44",
     "entry_point": "change_base",
     "prompt": "\n\ndef change_base(x: int, base: int):\n    \"\"\"Change numerical base of input number x to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> change_base(8, 3)\n    '22'\n    >>> change_base(8, 2)\n    '1000'\n    >>> change_base(7, 2)\n    '111'\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef change_base(x: int, base: int):\n    \"\"\"Change numerical base of input number x to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> change_base(8, 3)\n    '22'\n    >>> change_base(8, 2)\n    '1000'\n    >>> change_base(7, 2)\n    '111'\n    \"\"\"\n    ret = \"\"\n    while x > 0:\n        ret = str(x % base) + ret\n        x //= base\n    return ret\n",
     "test_case": [
         {
@@ -3110,6 +3167,13 @@
     "name": "HumanEval/45",
     "entry_point": "triangle_area",
     "prompt": "\n\ndef triangle_area(a, h):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> triangle_area(5, 3)\n    7.5\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef triangle_area(a, h):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> triangle_area(5, 3)\n    7.5\n    \"\"\"\n    return a * h / 2.0\n",
     "test_case": [
         {
@@ -3133,6 +3197,13 @@
     "name": "HumanEval/46",
     "entry_point": "fib4",
     "prompt": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"\n    results = [0, 0, 2, 0]\n    if n < 4:\n        return results[n]\n\n    for _ in range(4, n + 1):\n        results.append(results[-1] + results[-2] + results[-3] + results[-4])\n        results.pop(0)\n\n    return results[-1]\n",
     "test_case": [
         {
@@ -3161,6 +3232,13 @@
     "name": "HumanEval/47",
     "entry_point": "median",
     "prompt": "\n\ndef median(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median([3, 1, 2, 4, 5])\n    3\n    >>> median([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef median(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median([3, 1, 2, 4, 5])\n    3\n    >>> median([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n    l = sorted(l)\n    if len(l) % 2 == 1:\n        return l[len(l) // 2]\n    else:\n        return (l[len(l) // 2 - 1] + l[len(l) // 2]) / 2.0\n",
     "test_case": [
         {
@@ -3194,6 +3272,13 @@
     "name": "HumanEval/48",
     "entry_point": "is_palindrome",
     "prompt": "\n\ndef is_palindrome(text: str):\n    \"\"\"\n    Checks if given string is a palindrome\n    >>> is_palindrome('')\n    True\n    >>> is_palindrome('aba')\n    True\n    >>> is_palindrome('aaaaa')\n    True\n    >>> is_palindrome('zbcd')\n    False\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef is_palindrome(text: str):\n    \"\"\"\n    Checks if given string is a palindrome\n    >>> is_palindrome('')\n    True\n    >>> is_palindrome('aba')\n    True\n    >>> is_palindrome('aaaaa')\n    True\n    >>> is_palindrome('zbcd')\n    False\n    \"\"\"\n    for i in range(len(text)):\n        if text[i] != text[len(text) - 1 - i]:\n            return False\n    return True\n",
     "test_case": [
         {
@@ -3237,6 +3322,13 @@
     "name": "HumanEval/49",
     "entry_point": "modp",
     "prompt": "\n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"\n    ret = 1\n    for i in range(n):\n        ret = (2 * ret) % p\n    return ret\n",
     "test_case": [
         {
@@ -3280,6 +3372,13 @@
     "name": "HumanEval/50",
     "entry_point": "decode_shift",
     "prompt": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef decode_shift(s: str):\n    \"\"\"\n    takes as input string encoded with encode_shift function. Returns decoded string.\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef decode_shift(s: str):\n    \"\"\"\n    takes as input string encoded with encode_shift function. Returns decoded string.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n",
     "test_case": [
         {
@@ -3788,6 +3887,13 @@
     "name": "HumanEval/51",
     "entry_point": "remove_vowels",
     "prompt": "\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without vowels.\n    >>> remove_vowels('')\n    ''\n    >>> remove_vowels(\"abcdef\\nghijklm\")\n    'bcdf\\nghjklm'\n    >>> remove_vowels('abcdef')\n    'bcdf'\n    >>> remove_vowels('aaaaa')\n    ''\n    >>> remove_vowels('aaBAA')\n    'B'\n    >>> remove_vowels('zbcd')\n    'zbcd'\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without vowels.\n    >>> remove_vowels('')\n    ''\n    >>> remove_vowels(\"abcdef\\nghijklm\")\n    'bcdf\\nghjklm'\n    >>> remove_vowels('abcdef')\n    'bcdf'\n    >>> remove_vowels('aaaaa')\n    ''\n    >>> remove_vowels('aaBAA')\n    'B'\n    >>> remove_vowels('zbcd')\n    'zbcd'\n    \"\"\"\n    return \"\".join([s for s in text if s.lower() not in [\"a\", \"e\", \"i\", \"o\", \"u\"]])\n",
     "test_case": [
         {
