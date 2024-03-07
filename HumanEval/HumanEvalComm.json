@@ -2900,7 +2900,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/40",
     "entry_point": "triples_sum_to_zero",
@@ -2957,7 +2957,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/41",
     "entry_point": "car_race_collision",
@@ -2997,18 +2997,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/42",
     "entry_point": "incr_list",
     "prompt": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 1.\n    >>> incr_list([1, 2, 3])\n    [2, 3, 4]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [6, 4, 6, 3, 4, 4, 10, 1, 124]\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 2 or 1.\n    >>> incr_list([1, 2, 3])\n    [2, 3, 4]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [6, 4, 6, 3, 4, 4, 10, 1, 124]\n    \"\"\"\n",
+    "prompt1c": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 1.\n    >>> incr_list([1, 2, 3])\n    [3, 4, 5]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [7, 5, 7, 4, 5, 5, 11, 2, 125]\n    \"\"\"\n",
+    "prompt1p": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 2 or 1.\n    >>> incr_list([1, 2, 3])\n    [3, 4, 5]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [7, 5, 7, 4, 5, 5, 11, 2, 125]\n    \"\"\"\n",
     "solution": "\n\ndef incr_list(l: list):\n    \"\"\"Return list with elements incremented by 1.\n    >>> incr_list([1, 2, 3])\n    [2, 3, 4]\n    >>> incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    [6, 4, 6, 3, 4, 4, 10, 1, 124]\n    \"\"\"\n    return [(e + 1) for e in l]\n",
     "test_case": [
         {
@@ -3027,18 +3024,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/43",
     "entry_point": "pairs_sum_to_zero",
     "prompt": "\n\ndef pairs_sum_to_zero(l):\n    \"\"\"\n    pairs_sum_to_zero takes a list of integers as an input.\n    it returns True if there are two distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> pairs_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> pairs_sum_to_zero([1, 3, -2, 1])\n    False\n    >>> pairs_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> pairs_sum_to_zero([2, 4, -5, 3, 5, 7])\n    True\n    >>> pairs_sum_to_zero([1])\n    False\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(l):\n    \"\"\"\n    candidate takes a list of integers as an input.\n    it returns True if there are two or more distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> candidate([1, 3, 5, 0])\n    False\n    >>> candidate([1, 3, -2, 1])\n    False\n    >>> candidate([1, 2, 3, 7])\n    False\n    >>> candidate([2, 4, -5, 3, 5, 7])\n    True\n    >>> candidate([1])\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef pairs_sum_to_zero(l):\n    \"\"\"\n    pairs_sum_to_zero takes a list of integers as an input.\n    it returns True if there are two distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> pairs_sum_to_zero([1, 3, 5, 0])\n    True\n    >>> pairs_sum_to_zero([1, 3, -2, 1])\n    True\n    >>> pairs_sum_to_zero([1, 2, 3, 7])\n    True\n    >>> pairs_sum_to_zero([2, 4, -5, 3, 5, 7])\n    False\n    >>> pairs_sum_to_zero([1])\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l):\n    \"\"\"\n    candidate takes a list of integers as an input.\n    it returns True if there are two distinct elements in the list that\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l):\n    \"\"\"\n    candidate takes a list of integers as an input.\n    it returns True if there are two or more distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> candidate([1, 3, 5, 0])\n    True\n    >>> candidate([1, 3, -2, 1])\n    True\n    >>> candidate([1, 2, 3, 7])\n    True\n    >>> candidate([2, 4, -5, 3, 5, 7])\n    False\n    >>> candidate([1])\n    True\n    \"\"\"\n",
     "solution": "\n\ndef pairs_sum_to_zero(l):\n    \"\"\"\n    pairs_sum_to_zero takes a list of integers as an input.\n    it returns True if there are two distinct elements in the list that\n    sum to zero, and False otherwise.\n    >>> pairs_sum_to_zero([1, 3, 5, 0])\n    False\n    >>> pairs_sum_to_zero([1, 3, -2, 1])\n    False\n    >>> pairs_sum_to_zero([1, 2, 3, 7])\n    False\n    >>> pairs_sum_to_zero([2, 4, -5, 3, 5, 7])\n    True\n    >>> pairs_sum_to_zero([1])\n    False\n    \"\"\"\n    for i, l1 in enumerate(l):\n        for j in range(i + 1, len(l)):\n            if l1 + l[j] == 0:\n                return True\n    return False\n",
     "test_case": [
         {
@@ -3087,18 +3081,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/44",
     "entry_point": "change_base",
     "prompt": "\n\ndef change_base(x: int, base: int):\n    \"\"\"Change numerical base of input number x to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> change_base(8, 3)\n    '22'\n    >>> change_base(8, 2)\n    '1000'\n    >>> change_base(7, 2)\n    '111'\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Change numerical base of input number x or y to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> candidate(8, 3)\n    '22'\n    >>> candidate(8, 2)\n    '1000'\n    >>> candidate(7, 2)\n    '111'\n    \"\"\"\n",
+    "prompt1c": "\n\ndef change_base(x: int, base: int):\n    \"\"\"Change numerical base of input number x to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> change_base(8, 3)\n    '11'\n    >>> change_base(8, 2)\n    '1111'\n    >>> change_base(7, 2)\n    '100'\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Change numerical base of input number x to base.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Change numerical base of input number x or y to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> candidate(8, 3)\n    '11'\n    >>> candidate(8, 2)\n    '1111'\n    >>> candidate(7, 2)\n    '100'\n    \"\"\"\n",
     "solution": "\n\ndef change_base(x: int, base: int):\n    \"\"\"Change numerical base of input number x to base.\n    return string representation after the conversion.\n    base numbers are less than 10.\n    >>> change_base(8, 3)\n    '22'\n    >>> change_base(8, 2)\n    '1000'\n    >>> change_base(7, 2)\n    '111'\n    \"\"\"\n    ret = \"\"\n    while x > 0:\n        ret = str(x % base) + ret\n        x //= base\n    return ret\n",
     "test_case": [
         {
@@ -3162,18 +3153,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/45",
     "entry_point": "triangle_area",
     "prompt": "\n\ndef triangle_area(a, h):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> triangle_area(5, 3)\n    7.5\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(x, y):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> candidate(5, 3)\n    7.5\n    \"\"\"\n",
+    "prompt1c": "\n\ndef triangle_area(a, h):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> triangle_area(5, 3)\n    3\n    \"\"\"\n",
+    "prompt1p": "\n\ndef triangle_area(a, h):\n    \"\"\"Given length of a side and high, return.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(x, y):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> candidate(5, 3)\n    3\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(x, y):\n    \"\"\"Given length of a side and high, return.\n    \"\"\"\n",
     "solution": "\n\ndef triangle_area(a, h):\n    \"\"\"Given length of a side and high return area for a triangle.\n    >>> triangle_area(5, 3)\n    7.5\n    \"\"\"\n    return a * h / 2.0\n",
     "test_case": [
         {
@@ -3192,18 +3181,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/46",
     "entry_point": "fib4",
     "prompt": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) +/- fib4(n-2) +/- fib4(n-3) +/- fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"\n",
+    "prompt1c": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    0\n    >>> fib4(6)\n    0\n    >>> fib4(7)\n    2\n    \"\"\"\n",
+    "prompt1p": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) +/- fib4(n-2) +/- fib4(n-3) +/- fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    0\n    >>> fib4(6)\n    0\n    >>> fib4(7)\n    2\n    \"\"\"\n",
     "solution": "\n\ndef fib4(n: int):\n    \"\"\"The Fib4 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib4(0) -> 0\n    fib4(1) -> 0\n    fib4(2) -> 2\n    fib4(3) -> 0\n    fib4(n) -> fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4).\n    Please write a function to efficiently compute the n-th element of the fib4 number sequence.  Do not use recursion.\n    >>> fib4(5)\n    4\n    >>> fib4(6)\n    8\n    >>> fib4(7)\n    14\n    \"\"\"\n    results = [0, 0, 2, 0]\n    if n < 4:\n        return results[n]\n\n    for _ in range(4, n + 1):\n        results.append(results[-1] + results[-2] + results[-3] + results[-4])\n        results.pop(0)\n\n    return results[-1]\n",
     "test_case": [
         {
@@ -3227,18 +3213,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/47",
     "entry_point": "median",
     "prompt": "\n\ndef median(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median([3, 1, 2, 4, 5])\n    3\n    >>> median([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"Return max or median of elements in the list l.\n    >>> candidate([3, 1, 2, 4, 5])\n    3\n    >>> candidate([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n",
+    "prompt1c": "\n\ndef median(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median([3, 1, 2, 4, 5])\n    5\n    >>> median([-10, 4, 6, 1000, 10, 20])\n    1000\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"Return of elements in the list l.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"Return max or median of elements in the list l.\n    >>> candidate([3, 1, 2, 4, 5])\n    5\n    >>> candidate([-10, 4, 6, 1000, 10, 20])\n    1000\n    \"\"\"\n",
     "solution": "\n\ndef median(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median([3, 1, 2, 4, 5])\n    3\n    >>> median([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n    l = sorted(l)\n    if len(l) % 2 == 1:\n        return l[len(l) // 2]\n    else:\n        return (l[len(l) // 2 - 1] + l[len(l) // 2]) / 2.0\n",
     "test_case": [
         {
@@ -3267,18 +3250,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/48",
     "entry_point": "is_palindrome",
     "prompt": "\n\ndef is_palindrome(text: str):\n    \"\"\"\n    Checks if given string is a palindrome\n    >>> is_palindrome('')\n    True\n    >>> is_palindrome('aba')\n    True\n    >>> is_palindrome('aaaaa')\n    True\n    >>> is_palindrome('zbcd')\n    False\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(text: str):\n    \"\"\"\n    Checks if given string is an Isogram/Palindrome or not \n    >>> candidate('')\n    True\n    >>> candidate('aba')\n    True\n    >>> candidate('aaaaa')\n    True\n    >>> candidate('zbcd')\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef is_palindrome(text: str):\n    \"\"\"\n    Checks if given string is a palindrome\n    >>> is_palindrome('')\n    False\n    >>> is_palindrome('aba')\n    False\n    >>> is_palindrome('aaaaa')\n    False\n    >>> is_palindrome('zbcd')\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(text: str):\n    \"\"\"\n    Checks if given string is a \n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(text: str):\n    \"\"\"\n    Checks if given string is an Isogram/Palindrome or not \n    >>> candidate('')\n    False\n    >>> candidate('aba')\n    False\n    >>> candidate('aaaaa')\n    False\n    >>> candidate('zbcd')\n    True\n    \"\"\"\n",
     "solution": "\n\ndef is_palindrome(text: str):\n    \"\"\"\n    Checks if given string is a palindrome\n    >>> is_palindrome('')\n    True\n    >>> is_palindrome('aba')\n    True\n    >>> is_palindrome('aaaaa')\n    True\n    >>> is_palindrome('zbcd')\n    False\n    \"\"\"\n    for i in range(len(text)):\n        if text[i] != text[len(text) - 1 - i]:\n            return False\n    return True\n",
     "test_case": [
         {
@@ -3317,18 +3297,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/49",
     "entry_point": "modp",
     "prompt": "\n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> candidate(3, 5)\n    3\n    >>> candidate(1101, 101)\n    2\n    >>> candidate(0, 101)\n    1\n    >>> candidate(3, 11)\n    8\n    >>> candidate(100, 101)\n    1\n    \"\"\"\n",
+    "prompt1c": "\n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    5\n    >>> modp(1101, 101)\n    101\n    >>> modp(0, 101)\n    101\n    >>> modp(3, 11)\n    11\n    >>> modp(100, 101)\n    101\n    \"\"\"\n",
+    "prompt1p": "\n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> candidate(3, 5)\n    5\n    >>> candidate(1101, 101)\n    101\n    >>> candidate(0, 101)\n    101\n    >>> candidate(3, 11)\n    11\n    >>> candidate(100, 101)\n    101\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Return 2^n modulo.\n    \"\"\"\n",
     "solution": "\n\ndef modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"\n    ret = 1\n    for i in range(n):\n        ret = (2 * ret) % p\n    return ret\n",
     "test_case": [
         {
@@ -3367,18 +3345,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/50",
     "entry_point": "decode_shift",
     "prompt": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef decode_shift(s: str):\n    \"\"\"\n    takes as input string encoded with encode_shift function. Returns decoded string.\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string decoded or encoded with encode_shift function. Returns decoded or encoded string.\n    \"\"\"\n",
+    "prompt1c": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef decode_shift(s: str):\n    \"\"\"\n    takes as input string encoded with shift function. Returns decoded string.\n    \"\"\"\n",
+    "prompt1p": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string encoded with encode_shift function.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string decoded or encoded with shift function. Returns decoded or encoded string.\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string decoded or encoded with encode_shift function.\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string encoded with shift function.\n    \"\"\"\n",
+    "prompt3acp": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef candidate(s: str):\n    \"\"\"\n    takes as input string decoded or encoded with shift function.\n    \"\"\"\n",
     "solution": "\n\ndef encode_shift(s: str):\n    \"\"\"\n    returns encoded string by shifting every character by 5 in the alphabet.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) + 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef decode_shift(s: str):\n    \"\"\"\n    takes as input string encoded with encode_shift function. Returns decoded string.\n    \"\"\"\n    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n",
     "test_case": [
         {
@@ -3882,18 +3860,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/51",
     "entry_point": "remove_vowels",
     "prompt": "\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without vowels.\n    >>> remove_vowels('')\n    ''\n    >>> remove_vowels(\"abcdef\\nghijklm\")\n    'bcdf\\nghjklm'\n    >>> remove_vowels('abcdef')\n    'bcdf'\n    >>> remove_vowels('aaaaa')\n    ''\n    >>> remove_vowels('aaBAA')\n    'B'\n    >>> remove_vowels('zbcd')\n    'zbcd'\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(text):\n    \"\"\"\n    candidate is a function that takes string and returns string with or without vowels.\n    >>> candidate('')\n    ''\n    >>> candidate(\"abcdef\\nghijklm\")\n    'bcdf\\nghjklm'\n    >>> candidate('abcdef')\n    'bcdf'\n    >>> candidate('aaaaa')\n    'aaaaa'\n    >>> candidate('aaBAA')\n    'B'\n    >>> candidate('zbcd')\n    'zbcd'\n    \"\"\"\n",
+    "prompt1c": "\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without vowels.\n    >>> remove_vowels('a')\n    ''\n    >>> remove_vowels(\"abcdef\\nghijklm\")\n    'abcdf\\nghjklm'\n    >>> remove_vowels('abcdef')\n    'abcdf'\n    >>> remove_vowels('aaaaa')\n    'aaaaa'\n    >>> remove_vowels('aaBAA')\n    'aaB'\n    >>> remove_vowels('zbcd')\n    'azbcd'\n    \"\"\"\n",
+    "prompt1p": "\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(text):\n    \"\"\"\n    candidate is a function that takes string and returns string with or without vowels.\n    >>> candidate('')\n    'a'\n    >>> candidate(\"abcdef\\nghijklm\")\n    'abcdf\\nghjklm'\n    >>> candidate('abcdef')\n    'abcdf'\n    >>> candidate('aaaaa')\n    'aaaaa'\n    >>> candidate('aaBAA')\n    'aaB'\n    >>> candidate('zbcd')\n    'azbcd'\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(text):\n    \"\"\"\n    candidate is a function that takes string and returns string without.\n    \"\"\"\n",
     "solution": "\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without vowels.\n    >>> remove_vowels('')\n    ''\n    >>> remove_vowels(\"abcdef\\nghijklm\")\n    'bcdf\\nghjklm'\n    >>> remove_vowels('abcdef')\n    'bcdf'\n    >>> remove_vowels('aaaaa')\n    ''\n    >>> remove_vowels('aaBAA')\n    'B'\n    >>> remove_vowels('zbcd')\n    'zbcd'\n    \"\"\"\n    return \"\".join([s for s in text if s.lower() not in [\"a\", \"e\", \"i\", \"o\", \"u\"]])\n",
     "test_case": [
         {
@@ -3932,11 +3908,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/52",
     "entry_point": "below_threshold",
     "prompt": "\n\ndef below_threshold(l: list, t: int):\n    \"\"\"Return True if all numbers in the list l are below threshold t.\n    >>> below_threshold([1, 2, 4, 10], 100)\n    True\n    >>> below_threshold([1, 20, 4, 10], 5)\n    False\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list, t: int):\n    \"\"\"Return True if all numbers in the list l are above or below threshold t.\n    >>> candidate([1, 2, 4, 10], 100)\n    True\n    >>> candidate([1, 20, 4, 10], 5)\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef below_threshold(l: list, t: int):\n    \"\"\"Return True if all numbers in the list l are below threshold t.\n    >>> below_threshold([1, 2, 4, 10], 100)\n    False\n    >>> below_threshold([1, 20, 4, 10], 5)\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list, t: int):\n    \"\"\"Return True if all numbers in the list l are below.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list, t: int):\n    \"\"\"Return True if all numbers in the list l are above or below threshold t.\n    >>> candidate([1, 2, 4, 10], 100)\n    False\n    >>> candidate([1, 20, 4, 10], 5)\n    True\n    \"\"\"\n",
     "solution": "\n\ndef below_threshold(l: list, t: int):\n    \"\"\"Return True if all numbers in the list l are below threshold t.\n    >>> below_threshold([1, 2, 4, 10], 100)\n    True\n    >>> below_threshold([1, 20, 4, 10], 5)\n    False\n    \"\"\"\n    for e in l:\n        if e >= t:\n            return False\n    return True\n",
     "test_case": [
         {
@@ -3970,11 +3950,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/53",
     "entry_point": "add",
     "prompt": "\n\ndef add(x: int, y: int):\n    \"\"\"Add two numbers x and y\n    >>> add(2, 3)\n    5\n    >>> add(5, 7)\n    12\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Add or multiply two numbers x and y\n    >>> candidate(2, 3)\n    5\n    >>> candidate(5, 7)\n    12\n    \"\"\"\n",
+    "prompt1c": "\n\ndef add(x: int, y: int):\n    \"\"\"Add two numbers x and y\n    >>> add(2, 3)\n    1\n    >>> add(5, 7)\n    2\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(x: int, y: int):\n    \"\"\" two numbers x and y\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(x: int, y: int):\n    \"\"\"Add or multiply two numbers x and y\n    >>> candidate(2, 3)\n    1\n    >>> candidate(5, 7)\n    2\n    \"\"\"\n",
     "solution": "\n\ndef add(x: int, y: int):\n    \"\"\"Add two numbers x and y\n    >>> add(2, 3)\n    5\n    >>> add(5, 7)\n    12\n    \"\"\"\n    return x + y\n",
     "test_case": [
         {
@@ -4503,11 +4487,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/54",
     "entry_point": "same_chars",
     "prompt": "\n\ndef same_chars(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same characters.\n    >>> same_chars('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> same_chars('abcd', 'dddddddabc')\n    True\n    >>> same_chars('dddddddabc', 'abcd')\n    True\n    >>> same_chars('eabcd', 'dddddddabc')\n    False\n    >>> same_chars('abcd', 'dddddddabce')\n    False\n    >>> same_chars('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same length or same characters.\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> candidate('abcd', 'dddddddabc')\n    True\n    >>> candidate('dddddddabc', 'abcd')\n    True\n    >>> candidate('eabcd', 'dddddddabc')\n    False\n    >>> candidate('abcd', 'dddddddabce')\n    False\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef same_chars(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same characters.\n    >>> same_chars('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    False\n    >>> same_chars('abcd', 'dddddddabc')\n    False\n    >>> same_chars('dddddddabc', 'abcd')\n    False\n    >>> same_chars('eabcd', 'dddddddabc')\n    True\n    >>> same_chars('abcd', 'dddddddabce')\n    True\n    >>> same_chars('eabcdzzzz', 'dddzzzzzzzddddabc')\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(s0: str, s1: str):\n    \"\"\"\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> candidate('abcd', 'dddddddabc')\n    True\n    >>> candidate('dddddddabc', 'abcd')\n    True\n    >>> candidate('eabcd', 'dddddddabc')\n    False\n    >>> candidate('abcd', 'dddddddabce')\n    False\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same length or same characters.\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    False\n    >>> candidate('abcd', 'dddddddabc')\n    False\n    >>> candidate('dddddddabc', 'abcd')\n    False\n    >>> candidate('eabcd', 'dddddddabc')\n    True\n    >>> candidate('abcd', 'dddddddabce')\n    True\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddddabc')\n    True\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef candidate(s0: str, s1: str):\n    \"\"\"\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> candidate('abcd', 'dddddddabc')\n    True\n    >>> candidate('dddddddabc', 'abcd')\n    True\n    >>> candidate('eabcd', 'dddddddabc')\n    False\n    >>> candidate('abcd', 'dddddddabce')\n    False\n    >>> candidate('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n",
     "solution": "\n\ndef same_chars(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same characters.\n    >>> same_chars('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> same_chars('abcd', 'dddddddabc')\n    True\n    >>> same_chars('dddddddabc', 'abcd')\n    True\n    >>> same_chars('eabcd', 'dddddddabc')\n    False\n    >>> same_chars('abcd', 'dddddddabce')\n    False\n    >>> same_chars('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n    return set(s0) == set(s1)\n",
     "test_case": [
         {
@@ -4546,11 +4535,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/55",
     "entry_point": "fib",
     "prompt": "\n\ndef fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    55\n    >>> fib(1)\n    1\n    >>> fib(8)\n    21\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(n: int):\n    \"\"\"Return n-th Prime or Fibonacci number.\n    >>> candidate(10)\n    55\n    >>> candidate(1)\n    1\n    >>> candidate(8)\n    21\n    \"\"\"\n",
+    "prompt1c": "\n\ndef fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    1\n    >>> fib(1)\n    10\n    >>> fib(8)\n    2\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(n: int):\n    \"\"\"\n    >>> candidate(10)\n    55\n    >>> candidate(1)\n    1\n    >>> candidate(8)\n    21\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef candidate(n: int):\n    \"\"\"\n    >>> candidate(10)\n    1\n    >>> candidate(1)\n    10\n    >>> candidate(8)\n    2\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(n: int):\n    \"\"\"Return n-th Prime or Fibonacci number.\n    >>> candidate(10)\n    1\n    >>> candidate(1)\n    10\n    >>> candidate(8)\n    2\n    \"\"\"\n",
     "solution": "\n\ndef fib(n: int):\n    \"\"\"Return n-th Fibonacci number.\n    >>> fib(10)\n    55\n    >>> fib(1)\n    1\n    >>> fib(8)\n    21\n    \"\"\"\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n",
     "test_case": [
         {
@@ -4579,11 +4573,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/56",
     "entry_point": "correct_bracketing",
     "prompt": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"<\")\n    False\n    >>> correct_bracketing(\"<>\")\n    True\n    >>> correct_bracketing(\"<<><>>\")\n    True\n    >>> correct_bracketing(\"><<>\")\n    False\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every closing or opening bracket has a corresponding closing or opening bracket.\n\n    >>> candidate(\"<\")\n    False\n    >>> candidate(\"<>\")\n    True\n    >>> candidate(\"<<><>>\")\n    True\n    >>> candidate(\"><<>\")\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"<\")\n    True\n    >>> correct_bracketing(\"<>\")\n    False\n    >>> correct_bracketing(\"<<><>>\")\n    False\n    >>> correct_bracketing(\"><<>\")\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n\n    >>> correct_bracketing(\"<\")\n    False\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every closing or opening bracket has a corresponding closing or opening bracket.\n\n    >>> candidate(\"<\")\n    True\n    >>> candidate(\"<>\")\n    False\n    >>> candidate(\"<<><>>\")\n    False\n    >>> candidate(\"><<>\")\n    True\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n\n    >>> candidate(\"<\")\n    False\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n\n    >>> correct_bracketing(\"<\")\n    True\n    \"\"\"\n",
+    "prompt3acp": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n\n    >>> candidate(\"<\")\n    True\n    \"\"\"\n",
     "solution": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"<\")\n    False\n    >>> correct_bracketing(\"<>\")\n    True\n    >>> correct_bracketing(\"<<><>>\")\n    True\n    >>> correct_bracketing(\"><<>\")\n    False\n    \"\"\"\n    depth = 0\n    for b in brackets:\n        if b == \"<\":\n            depth += 1\n        else:\n            depth -= 1\n        if depth < 0:\n            return False\n    return depth == 0\n",
     "test_case": [
         {
@@ -4647,11 +4648,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/57",
     "entry_point": "monotonic",
-    "prompt": "\n\ndef monotonic(l: list):\n    \"\"\"Return True is list elements are monotonically increasing or decreasing.\n    >>> monotonic([1, 2, 4, 20])\n    True\n    >>> monotonic([1, 20, 4, 10])\n    False\n    >>> monotonic([4, 1, 0, -10])\n    True\n    \"\"\"\n",
+    "prompt": "\n\ndef monotonic(l: list):\n    \"\"\"Return True if list elements are monotonically increasing or decreasing.\n    >>> monotonic([1, 2, 4, 20])\n    True\n    >>> monotonic([1, 20, 4, 10])\n    False\n    >>> monotonic([4, 1, 0, -10])\n    True\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l: list):\n    \"\"\"Return True if list elements are monotonically or nonmonotonically increasing or decreasing.\n    >>> candidate([1, 2, 4, 20])\n    True\n    >>> candidate([1, 20, 4, 10])\n    False\n    >>> candidate([4, 1, 0, -10])\n    True\n    \"\"\"\n",
+    "prompt1c": "\n\ndef monotonic(l: list):\n    \"\"\"Return True if list elements are monotonically increasing or decreasing.\n    >>> monotonic([1, 2, 4, 20])\n    False\n    >>> monotonic([1, 20, 4, 10])\n    True\n    >>> monotonic([4, 1, 0, -10])\n    False\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(l: list):\n    \"\"\"\n    >>> candidate([1, 2, 4, 20])\n    True\n    >>> candidate([1, 20, 4, 10])\n    False\n    >>> candidate([4, 1, 0, -10])\n    True\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l: list):\n    \"\"\"Return True if list elements are monotonically or nonmonotonically increasing or decreasing.\n    >>> candidate([1, 2, 4, 20])\n    False\n    >>> candidate([1, 20, 4, 10])\n    True\n    >>> candidate([4, 1, 0, -10])\n    False\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef candidate(l: list):\n    \"\"\"Return True if list elements are monotonic.\n    >>> candidate([1, 2, 4, 20])\n    False\n    >>> candidate([1, 20, 4, 10])\n    True\n    >>> candidate([4, 1, 0, -10])\n    False\n    \"\"\"\n",
     "solution": "\n\ndef monotonic(l: list):\n    \"\"\"Return True is list elements are monotonically increasing or decreasing.\n    >>> monotonic([1, 2, 4, 20])\n    True\n    >>> monotonic([1, 20, 4, 10])\n    False\n    >>> monotonic([4, 1, 0, -10])\n    True\n    \"\"\"\n    if l == sorted(l) or l == sorted(l, reverse=True):\n        return True\n    return False\n",
     "test_case": [
         {
@@ -4695,11 +4701,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/58",
     "entry_point": "common",
     "prompt": "\n\ndef common(l1: list, l2: list):\n    \"\"\"Return sorted unique common elements for two lists.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(l1: list, l2: list):\n    \"\"\"Return sorted (descendingly or ascendingly) unique common elements for two lists.\n    >>> candidate([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> candidate([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"\n",
+    "prompt1c": "\n\ndef common(l1: list, l2: list):\n    \"\"\"Return sorted unique common elements for two lists.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [653, 5, 1]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 2]\n\n    \"\"\"\n",
+    "prompt1p": "\n\ndef common(l1: list, l2: list):\n    \"\"\"Return unique common elements.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(l1: list, l2: list):\n    \"\"\"Return sorted (descendingly or ascendingly) unique common elements for two lists.\n    >>> candidate([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [653, 5, 1]\n    >>> candidate([5, 3, 2, 8], [3, 2])\n    [2, 2]\n\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(l1: list, l2: list):\n    \"\"\"Return unique common elements.\n    >>> candidate([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> candidate([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef common(l1: list, l2: list):\n    \"\"\"Return unique common elements.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [653, 5, 1]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 2]\n\n    \"\"\"\n",
+    "prompt3acp": "\n\ndef candidate(l1: list, l2: list):\n    \"\"\"Return unique common elements.\n    >>> candidate([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [653, 5, 1]\n    >>> candidate([5, 3, 2, 8], [3, 2])\n    [2, 2]\n\n    \"\"\"\n",
     "solution": "\n\ndef common(l1: list, l2: list):\n    \"\"\"Return sorted unique common elements for two lists.\n    >>> common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [1, 5, 653]\n    >>> common([5, 3, 2, 8], [3, 2])\n    [2, 3]\n\n    \"\"\"\n    ret = set()\n    for e1 in l1:\n        for e2 in l2:\n            if e1 == e2:\n                ret.add(e1)\n    return sorted(list(ret))\n",
     "test_case": [
         {
@@ -4723,11 +4736,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/59",
     "entry_point": "largest_prime_factor",
     "prompt": "\n\ndef largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    29\n    >>> largest_prime_factor(2048)\n    2\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(n: int):\n    \"\"\"Return the smallest or largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> candidate(13195)\n    29\n    >>> candidate(2048)\n    2\n    \"\"\"\n",
+    "prompt1c": "\n\ndef largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    2\n    >>> largest_prime_factor(2048)\n    2048\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(n: int):\n    \"\"\"Return the prime factor of n. Assume n > 1 and is not a prime.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(n: int):\n    \"\"\"Return the smallest or largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> candidate(13195)\n    2\n    >>> candidate(2048)\n    2048\n    \"\"\"\n",
     "solution": "\n\ndef largest_prime_factor(n: int):\n    \"\"\"Return the largest prime factor of n. Assume n > 1 and is not a prime.\n    >>> largest_prime_factor(13195)\n    29\n    >>> largest_prime_factor(2048)\n    2\n    \"\"\"\n    def is_prime(k):\n        if k < 2:\n            return False\n        for i in range(2, k - 1):\n            if k % i == 0:\n                return False\n        return True\n    largest = 1\n    for j in range(2, n + 1):\n        if n % j == 0 and is_prime(j):\n            largest = max(largest, j)\n    return largest\n",
     "test_case": [
         {
@@ -4756,11 +4773,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/60",
     "entry_point": "sum_to_n",
     "prompt": "\n\ndef sum_to_n(n: int):\n    \"\"\"sum_to_n is a function that sums numbers from 1 to n.\n    >>> sum_to_n(30)\n    465\n    >>> sum_to_n(100)\n    5050\n    >>> sum_to_n(5)\n    15\n    >>> sum_to_n(10)\n    55\n    >>> sum_to_n(1)\n    1\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(n: int):\n    \"\"\"candidate is a function that sums numbers from 1 to n or 2n or 3n.\n    >>> candidate(30)\n    465\n    >>> candidate(100)\n    5050\n    >>> candidate(5)\n    15\n    >>> candidate(10)\n    55\n    >>> candidate(1)\n    1\n    \"\"\"\n",
+    "prompt1c": "\n\ndef sum_to_n(n: int):\n    \"\"\"sum_to_n is a function that sums numbers from 1 to n.\n    >>> sum_to_n(30)\n    5\n    >>> sum_to_n(100)\n    50\n    >>> sum_to_n(5)\n    5\n    >>> sum_to_n(10)\n    5\n    >>> sum_to_n(1)\n    10\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(n: int):\n    \"\"\"candidate is a function that sums numbers.\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(n: int):\n    \"\"\"candidate is a function that sums numbers from 1 to n or 2n or 3n.\n    >>> candidate(30)\n    5\n    >>> candidate(100)\n    50\n    >>> candidate(5)\n    5\n    >>> candidate(10)\n    5\n    >>> candidate(1)\n    10\n    \"\"\"\n",
     "solution": "\n\ndef sum_to_n(n: int):\n    \"\"\"sum_to_n is a function that sums numbers from 1 to n.\n    >>> sum_to_n(30)\n    465\n    >>> sum_to_n(100)\n    5050\n    >>> sum_to_n(5)\n    15\n    >>> sum_to_n(10)\n    55\n    >>> sum_to_n(1)\n    1\n    \"\"\"\n    return sum(range(n + 1))\n",
     "test_case": [
         {
@@ -4789,11 +4810,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/61",
     "entry_point": "correct_bracketing",
     "prompt": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every closing or opening bracket has a corresponding closing or opening bracket.\n\n    >>> candidate(\"(\")\n    False\n    >>> candidate(\"()\")\n    True\n    >>> candidate(\"(()())\")\n    True\n    >>> candidate(\")(()\")\n    False\n    \"\"\"\n",
+    "prompt1c": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    True\n    >>> correct_bracketing(\"()\")\n    False\n    >>> correct_bracketing(\"(()())\")\n    False\n    >>> correct_bracketing(\")(()\")\n    True\n    \"\"\"\n",
+    "prompt1p": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n\n    >>> correct_bracketing(\"(\")\n    False\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every closing or opening bracket has a corresponding closing or opening bracket.\n\n    >>> candidate(\"(\")\n    True\n    >>> candidate(\"()\")\n    False\n    >>> candidate(\"(()())\")\n    False\n    >>> candidate(\")(()\")\n    True\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n\n    >>> candidate(\"(\")\n    False\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n\n    >>> correct_bracketing(\"(\")\n    True\n    \"\"\"\n",
+    "prompt3acp": "\n\ndef candidate(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n\n    >>> candidate(\"(\")\n    True\n    \"\"\"\n",
     "solution": "\n\ndef correct_bracketing(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> correct_bracketing(\"(\")\n    False\n    >>> correct_bracketing(\"()\")\n    True\n    >>> correct_bracketing(\"(()())\")\n    True\n    >>> correct_bracketing(\")(()\")\n    False\n    \"\"\"\n    depth = 0\n    for b in brackets:\n        if b == \"(\":\n            depth += 1\n        else:\n            depth -= 1\n        if depth < 0:\n            return False\n    return depth == 0\n",
     "test_case": [
         {
@@ -4857,11 +4885,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/62",
     "entry_point": "derivative",
     "prompt": "\n\ndef derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> derivative([1, 2, 3])\n    [2, 6]\n    \"\"\"\n",
+    "prompt1a": "\n\ndef candidate(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return first or second derivative of this polynomial in the same form.\n    >>> candidate([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> candidate([1, 2, 3])\n    [2, 6]\n    \"\"\"\n",
+    "prompt1c": "\n\ndef derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [2, 1, 3, 4]\n    >>> derivative([1, 2, 3])\n    [1, 2]\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return first or second derivative of this polynomial in the same form.\n    >>> candidate([3, 1, 2, 4, 5])\n    [2, 1, 3, 4]\n    >>> candidate([1, 2, 3])\n    [1, 2]\n    \"\"\"\n",
     "solution": "\n\ndef derivative(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return derivative of this polynomial in the same form.\n    >>> derivative([3, 1, 2, 4, 5])\n    [1, 4, 12, 20]\n    >>> derivative([1, 2, 3])\n    [2, 6]\n    \"\"\"\n    return [(i * x) for i, x in enumerate(xs)][1:]\n",
     "test_case": [
         {
@@ -4890,11 +4922,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/63",
     "entry_point": "fibfib",
-    "prompt": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    0\n    >>> fibfib(5)\n    4\n    >>> fibfib(8)\n    24\n    \"\"\"\n",
+    "prompt": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    0\n    >>> fibfib(5)\n    4\n    >>> fibfib(8)\n    24\n    \"\"\"\n",
+    "prompt1a": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Harmonic or Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    0\n    >>> fibfib(5)\n    4\n    >>> fibfib(8)\n    24\n    \"\"\"\n",
+    "prompt1c": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    1\n    >>> fibfib(5)\n    1\n    >>> fibfib(8)\n    1\n    \"\"\"\n",
+    "prompt1p": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    0\n    >>> fibfib(5)\n    4\n    >>> fibfib(8)\n    24\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Harmonic or Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    1\n    >>> fibfib(5)\n    1\n    >>> fibfib(8)\n    1\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Harmonic or Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    0\n    >>> fibfib(5)\n    4\n    >>> fibfib(8)\n    24\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    1\n    >>> fibfib(5)\n    1\n    >>> fibfib(8)\n    1\n    \"\"\"\n",
+    "prompt3acp": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Harmonic or Fibbonacci sequence that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    1\n    >>> fibfib(5)\n    1\n    >>> fibfib(8)\n    1\n    \"\"\"\n",
     "solution": "\n\ndef fibfib(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the n-th element of the fibfib number sequence.\n    >>> fibfib(1)\n    0\n    >>> fibfib(5)\n    4\n    >>> fibfib(8)\n    24\n    \"\"\"\n    if n == 0:\n        return 0\n    if n == 1:\n        return 0\n    if n == 2:\n        return 1\n    return fibfib(n - 1) + fibfib(n - 2) + fibfib(n - 3)\n",
     "test_case": [
         {
@@ -4933,11 +4972,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/64",
     "entry_point": "vowels_count",
     "prompt": "\nFIX = \"\"\"\nAdd more test cases.\n\"\"\"\n\ndef vowels_count(s):\n    \"\"\"Write a function vowels_count which takes a string representing\n    a word as input and returns the number of vowels in the string.\n    Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a\n    vowel, but only when it is at the end of the given word.\n\n    Example:\n    >>> vowels_count(\"abcde\")\n    2\n    >>> vowels_count(\"ACEDY\")\n    3\n    \"\"\"\n",
+    "prompt1a": "\nFIX = \"\"\"\nAdd more test cases.\n\"\"\"\n\ndef candidate(s):\n    \"\"\"Write a function candidate which takes a string representing\n    a word as input and returns the number of characters or vowels in the string.\n    Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a\n    vowel, but only when it is at the end of the given word.\n\n    Example:\n    >>> candidate(\"abcde\")\n    2\n    >>> candidate(\"ACEDY\")\n    3\n    \"\"\"\n",
+    "prompt1c": "\nFIX = \"\"\"\nAdd more test cases.\n\"\"\"\n\ndef vowels_count(s):\n    \"\"\"Write a function vowels_count which takes a string representing\n    a word as input and returns the number of vowels in the string.\n    Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a\n    vowel, but only when it is at the end of the given word.\n\n    Example:\n    >>> vowels_count(\"abcde\")\n    5\n    >>> vowels_count(\"ACEDY\")\n    5\n    \"\"\"\n",
+    "prompt1p": "\nFIX = \"\"\"\nAdd more test cases.\n\"\"\"\n\ndef candidate(s):\n    \"\"\"Write a function candidate which takes a string representing\n    a word as input.\n    Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a\n    vowel, but only when it is at the end of the given word.\n\n    \"\"\"\n",
+    "prompt2ac": "\nFIX = \"\"\"\nAdd more test cases.\n\"\"\"\n\ndef candidate(s):\n    \"\"\"Write a function candidate which takes a string representing\n    a word as input and returns the number of characters or vowels in the string.\n    Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a\n    vowel, but only when it is at the end of the given word.\n\n    Example:\n    >>> candidate(\"abcde\")\n    5\n    >>> candidate(\"ACEDY\")\n    5\n    \"\"\"\n",
     "solution": "\nFIX = \"\"\"\nAdd more test cases.\n\"\"\"\n\ndef vowels_count(s):\n    \"\"\"Write a function vowels_count which takes a string representing\n    a word as input and returns the number of vowels in the string.\n    Vowels in this case are 'a', 'e', 'i', 'o', 'u'. Here, 'y' is also a\n    vowel, but only when it is at the end of the given word.\n\n    Example:\n    >>> vowels_count(\"abcde\")\n    2\n    >>> vowels_count(\"ACEDY\")\n    3\n    \"\"\"\n    vowels = \"aeiouAEIOU\"\n    n_vowels = sum(c in vowels for c in s)\n    if s[-1] == 'y' or s[-1] == 'Y':\n        n_vowels += 1\n    return n_vowels\n",
     "test_case": [
         {
@@ -4976,11 +5019,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/65",
     "entry_point": "circular_shift",
     "prompt": "\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"21\"\n    >>> circular_shift(12, 2)\n    \"12\"\n    \"\"\"\n",
+    "prompt1a": "\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits left or right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"21\"\n    >>> circular_shift(12, 2)\n    \"12\"\n    \"\"\"\n",
+    "prompt1c": "\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"12\"\n    >>> circular_shift(12, 2)\n    \"21\"\n    \"\"\"\n",
+    "prompt1p": "\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits\n    and return the result as a string.\n    \"\"\"\n",
+    "prompt2ac": "\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits left or right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"12\"\n    >>> circular_shift(12, 2)\n    \"21\"\n    \"\"\"\n",
     "solution": "\ndef circular_shift(x, shift):\n    \"\"\"Circular shift the digits of the integer x, shift the digits right by shift\n    and return the result as a string.\n    If shift > number of digits, return digits reversed.\n    >>> circular_shift(12, 1)\n    \"21\"\n    >>> circular_shift(12, 2)\n    \"12\"\n    \"\"\"\n    s = str(x)\n    if shift > len(s):\n        return s[::-1]\n    else:\n        return s[len(s) - shift:] + s[:len(s) - shift]\n",
     "test_case": [
         {
@@ -5009,11 +5056,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/66",
     "entry_point": "digitSum",
     "prompt": "\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 0\n        digitSum(\"abAB\") => 131\n        digitSum(\"abcCd\") => 67\n        digitSum(\"helloE\") => 69\n        digitSum(\"woArBld\") => 131\n        digitSum(\"aAaaaXa\") => 153\n    \"\"\"\n",
+    "prompt1a": "\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the lower or upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 0\n        digitSum(\"abAB\") => 131\n        digitSum(\"abcCd\") => 67\n        digitSum(\"helloE\") => 69\n        digitSum(\"woArBld\") => 131\n        digitSum(\"aAaaaXa\") => 153\n    \"\"\"\n",
+    "prompt1c": "\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 100\n        digitSum(\"abAB\") => 10131\n        digitSum(\"abcCd\") => 1067\n        digitSum(\"helloE\") => 1069\n        digitSum(\"woArBld\") => 10131\n        digitSum(\"aAaaaXa\") => 10153\n    \"\"\"\n",
+    "prompt1p": "\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum'\n    \"\"\"\n",
+    "prompt2ac": "\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the lower or upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 100\n        digitSum(\"abAB\") => 10131\n        digitSum(\"abcCd\") => 1067\n        digitSum(\"helloE\") => 1069\n        digitSum(\"woArBld\") => 10131\n        digitSum(\"aAaaaXa\") => 10153\n    \"\"\"\n",
     "solution": "\ndef digitSum(s):\n    \"\"\"Task\n    Write a function that takes a string as input and returns the sum of the upper characters only'\n    ASCII codes.\n\n    Examples:\n        digitSum(\"\") => 0\n        digitSum(\"abAB\") => 131\n        digitSum(\"abcCd\") => 67\n        digitSum(\"helloE\") => 69\n        digitSum(\"woArBld\") => 131\n        digitSum(\"aAaaaXa\") => 153\n    \"\"\"\n    if s == \"\": return 0\n    return sum(ord(char) if char.isupper() else 0 for char in s)\n",
     "test_case": [
         {
@@ -5057,11 +5108,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/67",
     "entry_point": "fruit_distribution",
     "prompt": "\ndef fruit_distribution(s,n):\n    \"\"\"\n    In this task, you will be given a string that represents a number of apples and oranges \n    that are distributed in a basket of fruit this basket contains \n    apples, oranges, and mango fruits. Given the string that represents the total number of \n    the oranges and apples and an integer that represent the total number of the fruits \n    in the basket return the number of the mango fruits in the basket.\n    for examble:\n    fruit_distribution(\"5 apples and 6 oranges\", 19) ->19 - 5 - 6 = 8\n    fruit_distribution(\"0 apples and 1 oranges\",3) -> 3 - 0 - 1 = 2\n    fruit_distribution(\"2 apples and 3 oranges\", 100) -> 100 - 2 - 3 = 95\n    fruit_distribution(\"100 apples and 1 oranges\",120) -> 120 - 100 - 1 = 19\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef fruit_distribution(s,n):\n    \"\"\"\n    In this task, you will be given a string that represents a number of apples and oranges \n    that are distributed in a basket of fruit this basket contains \n    apples, oranges, and mango fruits. Given the string that represents the total number of \n    the oranges and apples and an integer that represent the total number of the fruits \n    in the basket return the number of the mango fruits in the basket.\n    for examble:\n    fruit_distribution(\"5 apples and 6 oranges\", 19) ->19 - 5 - 6 = 8\n    fruit_distribution(\"0 apples and 1 oranges\",3) -> 3 - 0 - 1 = 2\n    fruit_distribution(\"2 apples and 3 oranges\", 100) -> 100 - 2 - 3 = 95\n    fruit_distribution(\"100 apples and 1 oranges\",120) -> 120 - 100 - 1 = 19\n    \"\"\"\n    lis = list()\n    for i in s.split(' '):\n        if i.isdigit():\n            lis.append(int(i))\n    return n - sum(lis)\n",
     "test_case": [
         {
@@ -5100,11 +5158,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/68",
     "entry_point": "pluck",
     "prompt": "\ndef pluck(arr):\n    \"\"\"\n    \"Given an array representing a branch of a tree that has non-negative integer nodes\n    your task is to pluck one of the nodes and return it.\n    The plucked node should be the node with the smallest even value.\n    If multiple nodes with the same smallest even value are found return the node that has smallest index.\n\n    The plucked node should be returned in a list, [ smalest_value, its index ],\n    If there are no even values or the given array is empty, return [].\n\n    Example 1:\n        Input: [4,2,3]\n        Output: [2, 1]\n        Explanation: 2 has the smallest even value, and 2 has the smallest index.\n\n    Example 2:\n        Input: [1,2,3]\n        Output: [2, 1]\n        Explanation: 2 has the smallest even value, and 2 has the smallest index. \n\n    Example 3:\n        Input: []\n        Output: []\n    \n    Example 4:\n        Input: [5, 0, 3, 0, 4, 2]\n        Output: [0, 1]\n        Explanation: 0 is the smallest value, but  there are two zeros,\n                     so we will choose the first zero, which has the smallest index.\n\n    Constraints:\n        * 1 <= nodes.length <= 10000\n        * 0 <= node.value\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef pluck(arr):\n    \"\"\"\n    \"Given an array representing a branch of a tree that has non-negative integer nodes\n    your task is to pluck one of the nodes and return it.\n    The plucked node should be the node with the smallest even value.\n    If multiple nodes with the same smallest even value are found return the node that has smallest index.\n\n    The plucked node should be returned in a list, [ smalest_value, its index ],\n    If there are no even values or the given array is empty, return [].\n\n    Example 1:\n        Input: [4,2,3]\n        Output: [2, 1]\n        Explanation: 2 has the smallest even value, and 2 has the smallest index.\n\n    Example 2:\n        Input: [1,2,3]\n        Output: [2, 1]\n        Explanation: 2 has the smallest even value, and 2 has the smallest index. \n\n    Example 3:\n        Input: []\n        Output: []\n    \n    Example 4:\n        Input: [5, 0, 3, 0, 4, 2]\n        Output: [0, 1]\n        Explanation: 0 is the smallest value, but  there are two zeros,\n                     so we will choose the first zero, which has the smallest index.\n\n    Constraints:\n        * 1 <= nodes.length <= 10000\n        * 0 <= node.value\n    \"\"\"\n    if(len(arr) == 0): return []\n    evens = list(filter(lambda x: x%2 == 0, arr))\n    if(evens == []): return []\n    return [min(evens), arr.index(min(evens))]\n",
     "test_case": [
         {
@@ -5148,11 +5213,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/69",
     "entry_point": "search",
     "prompt": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, 2, 3, 1]) == 2\n        search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == 3\n        search([5, 5, 4, 4, 4]) == -1\n    '''\n",
+    "prompt1a": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the smallest or greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, 2, 3, 1]) == 2\n        search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == 3\n        search([5, 5, 4, 4, 4]) == -1\n    '''\n",
+    "prompt1c": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, 2, 3, 1]) == -2\n        search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == -3\n        search([5, 5, 4, 4, 4]) == 1\n    '''\n",
+    "prompt1p": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the greatest integer that is greater than \n    zero, and has a frequency. \n    '''\n",
+    "prompt2ac": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the smallest or greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, 2, 3, 1]) == -2\n        search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == -3\n        search([5, 5, 4, 4, 4]) == 1\n    '''\n",
+    "prompt2ap": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the smallest or greatest integer that is greater than \n    zero, and has a frequency. \n    '''\n",
     "solution": "\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, 2, 3, 1]) == 2\n        search([1, 2, 2, 3, 3, 3, 4, 4, 4]) == 3\n        search([5, 5, 4, 4, 4]) == -1\n    '''\n    frq = [0] * (max(lst) + 1)\n    for i in lst:\n        frq[i] += 1;\n\n    ans = -1\n    for i in range(1, len(frq)):\n        if frq[i] >= i:\n            ans = i\n    \n    return ans\n",
     "test_case": [
         {
@@ -5281,11 +5351,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/70",
     "entry_point": "strange_sort_list",
     "prompt": "\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange_sort_list([]) == []\n    '''\n",
+    "prompt1a": "\ndef candidate(lst):\n    '''\n    Given list of integers, return list in ascending or strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    candidate([1, 2, 3, 4]) == [1, 4, 2, 3]\n    candidate([5, 5, 5, 5]) == [5, 5, 5, 5]\n    candidate([]) == []\n    '''\n",
+    "prompt1c": "\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 2, 3, 4]\n    strange_sort_list([5, 5, 5, 5]) == [5]\n    strange_sort_list([]) == [1]\n    '''\n",
+    "prompt1p": "\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange_sort_list([]) == []\n    '''\n",
+    "prompt2ac": "\ndef candidate(lst):\n    '''\n    Given list of integers, return list in ascending or strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    candidate([1, 2, 3, 4]) == [1, 2, 3, 4]\n    candidate([5, 5, 5, 5]) == [5]\n    candidate([]) == [1]\n    '''\n",
+    "prompt2ap": "\ndef candidate(lst):\n    '''\n    Given list of integers, return list in ascending or strange order.\n\n    Examples:\n    candidate([1, 2, 3, 4]) == [1, 4, 2, 3]\n    candidate([5, 5, 5, 5]) == [5, 5, 5, 5]\n    candidate([]) == []\n    '''\n",
+    "prompt2cp": "\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 2, 3, 4]\n    strange_sort_list([5, 5, 5, 5]) == [5]\n    strange_sort_list([]) == [1]\n    '''\n",
+    "prompt3acp": "\ndef candidate(lst):\n    '''\n    Given list of integers, return list in ascending or strange order.\n\n    Examples:\n    candidate([1, 2, 3, 4]) == [1, 2, 3, 4]\n    candidate([5, 5, 5, 5]) == [5]\n    candidate([]) == [1]\n    '''\n",
     "solution": "\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange_sort_list([]) == []\n    '''\n    res, switch = [], True\n    while lst:\n        res.append(min(lst) if switch else max(lst))\n        lst.remove(res[-1])\n        switch = not switch\n    return res\n",
     "test_case": [
         {
@@ -5339,6 +5416,13 @@
     "name": "HumanEval/71",
     "entry_point": "triangle_area",
     "prompt": "\ndef triangle_area(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return the area of\n    the triangle rounded to 2 decimal points if the three sides form a valid triangle. \n    Otherwise return -1\n    Three sides make a valid triangle when the sum of any two sides is greater \n    than the third side.\n    Example:\n    triangle_area(3, 4, 5) == 6.00\n    triangle_area(1, 2, 10) == -1\n    '''\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef triangle_area(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return the area of\n    the triangle rounded to 2 decimal points if the three sides form a valid triangle. \n    Otherwise return -1\n    Three sides make a valid triangle when the sum of any two sides is greater \n    than the third side.\n    Example:\n    triangle_area(3, 4, 5) == 6.00\n    triangle_area(1, 2, 10) == -1\n    '''\n    if a + b <= c or a + c <= b or b + c <= a:\n        return -1 \n    s = (a + b + c)/2    \n    area = (s * (s - a) * (s - b) * (s - c)) ** 0.5\n    area = round(area, 2)\n    return area\n",
     "test_case": [
         {
@@ -5392,6 +5476,13 @@
     "name": "HumanEval/72",
     "entry_point": "will_it_fly",
     "prompt": "\ndef will_it_fly(q,w):\n    '''\n    Write a function that returns True if the object q will fly, and False otherwise.\n    The object q will fly if it's balanced (it is a palindromic list) and the sum of its elements is less than or equal the maximum possible weight w.\n\n    Example:\n    will_it_fly([1, 2], 5) \u279e False \n    # 1+2 is less than the maximum possible weight, but it's unbalanced.\n\n    will_it_fly([3, 2, 3], 1) \u279e False\n    # it's balanced, but 3+2+3 is more than the maximum possible weight.\n\n    will_it_fly([3, 2, 3], 9) \u279e True\n    # 3+2+3 is less than the maximum possible weight, and it's balanced.\n\n    will_it_fly([3], 5) \u279e True\n    # 3 is less than the maximum possible weight, and it's balanced.\n    '''\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef will_it_fly(q,w):\n    '''\n    Write a function that returns True if the object q will fly, and False otherwise.\n    The object q will fly if it's balanced (it is a palindromic list) and the sum of its elements is less than or equal the maximum possible weight w.\n\n    Example:\n    will_it_fly([1, 2], 5) \u279e False \n    # 1+2 is less than the maximum possible weight, but it's unbalanced.\n\n    will_it_fly([3, 2, 3], 1) \u279e False\n    # it's balanced, but 3+2+3 is more than the maximum possible weight.\n\n    will_it_fly([3, 2, 3], 9) \u279e True\n    # 3+2+3 is less than the maximum possible weight, and it's balanced.\n\n    will_it_fly([3], 5) \u279e True\n    # 3 is less than the maximum possible weight, and it's balanced.\n    '''\n    if sum(q) > w:\n        return False\n\n    i, j = 0, len(q)-1\n    while i<j:\n        if q[i] != q[j]:\n            return False\n        i+=1\n        j-=1\n    return True\n",
     "test_case": [
         {
@@ -5430,6 +5521,13 @@
     "name": "HumanEval/73",
     "entry_point": "smallest_change",
     "prompt": "\ndef smallest_change(arr):\n    \"\"\"\n    Given an array arr of integers, find the minimum number of elements that\n    need to be changed to make the array palindromic. A palindromic array is an array that\n    is read the same backwards and forwards. In one change, you can change one element to any other element.\n\n    For example:\n    smallest_change([1,2,3,5,4,7,9,6]) == 4\n    smallest_change([1, 2, 3, 4, 3, 2, 2]) == 1\n    smallest_change([1, 2, 3, 2, 1]) == 0\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef smallest_change(arr):\n    \"\"\"\n    Given an array arr of integers, find the minimum number of elements that\n    need to be changed to make the array palindromic. A palindromic array is an array that\n    is read the same backwards and forwards. In one change, you can change one element to any other element.\n\n    For example:\n    smallest_change([1,2,3,5,4,7,9,6]) == 4\n    smallest_change([1, 2, 3, 4, 3, 2, 2]) == 1\n    smallest_change([1, 2, 3, 2, 1]) == 0\n    \"\"\"\n    ans = 0\n    for i in range(len(arr) // 2):\n        if arr[i] != arr[len(arr) - i - 1]:\n            ans += 1\n    return ans\n",
     "test_case": [
         {
@@ -5478,6 +5576,13 @@
     "name": "HumanEval/74",
     "entry_point": "total_match",
     "prompt": "\ndef total_match(lst1, lst2):\n    '''\n    Write a function that accepts two lists of strings and returns the list that has \n    total number of chars in the all strings of the list less than the other list.\n\n    if the two lists have the same number of chars, return the first list.\n\n    Examples\n    total_match([], []) \u279e []\n    total_match(['hi', 'admin'], ['hI', 'Hi']) \u279e ['hI', 'Hi']\n    total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) \u279e ['hi', 'admin']\n    total_match(['hi', 'admin'], ['hI', 'hi', 'hi']) \u279e ['hI', 'hi', 'hi']\n    total_match(['4'], ['1', '2', '3', '4', '5']) \u279e ['4']\n    '''\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef total_match(lst1, lst2):\n    '''\n    Write a function that accepts two lists of strings and returns the list that has \n    total number of chars in the all strings of the list less than the other list.\n\n    if the two lists have the same number of chars, return the first list.\n\n    Examples\n    total_match([], []) \u279e []\n    total_match(['hi', 'admin'], ['hI', 'Hi']) \u279e ['hI', 'Hi']\n    total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) \u279e ['hi', 'admin']\n    total_match(['hi', 'admin'], ['hI', 'hi', 'hi']) \u279e ['hI', 'hi', 'hi']\n    total_match(['4'], ['1', '2', '3', '4', '5']) \u279e ['4']\n    '''\n    l1 = 0\n    for st in lst1:\n        l1 += len(st)\n    \n    l2 = 0\n    for st in lst2:\n        l2 += len(st)\n    \n    if l1 <= l2:\n        return lst1\n    else:\n        return lst2\n",
     "test_case": [
         {
@@ -5531,6 +5636,13 @@
     "name": "HumanEval/75",
     "entry_point": "is_multiply_prime",
     "prompt": "\ndef is_multiply_prime(a):\n    \"\"\"Write a function that returns true if the given number is the multiplication of 3 prime numbers\n    and false otherwise.\n    Knowing that (a) is less then 100. \n    Example:\n    is_multiply_prime(30) == True\n    30 = 2 * 3 * 5\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef is_multiply_prime(a):\n    \"\"\"Write a function that returns true if the given number is the multiplication of 3 prime numbers\n    and false otherwise.\n    Knowing that (a) is less then 100. \n    Example:\n    is_multiply_prime(30) == True\n    30 = 2 * 3 * 5\n    \"\"\"\n    def is_prime(n):\n        for j in range(2,n):\n            if n%j == 0:\n                return False\n        return True\n\n    for i in range(2,101):\n        if not is_prime(i): continue\n        for j in range(2,101):\n            if not is_prime(j): continue\n            for k in range(2,101):\n                if not is_prime(k): continue\n                if i*j*k == a: return True\n    return False\n",
     "test_case": [
         {
@@ -5589,6 +5701,13 @@
     "name": "HumanEval/76",
     "entry_point": "is_simple_power",
     "prompt": "\ndef is_simple_power(x, n):\n    \"\"\"Your task is to write a function that returns true if a number x is a simple\n    power of n and false in other cases.\n    x is a simple power of n if n**int=x\n    For example:\n    is_simple_power(1, 4) => true\n    is_simple_power(2, 2) => true\n    is_simple_power(8, 2) => true\n    is_simple_power(3, 2) => false\n    is_simple_power(3, 1) => false\n    is_simple_power(5, 3) => false\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef is_simple_power(x, n):\n    \"\"\"Your task is to write a function that returns true if a number x is a simple\n    power of n and false in other cases.\n    x is a simple power of n if n**int=x\n    For example:\n    is_simple_power(1, 4) => true\n    is_simple_power(2, 2) => true\n    is_simple_power(8, 2) => true\n    is_simple_power(3, 2) => false\n    is_simple_power(3, 1) => false\n    is_simple_power(5, 3) => false\n    \"\"\"\n    if (n == 1): \n        return (x == 1) \n    power = 1\n    while (power < x): \n        power = power * n \n    return (power == x) \n",
     "test_case": [
         {
@@ -5637,6 +5756,13 @@
     "name": "HumanEval/77",
     "entry_point": "iscube",
     "prompt": "\ndef iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef iscube(a):\n    '''\n    Write a function that takes an integer a and returns True \n    if this ingeger is a cube of some integer number.\n    Note: you may assume the input is always valid.\n    Examples:\n    iscube(1) ==> True\n    iscube(2) ==> False\n    iscube(-1) ==> True\n    iscube(64) ==> True\n    iscube(0) ==> True\n    iscube(180) ==> False\n    '''\n    a = abs(a)\n    return int(round(a ** (1. / 3))) ** 3 == a\n",
     "test_case": [
         {
@@ -5685,6 +5811,13 @@
     "name": "HumanEval/78",
     "entry_point": "hex_key",
     "prompt": "\ndef hex_key(num):\n    \"\"\"You have been tasked to write a function that receives \n    a hexadecimal number as a string and counts the number of hexadecimal \n    digits that are primes (prime number, or a prime, is a natural number \n    greater than 1 that is not a product of two smaller natural numbers).\n    Hexadecimal digits are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F.\n    Prime numbers are 2, 3, 5, 7, 11, 13, 17,...\n    So you have to determine a number of the following digits: 2, 3, 5, 7, \n    B (=decimal 11), D (=decimal 13).\n    Note: you may assume the input is always correct or empty string, \n    and symbols A,B,C,D,E,F are always uppercase.\n    Examples:\n    For num = \"AB\" the output should be 1.\n    For num = \"1077E\" the output should be 2.\n    For num = \"ABED1A33\" the output should be 4.\n    For num = \"123456789ABCDEF0\" the output should be 6.\n    For num = \"2020\" the output should be 2.\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef hex_key(num):\n    \"\"\"You have been tasked to write a function that receives \n    a hexadecimal number as a string and counts the number of hexadecimal \n    digits that are primes (prime number, or a prime, is a natural number \n    greater than 1 that is not a product of two smaller natural numbers).\n    Hexadecimal digits are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F.\n    Prime numbers are 2, 3, 5, 7, 11, 13, 17,...\n    So you have to determine a number of the following digits: 2, 3, 5, 7, \n    B (=decimal 11), D (=decimal 13).\n    Note: you may assume the input is always correct or empty string, \n    and symbols A,B,C,D,E,F are always uppercase.\n    Examples:\n    For num = \"AB\" the output should be 1.\n    For num = \"1077E\" the output should be 2.\n    For num = \"ABED1A33\" the output should be 4.\n    For num = \"123456789ABCDEF0\" the output should be 6.\n    For num = \"2020\" the output should be 2.\n    \"\"\"\n    primes = ('2', '3', '5', '7', 'B', 'D')\n    total = 0\n    for i in range(0, len(num)):\n        if num[i] in primes:\n            total += 1\n    return total\n",
     "test_case": [
         {
@@ -5728,6 +5861,13 @@
     "name": "HumanEval/79",
     "entry_point": "decimal_to_binary",
     "prompt": "\ndef decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal_to_binary(32)   # returns \"db100000db\"\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal_to_binary(32)   # returns \"db100000db\"\n    \"\"\"\n    return \"db\" + bin(decimal)[2:] + \"db\"\n",
     "test_case": [
         {
@@ -5756,6 +5896,13 @@
     "name": "HumanEval/80",
     "entry_point": "is_happy",
     "prompt": "\ndef is_happy(s):\n    \"\"\"You are given a string s.\n    Your task is to check if the string is happy or not.\n    A string is happy if its length is at least 3 and every 3 consecutive letters are distinct\n    For example:\n    is_happy(a) => False\n    is_happy(aa) => False\n    is_happy(abcd) => True\n    is_happy(aabb) => False\n    is_happy(adb) => True\n    is_happy(xyy) => False\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef is_happy(s):\n    \"\"\"You are given a string s.\n    Your task is to check if the string is happy or not.\n    A string is happy if its length is at least 3 and every 3 consecutive letters are distinct\n    For example:\n    is_happy(a) => False\n    is_happy(aa) => False\n    is_happy(abcd) => True\n    is_happy(aabb) => False\n    is_happy(adb) => True\n    is_happy(xyy) => False\n    \"\"\"\n    if len(s) < 3:\n      return False\n\n    for i in range(len(s) - 2):\n      \n      if s[i] == s[i+1] or s[i+1] == s[i+2] or s[i] == s[i+2]:\n        return False\n    return True\n",
     "test_case": [
         {
@@ -5804,6 +5951,13 @@
     "name": "HumanEval/81",
     "entry_point": "numerical_letter_grade",
     "prompt": "\ndef numerical_letter_grade(grades):\n    \"\"\"It is the last week of the semester and the teacher has to give the grades\n    to students. The teacher has been making her own algorithm for grading.\n    The only problem is, she has lost the code she used for grading.\n    She has given you a list of GPAs for some students and you have to write \n    a function that can output a list of letter grades using the following table:\n             GPA       |    Letter grade\n              4.0                A+\n            > 3.7                A \n            > 3.3                A- \n            > 3.0                B+\n            > 2.7                B \n            > 2.3                B-\n            > 2.0                C+\n            > 1.7                C\n            > 1.3                C-\n            > 1.0                D+ \n            > 0.7                D \n            > 0.0                D-\n              0.0                E\n    \n\n    Example:\n    grade_equation([4.0, 3, 1.7, 2, 3.5]) ==> ['A+', 'B', 'C-', 'C', 'A-']\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef numerical_letter_grade(grades):\n    \"\"\"It is the last week of the semester and the teacher has to give the grades\n    to students. The teacher has been making her own algorithm for grading.\n    The only problem is, she has lost the code she used for grading.\n    She has given you a list of GPAs for some students and you have to write \n    a function that can output a list of letter grades using the following table:\n             GPA       |    Letter grade\n              4.0                A+\n            > 3.7                A \n            > 3.3                A- \n            > 3.0                B+\n            > 2.7                B \n            > 2.3                B-\n            > 2.0                C+\n            > 1.7                C\n            > 1.3                C-\n            > 1.0                D+ \n            > 0.7                D \n            > 0.0                D-\n              0.0                E\n    \n\n    Example:\n    grade_equation([4.0, 3, 1.7, 2, 3.5]) ==> ['A+', 'B', 'C-', 'C', 'A-']\n    \"\"\"\n\n   \n    letter_grade = []\n    for gpa in grades:\n        if gpa == 4.0:\n            letter_grade.append(\"A+\")\n        elif gpa > 3.7:\n            letter_grade.append(\"A\")\n        elif gpa > 3.3:\n            letter_grade.append(\"A-\")\n        elif gpa > 3.0:\n            letter_grade.append(\"B+\")\n        elif gpa > 2.7:\n            letter_grade.append(\"B\")\n        elif gpa > 2.3:\n            letter_grade.append(\"B-\")\n        elif gpa > 2.0:\n            letter_grade.append(\"C+\")\n        elif gpa > 1.7:\n            letter_grade.append(\"C\")\n        elif gpa > 1.3:\n            letter_grade.append(\"C-\")\n        elif gpa > 1.0:\n            letter_grade.append(\"D+\")\n        elif gpa > 0.7:\n            letter_grade.append(\"D\")\n        elif gpa > 0.0:\n            letter_grade.append(\"D-\")\n        else:\n            letter_grade.append(\"E\")\n    return letter_grade\n",
     "test_case": [
         {
@@ -5842,6 +5996,13 @@
     "name": "HumanEval/82",
     "entry_point": "prime_length",
     "prompt": "\ndef prime_length(string):\n    \"\"\"Write a function that takes a string and returns True if the string\n    length is a prime number or False otherwise\n    Examples\n    prime_length('Hello') == True\n    prime_length('abcdcba') == True\n    prime_length('kittens') == True\n    prime_length('orange') == False\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef prime_length(string):\n    \"\"\"Write a function that takes a string and returns True if the string\n    length is a prime number or False otherwise\n    Examples\n    prime_length('Hello') == True\n    prime_length('abcdcba') == True\n    prime_length('kittens') == True\n    prime_length('orange') == False\n    \"\"\"\n    l = len(string)\n    if l == 0 or l == 1:\n        return False\n    for i in range(2, l):\n        if l % i == 0:\n            return False\n    return True\n",
     "test_case": [
         {
@@ -5930,6 +6091,13 @@
     "name": "HumanEval/83",
     "entry_point": "starts_one_ends",
     "prompt": "\ndef starts_one_ends(n):\n    \"\"\"\n    Given a positive integer n, return the count of the numbers of n-digit\n    positive integers that start or end with 1.\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef starts_one_ends(n):\n    \"\"\"\n    Given a positive integer n, return the count of the numbers of n-digit\n    positive integers that start or end with 1.\n    \"\"\"\n    if n == 1: return 1\n    return 18 * (10 ** (n - 2))\n",
     "test_case": [
         {
@@ -5963,6 +6131,13 @@
     "name": "HumanEval/84",
     "entry_point": "solve",
     "prompt": "\ndef solve(N):\n    \"\"\"Given a positive integer N, return the total sum of its digits in binary.\n    \n    Example\n        For N = 1000, the sum of digits will be 1 the output should be \"1\".\n        For N = 150, the sum of digits will be 6 the output should be \"110\".\n        For N = 147, the sum of digits will be 12 the output should be \"1100\".\n    \n    Variables:\n        @N integer\n             Constraints: 0 \u2264 N \u2264 10000.\n    Output:\n         a string of binary number\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef solve(N):\n    \"\"\"Given a positive integer N, return the total sum of its digits in binary.\n    \n    Example\n        For N = 1000, the sum of digits will be 1 the output should be \"1\".\n        For N = 150, the sum of digits will be 6 the output should be \"110\".\n        For N = 147, the sum of digits will be 12 the output should be \"1100\".\n    \n    Variables:\n        @N integer\n             Constraints: 0 \u2264 N \u2264 10000.\n    Output:\n         a string of binary number\n    \"\"\"\n    return bin(sum(int(i) for i in str(N)))[2:]\n",
     "test_case": [
         {
@@ -5996,6 +6171,13 @@
     "name": "HumanEval/85",
     "entry_point": "add",
     "prompt": "\ndef add(lst):\n    \"\"\"Given a non-empty list of integers lst. add the even elements that are at odd indices..\n\n\n    Examples:\n        add([4, 2, 6, 7]) ==> 2 \n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef add(lst):\n    \"\"\"Given a non-empty list of integers lst. add the even elements that are at odd indices..\n\n\n    Examples:\n        add([4, 2, 6, 7]) ==> 2 \n    \"\"\"\n    return sum([lst[i] for i in range(1, len(lst), 2) if lst[i]%2 == 0])\n",
     "test_case": [
         {
@@ -6024,6 +6206,13 @@
     "name": "HumanEval/86",
     "entry_point": "anti_shuffle",
     "prompt": "\ndef anti_shuffle(s):\n    \"\"\"\n    Write a function that takes a string and returns an ordered version of it.\n    Ordered version of string, is a string where all words (separated by space)\n    are replaced by a new word where all the characters arranged in\n    ascending order based on ascii value.\n    Note: You should keep the order of words and blank spaces in the sentence.\n\n    For example:\n    anti_shuffle('Hi') returns 'Hi'\n    anti_shuffle('hello') returns 'ehllo'\n    anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor'\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef anti_shuffle(s):\n    \"\"\"\n    Write a function that takes a string and returns an ordered version of it.\n    Ordered version of string, is a string where all words (separated by space)\n    are replaced by a new word where all the characters arranged in\n    ascending order based on ascii value.\n    Note: You should keep the order of words and blank spaces in the sentence.\n\n    For example:\n    anti_shuffle('Hi') returns 'Hi'\n    anti_shuffle('hello') returns 'ehllo'\n    anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor'\n    \"\"\"\n    return ' '.join([''.join(sorted(list(i))) for i in s.split(' ')])\n",
     "test_case": [
         {
@@ -6067,6 +6256,13 @@
     "name": "HumanEval/87",
     "entry_point": "get_row",
     "prompt": "\ndef get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef get_row(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each row may contain a different number of columns.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(x1, y1), (x2, y2) ...] such that\n    each tuple is a coordinate - (row, columns), starting with 0.\n    Sort coordinates initially by rows in ascending order.\n    Also, sort coordinates of the row by columns in descending order.\n    \n    Examples:\n    get_row([\n      [1,2,3,4,5,6],\n      [1,2,3,4,1,6],\n      [1,2,3,4,5,1]\n    ], 1) == [(0, 0), (1, 4), (1, 0), (2, 5), (2, 0)]\n    get_row([], 1) == []\n    get_row([[], [1], [1, 2, 3]], 3) == [(2, 2)]\n    \"\"\"\n    coords = [(i, j) for i in range(len(lst)) for j in range(len(lst[i])) if lst[i][j] == x]\n    return sorted(sorted(coords, key=lambda x: x[1], reverse=True), key=lambda x: x[0])\n",
     "test_case": [
         {
@@ -6090,6 +6286,13 @@
     "name": "HumanEval/88",
     "entry_point": "sort_array",
     "prompt": "\ndef sort_array(array):\n    \"\"\"\n    Given an array of non-negative integers, return a copy of the given array after sorting,\n    you will sort the given array in ascending order if the sum( first index value, last index value) is odd,\n    or sort it in descending order if the sum( first index value, last index value) is even.\n\n    Note:\n    * don't change the given array.\n\n    Examples:\n    * sort_array([]) => []\n    * sort_array([5]) => [5]\n    * sort_array([2, 4, 3, 0, 1, 5]) => [0, 1, 2, 3, 4, 5]\n    * sort_array([2, 4, 3, 0, 1, 5, 6]) => [6, 5, 4, 3, 2, 1, 0]\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef sort_array(array):\n    \"\"\"\n    Given an array of non-negative integers, return a copy of the given array after sorting,\n    you will sort the given array in ascending order if the sum( first index value, last index value) is odd,\n    or sort it in descending order if the sum( first index value, last index value) is even.\n\n    Note:\n    * don't change the given array.\n\n    Examples:\n    * sort_array([]) => []\n    * sort_array([5]) => [5]\n    * sort_array([2, 4, 3, 0, 1, 5]) => [0, 1, 2, 3, 4, 5]\n    * sort_array([2, 4, 3, 0, 1, 5, 6]) => [6, 5, 4, 3, 2, 1, 0]\n    \"\"\"\n    return [] if len(array) == 0 else sorted(array, reverse= (array[0]+array[-1]) % 2 == 0) \n",
     "test_case": [
         {
@@ -6133,6 +6336,13 @@
     "name": "HumanEval/89",
     "entry_point": "encrypt",
     "prompt": "\ndef encrypt(s):\n    \"\"\"Create a function encrypt that takes a string as an argument and\n    returns a string encrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift down by two multiplied to two places.\n    For example:\n    encrypt('hi') returns 'lm'\n    encrypt('asdfghjkl') returns 'ewhjklnop'\n    encrypt('gf') returns 'kj'\n    encrypt('et') returns 'ix'\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef encrypt(s):\n    \"\"\"Create a function encrypt that takes a string as an argument and\n    returns a string encrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift down by two multiplied to two places.\n    For example:\n    encrypt('hi') returns 'lm'\n    encrypt('asdfghjkl') returns 'ewhjklnop'\n    encrypt('gf') returns 'kj'\n    encrypt('et') returns 'ix'\n    \"\"\"\n    d = 'abcdefghijklmnopqrstuvwxyz'\n    out = ''\n    for c in s:\n        if c in d:\n            out += d[(d.index(c)+2*2) % 26]\n        else:\n            out += c\n    return out\n",
     "test_case": [
         {
@@ -6161,6 +6371,13 @@
     "name": "HumanEval/90",
     "entry_point": "next_smallest",
     "prompt": "\ndef next_smallest(lst):\n    \"\"\"\n    You are given a list of integers.\n    Write a function next_smallest() that returns the 2nd smallest element of the list.\n    Return None if there is no such element.\n    \n    next_smallest([1, 2, 3, 4, 5]) == 2\n    next_smallest([5, 1, 4, 3, 2]) == 2\n    next_smallest([]) == None\n    next_smallest([1, 1]) == None\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef next_smallest(lst):\n    \"\"\"\n    You are given a list of integers.\n    Write a function next_smallest() that returns the 2nd smallest element of the list.\n    Return None if there is no such element.\n    \n    next_smallest([1, 2, 3, 4, 5]) == 2\n    next_smallest([5, 1, 4, 3, 2]) == 2\n    next_smallest([]) == None\n    next_smallest([1, 1]) == None\n    \"\"\"\n    lst = sorted(set(lst))\n    return None if len(lst) < 2 else lst[1]\n",
     "test_case": [
         {
@@ -6204,6 +6421,13 @@
     "name": "HumanEval/91",
     "entry_point": "is_bored",
     "prompt": "\ndef is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"\n    import re\n    sentences = re.split(r'[.?!]\\s*', S)\n    return sum(sentence[0:2] == 'I ' for sentence in sentences)\n",
     "test_case": [
         {
@@ -6242,6 +6466,13 @@
     "name": "HumanEval/92",
     "entry_point": "any_int",
     "prompt": "\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) \u279e True\n    \n    any_int(3, 2, 2) \u279e False\n\n    any_int(3, -2, 1) \u279e True\n    \n    any_int(3.6, -2.2, 2) \u279e False\n  \n\n    \n    '''\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) \u279e True\n    \n    any_int(3, 2, 2) \u279e False\n\n    any_int(3, -2, 1) \u279e True\n    \n    any_int(3.6, -2.2, 2) \u279e False\n  \n\n    \n    '''\n    \n    if isinstance(x,int) and isinstance(y,int) and isinstance(z,int):\n        if (x+y==z) or (x+z==y) or (y+z==x):\n            return True\n        return False\n    return False\n",
     "test_case": [
         {
@@ -6300,6 +6531,13 @@
     "name": "HumanEval/93",
     "entry_point": "encode",
     "prompt": "\ndef encode(message):\n    \"\"\"\n    Write a function that takes a message, and encodes in such a \n    way that it swaps case of all letters, replaces all vowels in \n    the message with the letter that appears 2 places ahead of that \n    vowel in the english alphabet. \n    Assume only letters. \n    \n    Examples:\n    >>> encode('test')\n    'TGST'\n    >>> encode('This is a message')\n    'tHKS KS C MGSSCGG'\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef encode(message):\n    \"\"\"\n    Write a function that takes a message, and encodes in such a \n    way that it swaps case of all letters, replaces all vowels in \n    the message with the letter that appears 2 places ahead of that \n    vowel in the english alphabet. \n    Assume only letters. \n    \n    Examples:\n    >>> encode('test')\n    'TGST'\n    >>> encode('This is a message')\n    'tHKS KS C MGSSCGG'\n    \"\"\"\n    vowels = \"aeiouAEIOU\"\n    vowels_replace = dict([(i, chr(ord(i) + 2)) for i in vowels])\n    message = message.swapcase()\n    return ''.join([vowels_replace[i] if i in vowels else i for i in message])\n",
     "test_case": [
         {
@@ -6333,6 +6571,13 @@
     "name": "HumanEval/94",
     "entry_point": "skjkasdkd",
     "prompt": "\n\ndef skjkasdkd(lst):\n    \"\"\"You are given a list of integers.\n    You need to find the largest prime value and return the sum of its digits.\n\n    Examples:\n    For lst = [0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3] the output should be 10\n    For lst = [1,0,1,8,2,4597,2,1,3,40,1,2,1,2,4,2,5,1] the output should be 25\n    For lst = [1,3,1,32,5107,34,83278,109,163,23,2323,32,30,1,9,3] the output should be 13\n    For lst = [0,724,32,71,99,32,6,0,5,91,83,0,5,6] the output should be 11\n    For lst = [0,81,12,3,1,21] the output should be 3\n    For lst = [0,8,1,2,1,7] the output should be 7\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\n\ndef skjkasdkd(lst):\n    \"\"\"You are given a list of integers.\n    You need to find the largest prime value and return the sum of its digits.\n\n    Examples:\n    For lst = [0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3] the output should be 10\n    For lst = [1,0,1,8,2,4597,2,1,3,40,1,2,1,2,4,2,5,1] the output should be 25\n    For lst = [1,3,1,32,5107,34,83278,109,163,23,2323,32,30,1,9,3] the output should be 13\n    For lst = [0,724,32,71,99,32,6,0,5,91,83,0,5,6] the output should be 11\n    For lst = [0,81,12,3,1,21] the output should be 3\n    For lst = [0,8,1,2,1,7] the output should be 7\n    \"\"\"\n    def isPrime(n):\n        for i in range(2,int(n**0.5)+1):\n            if n%i==0:\n                return False\n\n        return True\n    maxx = 0\n    i = 0\n    while i < len(lst):\n        if(lst[i] > maxx and isPrime(lst[i])):\n            maxx = lst[i]\n        i+=1\n    result = sum(int(digit) for digit in str(maxx))\n    return result\n\n",
     "test_case": [
         {
@@ -6386,6 +6631,13 @@
     "name": "HumanEval/95",
     "entry_point": "check_dict_case",
     "prompt": "\ndef check_dict_case(dict):\n    \"\"\"\n    Given a dictionary, return True if all keys are strings in lower \n    case or all keys are strings in upper case, else return False.\n    The function should return False is the given dictionary is empty.\n    Examples:\n    check_dict_case({\"a\":\"apple\", \"b\":\"banana\"}) should return True.\n    check_dict_case({\"a\":\"apple\", \"A\":\"banana\", \"B\":\"banana\"}) should return False.\n    check_dict_case({\"a\":\"apple\", 8:\"banana\", \"a\":\"apple\"}) should return False.\n    check_dict_case({\"Name\":\"John\", \"Age\":\"36\", \"City\":\"Houston\"}) should return False.\n    check_dict_case({\"STATE\":\"NC\", \"ZIP\":\"12345\" }) should return True.\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef check_dict_case(dict):\n    \"\"\"\n    Given a dictionary, return True if all keys are strings in lower \n    case or all keys are strings in upper case, else return False.\n    The function should return False is the given dictionary is empty.\n    Examples:\n    check_dict_case({\"a\":\"apple\", \"b\":\"banana\"}) should return True.\n    check_dict_case({\"a\":\"apple\", \"A\":\"banana\", \"B\":\"banana\"}) should return False.\n    check_dict_case({\"a\":\"apple\", 8:\"banana\", \"a\":\"apple\"}) should return False.\n    check_dict_case({\"Name\":\"John\", \"Age\":\"36\", \"City\":\"Houston\"}) should return False.\n    check_dict_case({\"STATE\":\"NC\", \"ZIP\":\"12345\" }) should return True.\n    \"\"\"\n    if len(dict.keys()) == 0:\n        return False\n    else:\n        state = \"start\"\n        for key in dict.keys():\n\n            if isinstance(key, str) == False:\n                state = \"mixed\"\n                break\n            if state == \"start\":\n                if key.isupper():\n                    state = \"upper\"\n                elif key.islower():\n                    state = \"lower\"\n                else:\n                    break\n            elif (state == \"upper\" and not key.isupper()) or (state == \"lower\" and not key.islower()):\n                    state = \"mixed\"\n                    break\n            else:\n                break\n        return state == \"upper\" or state == \"lower\" \n",
     "test_case": [
         {
@@ -6429,6 +6681,13 @@
     "name": "HumanEval/96",
     "entry_point": "count_up_to",
     "prompt": "\ndef count_up_to(n):\n    \"\"\"Implement a function that takes an non-negative integer and returns an array of the first n\n    integers that are prime numbers and less than n.\n    for example:\n    count_up_to(5) => [2,3]\n    count_up_to(11) => [2,3,5,7]\n    count_up_to(0) => []\n    count_up_to(20) => [2,3,5,7,11,13,17,19]\n    count_up_to(1) => []\n    count_up_to(18) => [2,3,5,7,11,13,17]\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef count_up_to(n):\n    \"\"\"Implement a function that takes an non-negative integer and returns an array of the first n\n    integers that are prime numbers and less than n.\n    for example:\n    count_up_to(5) => [2,3]\n    count_up_to(11) => [2,3,5,7]\n    count_up_to(0) => []\n    count_up_to(20) => [2,3,5,7,11,13,17,19]\n    count_up_to(1) => []\n    count_up_to(18) => [2,3,5,7,11,13,17]\n    \"\"\"\n    primes = []\n    for i in range(2, n):\n        is_prime = True\n        for j in range(2, i):\n            if i % j == 0:\n                is_prime = False\n                break\n        if is_prime:\n            primes.append(i)\n    return primes\n\n",
     "test_case": [
         {
@@ -6487,6 +6746,13 @@
     "name": "HumanEval/97",
     "entry_point": "multiply",
     "prompt": "\ndef multiply(a, b):\n    \"\"\"Complete the function that takes two integers and returns \n    the product of their unit digits.\n    Assume the input is always valid.\n    Examples:\n    multiply(148, 412) should return 16.\n    multiply(19, 28) should return 72.\n    multiply(2020, 1851) should return 0.\n    multiply(14,-15) should return 20.\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef multiply(a, b):\n    \"\"\"Complete the function that takes two integers and returns \n    the product of their unit digits.\n    Assume the input is always valid.\n    Examples:\n    multiply(148, 412) should return 16.\n    multiply(19, 28) should return 72.\n    multiply(2020, 1851) should return 0.\n    multiply(14,-15) should return 20.\n    \"\"\"\n    return abs(a % 10) * abs(b % 10)\n",
     "test_case": [
         {
@@ -6535,6 +6801,13 @@
     "name": "HumanEval/98",
     "entry_point": "count_upper",
     "prompt": "\ndef count_upper(s):\n    \"\"\"\n    Given a string s, count the number of uppercase vowels in even indices.\n    \n    For example:\n    count_upper('aBCdEf') returns 1\n    count_upper('abcdefg') returns 0\n    count_upper('dBBE') returns 0\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef count_upper(s):\n    \"\"\"\n    Given a string s, count the number of uppercase vowels in even indices.\n    \n    For example:\n    count_upper('aBCdEf') returns 1\n    count_upper('abcdefg') returns 0\n    count_upper('dBBE') returns 0\n    \"\"\"\n    count = 0\n    for i in range(0,len(s),2):\n        if s[i] in \"AEIOU\":\n            count += 1\n    return count\n",
     "test_case": [
         {
@@ -6563,6 +6836,13 @@
     "name": "HumanEval/99",
     "entry_point": "closest_integer",
     "prompt": "\ndef closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef closest_integer(value):\n    '''\n    Create a function that takes a value (string) representing a number\n    and returns the closest integer to it. If the number is equidistant\n    from two integers, round it away from zero.\n\n    Examples\n    >>> closest_integer(\"10\")\n    10\n    >>> closest_integer(\"15.3\")\n    15\n\n    Note:\n    Rounding away from zero means that if the given number is equidistant\n    from two integers, the one you should return is the one that is the\n    farthest from zero. For example closest_integer(\"14.5\") should\n    return 15 and closest_integer(\"-14.5\") should return -15.\n    '''\n    from math import floor, ceil\n\n    if value.count('.') == 1:\n        # remove trailing zeros\n        while (value[-1] == '0'):\n            value = value[:-1]\n\n    num = float(value)\n    if value[-2:] == '.5':\n        if num > 0:\n            res = ceil(num)\n        else:\n            res = floor(num)\n    elif len(value) > 0:\n        res = int(round(num))\n    else:\n        res = 0\n\n    return res\n\n",
     "test_case": [
         {
@@ -6596,6 +6876,13 @@
     "name": "HumanEval/100",
     "entry_point": "make_a_pile",
     "prompt": "\ndef make_a_pile(n):\n    \"\"\"\n    Given a positive integer n, you have to make a pile of n levels of stones.\n    The first level has n stones.\n    The number of stones in the next level is:\n        - the next odd number if n is odd.\n        - the next even number if n is even.\n    Return the number of stones in each level in a list, where element at index\n    i represents the number of stones in the level (i+1).\n\n    Examples:\n    >>> make_a_pile(3)\n    [3, 5, 7]\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef make_a_pile(n):\n    \"\"\"\n    Given a positive integer n, you have to make a pile of n levels of stones.\n    The first level has n stones.\n    The number of stones in the next level is:\n        - the next odd number if n is odd.\n        - the next even number if n is even.\n    Return the number of stones in each level in a list, where element at index\n    i represents the number of stones in the level (i+1).\n\n    Examples:\n    >>> make_a_pile(3)\n    [3, 5, 7]\n    \"\"\"\n    return [n + 2*i for i in range(n)]\n",
     "test_case": [
         {
@@ -6629,6 +6916,13 @@
     "name": "HumanEval/101",
     "entry_point": "words_string",
     "prompt": "\ndef words_string(s):\n    \"\"\"\n    You will be given a string of words separated by commas or spaces. Your task is\n    to split the string into words and return an array of the words.\n    \n    For example:\n    words_string(\"Hi, my name is John\") == [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n    words_string(\"One, two, three, four, five, six\") == [\"One\", \"two\", \"three\", \"four\", \"five\", \"six\"]\n    \"\"\"\n",
+    "prompt1a": "",
+    "prompt1c": "",
+    "prompt1p": "",
+    "prompt2ac": "",
+    "prompt2ap": "",
+    "prompt2cp": "",
+    "prompt3acp": "",
     "solution": "\ndef words_string(s):\n    \"\"\"\n    You will be given a string of words separated by commas or spaces. Your task is\n    to split the string into words and return an array of the words.\n    \n    For example:\n    words_string(\"Hi, my name is John\") == [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n    words_string(\"One, two, three, four, five, six\") == [\"One\", \"two\", \"three\", \"four\", \"five\", \"six\"]\n    \"\"\"\n    if not s:\n        return []\n\n    s_list = []\n\n    for letter in s:\n        if letter == ',':\n            s_list.append(' ')\n        else:\n            s_list.append(letter)\n\n    s_list = \"\".join(s_list)\n    return s_list.split()\n",
     "test_case": [
         {
