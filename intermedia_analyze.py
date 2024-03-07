@@ -41,6 +41,12 @@ def solution_evaluation(solution, test_cases, demo_file, time_limit):
 def solution_evaluation_HumanEval(solution, test_cases, demo_file, call_demo_file, entry_point, time_limit):
     passed_case = []
     case_status = []
+
+    # in HumanEvalComm, functions may be renamed from def [entry_point](...) to def candidate(...) to remove certain information,
+    # so here we recover these function names.    
+    if 'candidate(' in solution:
+        solution = solution.replace('candidate(', entry_point + '(')
+
     with open(demo_file, 'w', encoding='utf-8') as f:
         f.write(solution)
     for i in range(len(test_cases)):
