@@ -1,6 +1,8 @@
 {
     "task_id": "HumanEval/0",
     "prompt": "from typing import List\n\n\ndef has_close_elements(numbers: List[float], threshold: float) -> bool:\n    \"\"\" Check if in given list of numbers, are any two numbers closer to each other than\n    given threshold.\n    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)\n    False\n    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    \"\"\"\n",
+    "prompt1a": "from typing import List\n\n\ndef candidate(numbers: List[float], threshold: float) -> bool:\n    \"\"\" Check if in given list of numbers, are any two numbers closer to or larger than each other than\n    given threshold.\n    >>> candidate([1.0, 2.0, 3.0], 0.5)\n    False\n    >>> candidate([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    \"\"\"\n",
+    "prompt1c": "from typing import List\n\n\ndef has_close_elements(numbers: List[float], threshold: float) -> bool:\n    \"\"\" Check if in given list of numbers, are any two numbers larger than each other than\n    given threshold.\n    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)\n    False\n    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    \"\"\"\n",
     "prompt1p": "from typing import List\n\n\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n",
     "prompt2ap": "from typing import List\n\n\ndef candidate(numbers: List[float], x: float) -> bool:\n \"\"\" given a list of number.\"\"\"\n",
     "entry_point": "has_close_elements",
@@ -5928,7 +5930,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/81",
     "entry_point": "numerical_letter_grade",
