@@ -882,7 +882,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
                 continue
             
             print("********************************************************************", file=print_file)
-            print("****** new problem (input_prompt="+input_prompt+") ******", file=print_file)
+            print("****** new problem (name="+problem['task_id']+" input_prompt="+input_prompt+") ******", file=print_file)
             print("********************************************************************", file=print_file)
             description = problem[input_prompt]
             try:
