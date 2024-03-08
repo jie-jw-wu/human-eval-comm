@@ -532,8 +532,8 @@ def evaluate_clarifying_questions(
     clarifying_questions='',
     problem=''
 ):
-    print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print('!!!!!!! 2nd evaluate_clarifying_questions START !!!!!!!!!!!')
+    print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+    print('!!!!!!! 2nd evaluate_clarifying_questions START !!!!!!!!!!!', file=print_file)
     topn = 1
     temperature = 1.0
     model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
@@ -551,8 +551,8 @@ def evaluate_clarifying_questions(
             "content": content,
         }]
     )
-    print('!!!!!!!PROMPT_EVALUATE_QUESTIONS='+content)
-    print('!!!!!!!Completion='+completion['choices'][0]['message']['content'])
+    print('!!!!!!!PROMPT_EVALUATE_QUESTIONS='+content, file=print_file)
+    print('!!!!!!!Completion='+completion['choices'][0]['message']['content'], file=print_file)
     # Convert completion content to a string if it's not already a string
     completion_content = str(completion['choices'][0]['message']['content'])
 
@@ -561,11 +561,11 @@ def evaluate_clarifying_questions(
     answers = re.findall(r'ANSWERS\s*=?\s*```(.+?)```', completion_content, flags=re.DOTALL)
     answer_str = answers[0] if answers else ""
     question_quality_str = question_quality[0] if question_quality else ""
-    print('!!!!!!!answer_str',answer_str)
-    print('!!!!!!!question_quality_str',question_quality_str)
+    print('!!!!!!!answer_str',answer_str, file=print_file)
+    print('!!!!!!!question_quality_str',question_quality_str, file=print_file)
     
-    print('!!!!!!! 2nd evaluate_clarifying_questions END !!!!!!!!!!!')
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+    print('!!!!!!! 2nd evaluate_clarifying_questions END !!!!!!!!!!!', file=print_file)
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
     return answer_str, question_quality_str
 
 def create_prompt(description, option='original', percentage=0):
@@ -734,9 +734,9 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
 def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer):
     ## 1st round: initial code generation
     full_prompt = prompt + user_input
-    print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print('!!!!!!!!!!!!! prompt:\n' + full_prompt)
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+    print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+    print('!!!!!!!!!!!!! prompt:\n' + full_prompt, file=print_file)
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
     messages = []
     response_list = []
     model_2nd_round = model
@@ -766,10 +766,10 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         response = response_list[i]
         code = response_2_code_if_no_text(response)
         
-        print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print('!!!!!!!!!!!!! 1st CodeLLM response:\n' + response)
-        print('!!!!!!!!!!!!! 1st CodeLLM response code:\n' + code)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+        print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+        print('!!!!!!!!!!!!! 1st CodeLLM response:\n' + response, file=print_file)
+        print('!!!!!!!!!!!!! 1st CodeLLM response code:\n' + code, file=print_file)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         question_quality = '0'
         answer = ''
         if code == '':
@@ -789,10 +789,10 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
             code = response_2_code_if_no_text(response_2nd[0])
             
-            print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd)
-            print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i)
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+            print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
+            print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         qq_list.append(question_quality)
         code_list.append(code)
         ans_list.append(answer)
@@ -835,6 +835,7 @@ def response_2_code_if_no_text(response):
         
 def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, temperature, args, open_source_model, tokenizer):
     remove_percentage = 0
+    log_file = ''
     if option == 'original':
         log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
                    (dataset, model, topn, temperature, sequence)
@@ -842,6 +843,12 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
         log_file = './log/%s_dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
                    (option, dataset, model, topn, temperature, sequence)
         remove_percentage = string_to_int(get_ith_element(option, 1))
+    
+    # write printed output to a file (print_file)
+    print_file_str = './log/print' + log_file[5:]
+    global print_file
+    print_file = open(print_file_str, 'w')
+    
     problem_list = []
     line_cnt = 0
     with open(dataset_loc, 'r') as f:
@@ -874,9 +881,9 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             if input_prompt not in problem:
                 continue
             
-            print("********************************************************************")
-            print("****** new problem (input_prompt="+input_prompt+") ******")
-            print("********************************************************************\n\n")
+            print("********************************************************************", file=print_file)
+            print("****** new problem (input_prompt="+input_prompt+") ******", file=print_file)
+            print("********************************************************************", file=print_file)
             description = problem[input_prompt]
             try:
                 prompt = create_prompt(description, option, remove_percentage)
