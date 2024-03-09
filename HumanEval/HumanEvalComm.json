@@ -7731,18 +7731,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/119",
     "entry_point": "match_parens",
     "prompt": "\ndef match_parens(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    match_parens(['()(', ')']) == 'Yes'\n    match_parens([')', ')']) == 'No'\n    '''\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to choose one from or concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    candidate(['()(', ')']) == 'Yes'\n    candidate([')', ')']) == 'No'\n    '''\n",
+    "prompt1c": "\ndef match_parens(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    match_parens(['()(', ')']) == 'No'\n    match_parens([')', ')']) == 'Yes'\n    '''\n",
+    "prompt1p": "\ndef candidate(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to concatenate the two strings in\n    some order, that the resulting string will be good.\n    '''\n",
+    "prompt2ac": "\ndef candidate(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to choose one from or concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    candidate(['()(', ')']) == 'No'\n    candidate([')', ')']) == 'Yes'\n    '''\n",
+    "prompt2ap": "\ndef candidate(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to choose one from or concatenate the two strings in\n    some order, that the resulting string will be good.\n    '''\n",
     "solution": "\ndef match_parens(lst):\n    '''\n    You are given a list of two strings, both strings consist of open\n    parentheses '(' or close parentheses ')' only.\n    Your job is to check if it is possible to concatenate the two strings in\n    some order, that the resulting string will be good.\n    A string S is considered to be good if and only if all parentheses in S\n    are balanced. For example: the string '(())()' is good, while the string\n    '())' is not.\n    Return 'Yes' if there's a way to make a good string, and return 'No' otherwise.\n\n    Examples:\n    match_parens(['()(', ')']) == 'Yes'\n    match_parens([')', ')']) == 'No'\n    '''\n    def check(s):\n        val = 0\n        for i in s:\n            if i == '(':\n                val = val + 1\n            else:\n                val = val - 1\n            if val < 0:\n                return False\n        return True if val == 0 else False\n\n    S1 = lst[0] + lst[1]\n    S2 = lst[1] + lst[0]\n    return 'Yes' if check(S1) or check(S2) else 'No'\n",
     "test_case": [
         {
@@ -7806,18 +7804,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/120",
     "entry_point": "maximum",
     "prompt": "\ndef maximum(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with the maximum k numbers in arr.\n\n    Example 1:\n\n        Input: arr = [-3, -4, 5], k = 3\n        Output: [-4, -3, 5]\n\n    Example 2:\n\n        Input: arr = [4, -4, 4], k = 2\n        Output: [4, 4]\n\n    Example 3:\n\n        Input: arr = [-3, 2, 1, 2, -1, -2, 1], k = 1\n        Output: [2]\n\n    Note:\n        1. The length of the array will be in the range of [1, 1000].\n        2. The elements in the array will be in the range of [-1000, 1000].\n        3. 0 <= k <= len(arr)\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with the minimum or maximum k numbers in arr.\n\n    Example 1:\n\n        Input: arr = [-3, -4, 5], k = 3\n        Output: [-4, -3, 5]\n\n    Example 2:\n\n        Input: arr = [4, -4, 4], k = 2\n        Output: [4, 4]\n\n    Example 3:\n\n        Input: arr = [-3, 2, 1, 2, -1, -2, 1], k = 1\n        Output: [2]\n\n    Note:\n        1. The length of the array will be in the range of [1, 1000].\n        2. The elements in the array will be in the range of [-1000, 1000].\n        3. 0 <= k <= len(arr)\n    \"\"\"\n",
+    "prompt1c": "\ndef maximum(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with the maximum k numbers in arr.\n\n    Example 1:\n\n        Input: arr = [-3, -4, 5], k = 3\n        Output: [-4, -3]\n\n    Example 2:\n\n        Input: arr = [4, -4, 4], k = 2\n        Output: [4]\n\n    Example 3:\n\n        Input: arr = [-3, 2, 1, 2, -1, -2, 1], k = 1\n        Output: []\n\n    Note:\n        1. The length of the array will be in the range of [1, 1000].\n        2. The elements in the array will be in the range of [-1000, 1000].\n        3. 0 <= k <= len(arr)\n    \"\"\"\n",
+    "prompt1p": "\ndef maximum(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with \n\n    \"\"\"\n",
+    "prompt2ac": "\ndef candidate(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with the minimum or maximum k numbers in arr.\n\n    Example 1:\n\n        Input: arr = [-3, -4, 5], k = 3\n        Output: [-4, -3]\n\n    Example 2:\n\n        Input: arr = [4, -4, 4], k = 2\n        Output: [4]\n\n    Example 3:\n\n        Input: arr = [-3, 2, 1, 2, -1, -2, 1], k = 1\n        Output: []\n\n    Note:\n        1. The length of the array will be in the range of [1, 1000].\n        2. The elements in the array will be in the range of [-1000, 1000].\n        3. 0 <= k <= len(arr)\n    \"\"\"\n",
+    "prompt2ap": "\ndef candidate(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with \n\n    \"\"\"\n",
     "solution": "\ndef maximum(arr, k):\n    \"\"\"\n    Given an array arr of integers and a positive integer k, return a sorted list \n    of length k with the maximum k numbers in arr.\n\n    Example 1:\n\n        Input: arr = [-3, -4, 5], k = 3\n        Output: [-4, -3, 5]\n\n    Example 2:\n\n        Input: arr = [4, -4, 4], k = 2\n        Output: [4, 4]\n\n    Example 3:\n\n        Input: arr = [-3, 2, 1, 2, -1, -2, 1], k = 1\n        Output: [2]\n\n    Note:\n        1. The length of the array will be in the range of [1, 1000].\n        2. The elements in the array will be in the range of [-1000, 1000].\n        3. 0 <= k <= len(arr)\n    \"\"\"\n    if k == 0:\n        return []\n    arr.sort()\n    ans = arr[-k:]\n    return ans\n",
     "test_case": [
         {
@@ -7876,18 +7872,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/121",
     "entry_point": "solution",
     "prompt": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.\n    \n\n    Examples\n    solution([5, 8, 7, 1]) ==> 12\n    solution([3, 3, 3, 3, 3]) ==> 9\n    solution([30, 13, 24, 321]) ==>0\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the even or odd elements that are in even or odd positions.\n    \n\n    Examples\n    solution([5, 8, 7, 1]) ==> 12\n    solution([3, 3, 3, 3, 3]) ==> 9\n    solution([30, 13, 24, 321]) ==>0\n    \"\"\"\n",
+    "prompt1c": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.\n    \n\n    Examples\n    solution([5, 8, 7, 1]) ==> 1\n    solution([3, 3, 3, 3, 3]) ==> 3\n    solution([30, 13, 24, 321]) ==>30\n    \"\"\"\n",
+    "prompt1p": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the odd elements that are \n    \"\"\"\n",
+    "prompt2ac": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the even or odd elements that are in even or odd positions.\n    \n\n    Examples\n    solution([5, 8, 7, 1]) ==> 1\n    solution([3, 3, 3, 3, 3]) ==> 3\n    solution([30, 13, 24, 321]) ==>30\n    \"\"\"\n",
+    "prompt2ap": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the even or odd elements that are \n    \"\"\"\n",
     "solution": "\ndef solution(lst):\n    \"\"\"Given a non-empty list of integers, return the sum of all of the odd elements that are in even positions.\n    \n\n    Examples\n    solution([5, 8, 7, 1]) ==> 12\n    solution([3, 3, 3, 3, 3]) ==> 9\n    solution([30, 13, 24, 321]) ==>0\n    \"\"\"\n    return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2==1])\n",
     "test_case": [
         {
@@ -7921,18 +7915,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/122",
     "entry_point": "add_elements",
     "prompt": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the sum of the elements with at most two digits from the first k elements of arr.\n\n    Example:\n\n        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4\n        Output: 24 # sum of 21 + 3\n\n    Constraints:\n        1. 1 <= len(arr) <= 100\n        2. 1 <= k <= len(arr)\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the product or sum of the elements with at most two digits from the last or first k elements of arr.\n\n    Example:\n\n        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4\n        Output: 24 # sum of 21 + 3\n\n    Constraints:\n        1. 1 <= len(arr) <= 100\n        2. 1 <= k <= len(arr)\n    \"\"\"\n",
+    "prompt1c": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the sum of the elements with at most two digits from the first k elements of arr.\n\n    Example:\n\n        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4\n        Output: 21 # sum of 18 + 3\n\n    Constraints:\n        1. 1 <= len(arr) <= 100\n        2. 1 <= k <= len(arr)\n    \"\"\"\n",
+    "prompt1p": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the sum of the elements with at most two digits from\n\n    \"\"\"\n",
+    "prompt2ac": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the product or sum of the elements with at most two digits from the last or first k elements of arr.\n\n    Example:\n\n        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4\n        Output: 21 # sum of 18 + 3\n\n    Constraints:\n        1. 1 <= len(arr) <= 100\n        2. 1 <= k <= len(arr)\n    \"\"\"\n",
+    "prompt2ap": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the product or sum of the elements with at most two digits from\n\n    \"\"\"\n",
     "solution": "\ndef add_elements(arr, k):\n    \"\"\"\n    Given a non-empty array of integers arr and an integer k, return\n    the sum of the elements with at most two digits from the first k elements of arr.\n\n    Example:\n\n        Input: arr = [111,21,3,4000,5,6,7,8,9], k = 4\n        Output: 24 # sum of 21 + 3\n\n    Constraints:\n        1. 1 <= len(arr) <= 100\n        2. 1 <= k <= len(arr)\n    \"\"\"\n    return sum(elem for elem in arr[:k] if len(str(elem)) <= 2)\n",
     "test_case": [
         {
@@ -7961,18 +7953,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/123",
     "entry_point": "get_odd_collatz",
     "prompt": "\ndef get_odd_collatz(n):\n    \"\"\"\n    Given a positive integer n, return a sorted list that has the odd numbers in collatz sequence.\n\n    The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined\n    as follows: start with any positive integer n. Then each term is obtained from the \n    previous term as follows: if the previous term is even, the next term is one half of \n    the previous term. If the previous term is odd, the next term is 3 times the previous\n    term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1.\n\n    Note: \n        1. Collatz(1) is [1].\n        2. returned list sorted in increasing order.\n\n    For example:\n    get_odd_collatz(5) returns [1, 5] # The collatz sequence for 5 is [5, 16, 8, 4, 2, 1], so the odd numbers are only 1, and 5.\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef get_odd_collatz(n):\n    \"\"\"\n    Given a positive integer n, return a sorted list that has the odd numbers in collatz sequence.\n\n    The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined\n    as follows: start with any positive integer n. Then each term is obtained from the \n    previous term as follows: if the previous term is even or odd, the next term is one half of \n    the previous term. If the previous term is even or odd, the next term is 3 times the previous\n    term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1.\n\n    Note: \n        1. Collatz(1) is [1].\n        2. returned list sorted in increasing order.\n\n    For example:\n    get_odd_collatz(5) returns [1, 5] # The collatz sequence for 5 is [5, 16, 8, 4, 2, 1], so the odd numbers are only 1, and 5.\n    \"\"\"\n",
+    "prompt1c": "\ndef get_odd_collatz(n):\n    \"\"\"\n    Given a positive integer n, return a sorted list that has the odd numbers in collatz sequence.\n\n    The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined\n    as follows: start with any positive integer n. Then each term is obtained from the \n    previous term as follows: if the previous term is even, the next term is one half of \n    the previous term. If the previous term is odd, the next term is 3 times the previous\n    term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1.\n\n    Note: \n        1. Collatz(1) is [1].\n        2. returned list sorted in increasing order.\n\n    For example:\n    get_odd_collatz(5) returns [2] # The collatz sequence for 5 is [5, 16, 8, 4, 2, 1], so the odd numbers are only 2.\n    \"\"\"\n",
+    "prompt1p": "\ndef get_odd_collatz(n):\n    \"\"\"\n    Given a positive integer n, return a sorted list that has the odd numbers in collatz sequence.\n\n    The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined\n    as follows: start with any positive integer n. \n    \"\"\"\n",
+    "prompt2ac": "\ndef get_odd_collatz(n):\n    \"\"\"\n    Given a positive integer n, return a sorted list that has the odd numbers in collatz sequence.\n\n    The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined\n    as follows: start with any positive integer n. Then each term is obtained from the \n    previous term as follows: if the previous term is even or odd, the next term is one half of \n    the previous term. If the previous term is even or odd, the next term is 3 times the previous\n    term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1.\n\n    Note: \n        1. Collatz(1) is [1].\n        2. returned list sorted in increasing order.\n\n    For example:\n    get_odd_collatz(5) returns [2] # The collatz sequence for 5 is [5, 16, 8, 4, 2, 1], so the odd numbers are only 2.\n    \"\"\"\n",
     "solution": "\ndef get_odd_collatz(n):\n    \"\"\"\n    Given a positive integer n, return a sorted list that has the odd numbers in collatz sequence.\n\n    The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined\n    as follows: start with any positive integer n. Then each term is obtained from the \n    previous term as follows: if the previous term is even, the next term is one half of \n    the previous term. If the previous term is odd, the next term is 3 times the previous\n    term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1.\n\n    Note: \n        1. Collatz(1) is [1].\n        2. returned list sorted in increasing order.\n\n    For example:\n    get_odd_collatz(5) returns [1, 5] # The collatz sequence for 5 is [5, 16, 8, 4, 2, 1], so the odd numbers are only 1, and 5.\n    \"\"\"\n    if n%2==0:\n        odd_collatz = [] \n    else:\n        odd_collatz = [n]\n    while n > 1:\n        if n % 2 == 0:\n            n = n/2\n        else:\n            n = n*3 + 1\n            \n        if n%2 == 1:\n            odd_collatz.append(int(n))\n\n    return sorted(odd_collatz)\n",
     "test_case": [
         {
@@ -7996,18 +7985,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/124",
     "entry_point": "valid_date",
     "prompt": "\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => True\n\n    valid_date('15-01-2012') => False\n\n    valid_date('04-0-2040') => False\n\n    valid_date('06-04-2020') => True\n\n    valid_date('06/04/2020') => False\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: dd-mm-yyyy or mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => True\n\n    valid_date('15-01-2012') => False\n\n    valid_date('04-0-2040') => False\n\n    valid_date('06-04-2020') => True\n\n    valid_date('06/04/2020') => False\n    \"\"\"\n",
+    "prompt1c": "\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => False\n\n    valid_date('15-01-2012') => True\n\n    valid_date('04-0-2040') => True\n\n    valid_date('06-04-2020') => False\n\n    valid_date('06/04/2020') => True\n    \"\"\"\n",
+    "prompt1p": "\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1.\n    \"\"\"\n",
+    "prompt2ac": "\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: dd-mm-yyyy or mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => False\n\n    valid_date('15-01-2012') => True\n\n    valid_date('04-0-2040') => True\n\n    valid_date('06-04-2020') => False\n\n    valid_date('06/04/2020') => True\n    \"\"\"\n",
     "solution": "\ndef valid_date(date):\n    \"\"\"You have to write a function which validates a given date string and\n    returns True if the date is valid otherwise False.\n    The date is valid if all of the following rules are satisfied:\n    1. The date string is not empty.\n    2. The number of days is not less than 1 or higher than 31 days for months 1,3,5,7,8,10,12. And the number of days is not less than 1 or higher than 30 days for months 4,6,9,11. And, the number of days is not less than 1 or higher than 29 for the month 2.\n    3. The months should not be less than 1 or higher than 12.\n    4. The date should be in the format: mm-dd-yyyy\n\n    for example: \n    valid_date('03-11-2000') => True\n\n    valid_date('15-01-2012') => False\n\n    valid_date('04-0-2040') => False\n\n    valid_date('06-04-2020') => True\n\n    valid_date('06/04/2020') => False\n    \"\"\"\n    try:\n        date = date.strip()\n        month, day, year = date.split('-')\n        month, day, year = int(month), int(day), int(year)\n        if month < 1 or month > 12:\n            return False\n        if month in [1,3,5,7,8,10,12] and day < 1 or day > 31:\n            return False\n        if month in [4,6,9,11] and day < 1 or day > 30:\n            return False\n        if month == 2 and day < 1 or day > 29:\n            return False\n    except:\n        return False\n\n    return True\n",
     "test_case": [
         {
@@ -8091,18 +8077,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/125",
     "entry_point": "split_words",
     "prompt": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on whitespace, if no whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the\n    alphabet, ord('a') = 0, ord('b') = 1, ... ord('z') = 25\n    Examples\n    split_words(\"Hello world!\") \u279e [\"Hello\", \"world!\"]\n    split_words(\"Hello,world!\") \u279e [\"Hello\", \"world!\"]\n    split_words(\"abcdef\") == 3 \n    '''\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on lower-case letters or whitespace, if no lower-case letters or whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the\n    alphabet, ord('a') = 0, ord('b') = 1, ... ord('z') = 25\n    Examples\n    split_words(\"Hello world!\") \u279e [\"Hello\", \"world!\"]\n    split_words(\"Hello,world!\") \u279e [\"Hello\", \"world!\"]\n    split_words(\"abcdef\") == 3 \n    '''\n",
+    "prompt1c": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on whitespace, if no whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the\n    alphabet, ord('a') = 10, ord('b') = 11, ... ord('z') = 125\n    Examples\n    split_words(\"Hello world!\") \u279e [\"Hello\"]\n    split_words(\"Hello,world!\") \u279e [\"world!\"]\n    split_words(\"abcdef\") == 1 \n    '''\n",
+    "prompt1p": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on whitespace, if no whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of \n    '''\n",
+    "prompt2ac": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on lower-case letters or whitespace, if no lower-case letters or whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the\n    alphabet, ord('a') = 10, ord('b') = 11, ... ord('z') = 125\n    Examples\n    split_words(\"Hello world!\") \u279e [\"Hello\"]\n    split_words(\"Hello,world!\") \u279e [\"world!\"]\n    split_words(\"abcdef\") == 1 \n    '''\n",
+    "prompt2ap": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on lower-case letters or whitespace, if no lower-case letters or whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of \n    '''\n",
     "solution": "\ndef split_words(txt):\n    '''\n    Given a string of words, return a list of words split on whitespace, if no whitespaces exists in the text you\n    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the\n    alphabet, ord('a') = 0, ord('b') = 1, ... ord('z') = 25\n    Examples\n    split_words(\"Hello world!\") \u279e [\"Hello\", \"world!\"]\n    split_words(\"Hello,world!\") \u279e [\"Hello\", \"world!\"]\n    split_words(\"abcdef\") == 3 \n    '''\n    if \" \" in txt:\n        return txt.split()\n    elif \",\" in txt:\n        return txt.replace(',',' ').split()\n    else:\n        return len([i for i in txt if i.islower() and ord(i)%2 == 0])\n",
     "test_case": [
         {
@@ -8146,18 +8130,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/126",
     "entry_point": "is_sorted",
     "prompt": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) \u279e True\n    is_sorted([1, 2, 3, 4, 5]) \u279e True\n    is_sorted([1, 3, 2, 4, 5]) \u279e False\n    is_sorted([1, 2, 3, 4, 5, 6]) \u279e True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) \u279e True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) \u279e False\n    is_sorted([1, 2, 2, 3, 3, 4]) \u279e True\n    is_sorted([1, 2, 2, 2, 3, 4]) \u279e False\n    '''\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in descending or ascending order. If list has more than 3 or 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) \u279e True\n    is_sorted([1, 2, 3, 4, 5]) \u279e True\n    is_sorted([1, 3, 2, 4, 5]) \u279e False\n    is_sorted([1, 2, 3, 4, 5, 6]) \u279e True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) \u279e True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) \u279e False\n    is_sorted([1, 2, 2, 3, 3, 4]) \u279e True\n    is_sorted([1, 2, 2, 2, 3, 4]) \u279e False\n    '''\n",
+    "prompt1c": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) \u279e False\n    is_sorted([1, 2, 3, 4, 5]) \u279e False\n    is_sorted([1, 3, 2, 4, 5]) \u279e True\n    is_sorted([1, 2, 3, 4, 5, 6]) \u279e False\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) \u279e False\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) \u279e True\n    is_sorted([1, 2, 2, 3, 3, 4]) \u279e False\n    is_sorted([1, 2, 2, 2, 3, 4]) \u279e True\n    '''\n",
+    "prompt1p": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number,\n    '''\n",
+    "prompt2ac": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in descending or ascending order. If list has more than 3 or 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) \u279e False\n    is_sorted([1, 2, 3, 4, 5]) \u279e False\n    is_sorted([1, 3, 2, 4, 5]) \u279e True\n    is_sorted([1, 2, 3, 4, 5, 6]) \u279e False\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) \u279e False\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) \u279e True\n    is_sorted([1, 2, 2, 3, 3, 4]) \u279e False\n    is_sorted([1, 2, 2, 2, 3, 4]) \u279e True\n    '''\n",
+    "prompt2ap": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in descending or ascending order. If list has more than 3 or 1 duplicate of the same\n    number,\n    '''\n",
     "solution": "\ndef is_sorted(lst):\n    '''\n    Given a list of numbers, return whether or not they are sorted\n    in ascending order. If list has more than 1 duplicate of the same\n    number, return False. Assume no negative numbers and only integers.\n\n    Examples\n    is_sorted([5]) \u279e True\n    is_sorted([1, 2, 3, 4, 5]) \u279e True\n    is_sorted([1, 3, 2, 4, 5]) \u279e False\n    is_sorted([1, 2, 3, 4, 5, 6]) \u279e True\n    is_sorted([1, 2, 3, 4, 5, 6, 7]) \u279e True\n    is_sorted([1, 3, 2, 4, 5, 6, 7]) \u279e False\n    is_sorted([1, 2, 2, 3, 3, 4]) \u279e True\n    is_sorted([1, 2, 2, 2, 3, 4]) \u279e False\n    '''\n    count_digit = dict([(i, 0) for i in lst])\n    for i in lst:\n        count_digit[i]+=1 \n    if any(count_digit[i] > 2 for i in lst):\n        return False\n    if all(lst[i-1] <= lst[i] for i in range(1, len(lst))):\n        return True\n    else:\n        return False\n    \n    \n",
     "test_case": [
         {
@@ -8226,18 +8208,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/127",
     "entry_point": "intersection",
     "prompt": "\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is a prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"NO\"\n    intersection((-1, 1), (0, 4)) ==> \"NO\"\n    intersection((-3, -1), (-5, 5)) ==> \"YES\"\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is an even or odd or prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"NO\"\n    intersection((-1, 1), (0, 4)) ==> \"NO\"\n    intersection((-3, -1), (-5, 5)) ==> \"YES\"\n    \"\"\"\n",
+    "prompt1c": "\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is a prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"YES\"\n    intersection((-1, 1), (0, 4)) ==> \"YES\"\n    intersection((-3, -1), (-5, 5)) ==> \"NO\"\n    \"\"\"\n",
+    "prompt1p": "\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether \n    \"\"\"\n",
+    "prompt2ac": "\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is an even or odd or prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"YES\"\n    intersection((-1, 1), (0, 4)) ==> \"YES\"\n    intersection((-3, -1), (-5, 5)) ==> \"NO\"\n    \"\"\"\n",
     "solution": "\ndef intersection(interval1, interval2):\n    \"\"\"You are given two intervals,\n    where each interval is a pair of integers. For example, interval = (start, end) = (1, 2).\n    The given intervals are closed which means that the interval (start, end)\n    includes both start and end.\n    For each given interval, it is assumed that its start is less or equal its end.\n    Your task is to determine whether the length of intersection of these two \n    intervals is a prime number.\n    Example, the intersection of the intervals (1, 3), (2, 4) is (2, 3)\n    which its length is 1, which not a prime number.\n    If the length of the intersection is a prime number, return \"YES\",\n    otherwise, return \"NO\".\n    If the two intervals don't intersect, return \"NO\".\n\n\n    [input/output] samples:\n    intersection((1, 2), (2, 3)) ==> \"NO\"\n    intersection((-1, 1), (0, 4)) ==> \"NO\"\n    intersection((-3, -1), (-5, 5)) ==> \"YES\"\n    \"\"\"\n    def is_prime(num):\n        if num == 1 or num == 0:\n            return False\n        if num == 2:\n            return True\n        for i in range(2, num):\n            if num%i == 0:\n                return False\n        return True\n\n    l = max(interval1[0], interval2[0])\n    r = min(interval1[1], interval2[1])\n    length = r - l\n    if length > 0 and is_prime(length):\n        return \"YES\"\n    return \"NO\"\n",
     "test_case": [
         {
@@ -8281,18 +8260,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/128",
     "entry_point": "prod_signs",
     "prompt": "\ndef prod_signs(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by product of all signs\n    of each number in the array, represented by 1, -1 or 0.\n    Note: return None for empty arr.\n\n    Example:\n    >>> prod_signs([1, 2, 2, -4]) == -9\n    >>> prod_signs([0, 1]) == 0\n    >>> prod_signs([]) == None\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by sum or product of all signs\n    of each number in the array, represented by 1, -1 or 0.\n    Note: return None for empty arr.\n\n    Example:\n    >>> candidate([1, 2, 2, -4]) == -9\n    >>> candidate([0, 1]) == 0\n    >>> candidate([]) == None\n    \"\"\"\n",
+    "prompt1c": "\ndef prod_signs(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by product of all signs\n    of each number in the array, represented by 1, -1 or 0.\n    Note: return None for empty arr.\n\n    Example:\n    >>> prod_signs([1, 2, 2, -4]) == 1\n    >>> prod_signs([0, 1]) == 1\n    >>> prod_signs([]) == 1\n    \"\"\"\n",
+    "prompt1p": "\ndef candidate(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by \n    \"\"\"\n",
+    "prompt2ac": "\ndef prod_signs(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by sum or product of all signs\n    of each number in the array, represented by 1, -1 or 0.\n    Note: return None for empty arr.\n\n    Example:\n    >>> prod_signs([1, 2, 2, -4]) == 1\n    >>> prod_signs([0, 1]) == 1\n    >>> prod_signs([]) == 1\n    \"\"\"\n",
     "solution": "\ndef prod_signs(arr):\n    \"\"\"\n    You are given an array arr of integers and you need to return\n    sum of magnitudes of integers multiplied by product of all signs\n    of each number in the array, represented by 1, -1 or 0.\n    Note: return None for empty arr.\n\n    Example:\n    >>> prod_signs([1, 2, 2, -4]) == -9\n    >>> prod_signs([0, 1]) == 0\n    >>> prod_signs([]) == None\n    \"\"\"\n    if not arr: return None\n    prod = 0 if 0 in arr else (-1) ** len(list(filter(lambda x: x < 0, arr)))\n    return prod * sum([abs(i) for i in arr])\n",
     "test_case": [
         {
@@ -8336,7 +8312,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/129",
     "entry_point": "minPath",
@@ -8406,18 +8382,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/130",
     "entry_point": "tri",
     "prompt": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is even.\n    tri(n) =  tri(n - 1) + tri(n - 2) + tri(n + 1), if n is odd.\n    For example:\n    tri(2) = 1 + (2 / 2) = 2\n    tri(4) = 3\n    tri(3) = tri(2) + tri(1) + tri(4)\n           = 2 + 3 + 3 = 8 \n    You are given a non-negative integer number n, you have to a return a list of the \n    first n + 1 numbers of the Tribonacci sequence.\n    Examples:\n    tri(3) = [1, 3, 2, 8]\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is odd or even.\n    tri(n) =  tri(n - 1) + tri(n - 2) + tri(n + 1), if n is odd or even.\n    For example:\n    tri(2) = 1 + (2 / 2) = 2\n    tri(4) = 3\n    tri(3) = tri(2) + tri(1) + tri(4)\n           = 2 + 3 + 3 = 8 \n    You are given a non-negative integer number n, you have to a return a list of the \n    first n + 1 numbers of the Tribonacci sequence.\n    Examples:\n    tri(3) = [1, 3, 2, 8]\n    \"\"\"\n",
+    "prompt1c": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is even.\n    tri(n) =  tri(n - 1) + tri(n - 2) + tri(n + 1), if n is odd.\n    For example:\n    tri(2) = 1 + (2 / 2) = 2\n    tri(4) = 3\n    tri(3) = tri(2) + tri(1) + tri(4)\n           = 2 + 3 + 3 = 8 \n    You are given a non-negative integer number n, you have to a return a list of the \n    first n + 1 numbers of the Tribonacci sequence.\n    Examples:\n    tri(3) = [1, 1, 2, 3]\n    \"\"\"\n",
+    "prompt1p": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is even.\n    \"\"\"\n",
+    "prompt2ac": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is odd or even.\n    tri(n) =  tri(n - 1) + tri(n - 2) + tri(n + 1), if n is odd or even.\n    For example:\n    tri(2) = 1 + (2 / 2) = 2\n    tri(4) = 3\n    tri(3) = tri(2) + tri(1) + tri(4)\n           = 2 + 3 + 3 = 8 \n    You are given a non-negative integer number n, you have to a return a list of the \n    first n + 1 numbers of the Tribonacci sequence.\n    Examples:\n    tri(3) = [1, 1, 2, 3]\n    \"\"\"\n",
+    "prompt2ap": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is odd or even.\n    \"\"\"\n",
     "solution": "\ndef tri(n):\n    \"\"\"Everyone knows Fibonacci sequence, it was studied deeply by mathematicians in \n    the last couple centuries. However, what people don't know is Tribonacci sequence.\n    Tribonacci sequence is defined by the recurrence:\n    tri(1) = 3\n    tri(n) = 1 + n / 2, if n is even.\n    tri(n) =  tri(n - 1) + tri(n - 2) + tri(n + 1), if n is odd.\n    For example:\n    tri(2) = 1 + (2 / 2) = 2\n    tri(4) = 3\n    tri(3) = tri(2) + tri(1) + tri(4)\n           = 2 + 3 + 3 = 8 \n    You are given a non-negative integer number n, you have to a return a list of the \n    first n + 1 numbers of the Tribonacci sequence.\n    Examples:\n    tri(3) = [1, 3, 2, 8]\n    \"\"\"\n    if n == 0:\n        return [1]\n    my_tri = [1, 3]\n    for i in range(2, n + 1):\n        if i % 2 == 0:\n            my_tri.append(i / 2 + 1)\n        else:\n            my_tri.append(my_tri[i - 1] + my_tri[i - 2] + (i + 3) / 2)\n    return my_tri\n",
     "test_case": [
         {
@@ -8471,18 +8445,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/131",
     "entry_point": "digits",
     "prompt": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the product of the odd digits.\n    Return 0 if all digits are even.\n    For example:\n    digits(1)  == 1\n    digits(4)  == 0\n    digits(235) == 15\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the sum or product of the odd digits.\n    Return 0 if all digits are even.\n    For example:\n    digits(1)  == 1\n    digits(4)  == 0\n    digits(235) == 15\n    \"\"\"\n",
+    "prompt1c": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the product of the odd digits.\n    Return 0 if all digits are even.\n    For example:\n    digits(1)  == 2\n    digits(4)  == 0\n    digits(235) == 2\n    \"\"\"\n",
+    "prompt1p": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the product\n    \"\"\"\n",
+    "prompt2ac": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the sum or product of the odd digits.\n    Return 0 if all digits are even.\n    For example:\n    digits(1)  == 2\n    digits(4)  == 0\n    digits(235) == 2\n    \"\"\"\n",
+    "prompt2ap": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the sum or product\n    \"\"\"\n",
     "solution": "\ndef digits(n):\n    \"\"\"Given a positive integer n, return the product of the odd digits.\n    Return 0 if all digits are even.\n    For example:\n    digits(1)  == 1\n    digits(4)  == 0\n    digits(235) == 15\n    \"\"\"\n    product = 1\n    odd_count = 0\n    for digit in str(n):\n        int_digit = int(digit)\n        if int_digit%2 == 1:\n            product= product*int_digit\n            odd_count+=1\n    if odd_count ==0:\n        return 0\n    else:\n        return product\n",
     "test_case": [
         {
@@ -8516,18 +8488,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/132",
     "entry_point": "is_nested",
     "prompt": "\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least one bracket in the subsequence is nested.\n\n    is_nested('[[]]') \u279e True\n    is_nested('[]]]]]]][[[[[]') \u279e False\n    is_nested('[][]') \u279e False\n    is_nested('[]') \u279e False\n    is_nested('[[][]]') \u279e True\n    is_nested('[[]][[') \u279e True\n    '''\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least three or two or one brackets in the subsequence is nested.\n\n    is_nested('[[]]') \u279e True\n    is_nested('[]]]]]]][[[[[]') \u279e False\n    is_nested('[][]') \u279e False\n    is_nested('[]') \u279e False\n    is_nested('[[][]]') \u279e True\n    is_nested('[[]][[') \u279e True\n    '''\n",
+    "prompt1c": "\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least one bracket in the subsequence is nested.\n\n    is_nested('[[]]') \u279e False\n    is_nested('[]]]]]]][[[[[]') \u279e True\n    is_nested('[][]') \u279e True\n    is_nested('[]') \u279e True\n    is_nested('[[][]]') \u279e False\n    is_nested('[[]][[') \u279e False\n    '''\n",
+    "prompt1p": "\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where \n    '''\n",
+    "prompt2ac": "\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least three or two or one bracket in the subsequence is nested.\n\n    is_nested('[[]]') \u279e False\n    is_nested('[]]]]]]][[[[[]') \u279e True\n    is_nested('[][]') \u279e True\n    is_nested('[]') \u279e True\n    is_nested('[[][]]') \u279e False\n    is_nested('[[]][[') \u279e False\n    '''\n",
     "solution": "\ndef is_nested(string):\n    '''\n    Create a function that takes a string as input which contains only square brackets.\n    The function should return True if and only if there is a valid subsequence of brackets \n    where at least one bracket in the subsequence is nested.\n\n    is_nested('[[]]') \u279e True\n    is_nested('[]]]]]]][[[[[]') \u279e False\n    is_nested('[][]') \u279e False\n    is_nested('[]') \u279e False\n    is_nested('[[][]]') \u279e True\n    is_nested('[[]][[') \u279e True\n    '''\n    opening_bracket_index = []\n    closing_bracket_index = []\n    for i in range(len(string)):\n        if string[i] == '[':\n            opening_bracket_index.append(i)\n        else:\n            closing_bracket_index.append(i)\n    closing_bracket_index.reverse()\n    cnt = 0\n    i = 0\n    l = len(closing_bracket_index)\n    for idx in opening_bracket_index:\n        if i < l and idx < closing_bracket_index[i]:\n            cnt += 1\n            i += 1\n    return cnt >= 2\n\n    \n",
     "test_case": [
         {
@@ -8601,18 +8570,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/133",
     "entry_point": "sum_squares",
     "prompt": "\n\ndef sum_squares(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the sum of squared numbers in the given list,\n    round each element in the list to the upper int(Ceiling) first.\n    Examples:\n    For lst = [1,2,3] the output should be 14\n    For lst = [1,4,9] the output should be 98\n    For lst = [1,3,5,7] the output should be 84\n    For lst = [1.4,4.2,0] the output should be 29\n    For lst = [-2.4,1,1] the output should be 6\n    \n\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef candidate(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the product or sum of squared numbers in the given list,\n    round each element in the list to the upper int(Ceiling) first.\n    Examples:\n    For lst = [1,2,3] the output should be 14\n    For lst = [1,4,9] the output should be 98\n    For lst = [1,3,5,7] the output should be 84\n    For lst = [1.4,4.2,0] the output should be 29\n    For lst = [-2.4,1,1] the output should be 6\n    \n\n    \"\"\"\n",
+    "prompt1c": "\n\ndef sum_squares(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the sum of squared numbers in the given list,\n    round each element in the list to the upper int(Ceiling) first.\n    Examples:\n    For lst = [1,2,3] the output should be 20\n    For lst = [1,4,9] the output should be 100\n    For lst = [1,3,5,7] the output should be 90\n    For lst = [1.4,4.2,0] the output should be 30\n    For lst = [-2.4,1,1] the output should be 1\n    \n\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the sum of squared \n\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef candidate(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the product or sum of squared numbers in the given list,\n    round each element in the list to the upper int(Ceiling) first.\n    Examples:\n    For lst = [1,2,3] the output should be 20\n    For lst = [1,4,9] the output should be 100\n    For lst = [1,3,5,7] the output should be 90\n    For lst = [1.4,4.2,0] the output should be 30\n    For lst = [-2.4,1,1] the output should be 1\n    \n\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the product or sum of squared numbers in the given list,\n    round each element in the list to the upper int(Ceiling) first.\n    Examples:\n    For lst = [1,2,3] the output should be 20\n    For lst = [1,4,9] the output should be 100\n    For lst = [1,3,5,7] the output should be 90\n    For lst = [1.4,4.2,0] the output should be 30\n    For lst = [-2.4,1,1] the output should be 1\n    \n\n    \"\"\"\n",
     "solution": "\n\ndef sum_squares(lst):\n    \"\"\"You are given a list of numbers.\n    You need to return the sum of squared numbers in the given list,\n    round each element in the list to the upper int(Ceiling) first.\n    Examples:\n    For lst = [1,2,3] the output should be 14\n    For lst = [1,4,9] the output should be 98\n    For lst = [1,3,5,7] the output should be 84\n    For lst = [1.4,4.2,0] the output should be 29\n    For lst = [-2.4,1,1] the output should be 6\n    \n\n    \"\"\"\n    import math\n    squared = 0\n    for i in lst:\n        squared += math.ceil(i)**2\n    return squared\n",
     "test_case": [
         {
@@ -8676,18 +8643,18 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/134",
     "entry_point": "check_if_last_char_is_a_letter",
     "prompt": "\ndef check_if_last_char_is_a_letter(txt):\n    '''\n    Create a function that returns True if the last character\n    of a given string is an alphabetical character and is not\n    a part of a word, and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    check_if_last_char_is_a_letter(\"apple pie\") \u279e False\n    check_if_last_char_is_a_letter(\"apple pi e\") \u279e True\n    check_if_last_char_is_a_letter(\"apple pi e \") \u279e False\n    check_if_last_char_is_a_letter(\"\") \u279e False \n    '''\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(txt):\n    '''\n    Create a function that returns True if the first or last character\n    of a given string is an alphabetical character and is not\n    a part of a word, and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    candidate(\"apple pie\") \u279e False\n    candidate(\"apple pi e\") \u279e True\n    candidate(\"apple pi e \") \u279e False\n    candidate(\"\") \u279e False \n    '''\n",
+    "prompt1c": "\ndef check_if_last_char_is_a_letter(txt):\n    '''\n    Create a function that returns True if the last character\n    of a given string is an alphabetical character and is not\n    a part of a word, and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    check_if_last_char_is_a_letter(\"apple pie\") \u279e True\n    check_if_last_char_is_a_letter(\"apple pi e\") \u279e False\n    check_if_last_char_is_a_letter(\"apple pi e \") \u279e True\n    check_if_last_char_is_a_letter(\"\") \u279e True \n    '''\n",
+    "prompt1p": "\ndef candidate(txt):\n    '''\n    Create a function that returns True if the last character\n    of a given string is , and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    candidate(\"apple pie\") \u279e False\n    candidate(\"apple pi e\") \u279e True\n    candidate(\"apple pi e \") \u279e False\n    candidate(\"\") \u279e False \n    '''\n",
+    "prompt2ac": "\ndef candidate(txt):\n    '''\n    Create a function that returns True if the first or last character\n    of a given string is an alphabetical character and is not\n    a part of a word, and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    candidate(\"apple pie\") \u279e True\n    candidate(\"apple pi e\") \u279e False\n    candidate(\"apple pi e \") \u279e True\n    candidate(\"\") \u279e True \n    '''\n",
+    "prompt2ap": "\ndef candidate(txt):\n    '''\n    Create a function that returns True if the first or last character\n    of a given string is , and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    candidate(\"apple pie\") \u279e False\n    candidate(\"apple pi e\") \u279e True\n    candidate(\"apple pi e \") \u279e False\n    candidate(\"\") \u279e False \n    '''\n",
+    "prompt2cp": "\ndef candidate(txt):\n    '''\n    Create a function that returns True if the last character\n    of a given string is , and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    candidate(\"apple pie\") \u279e True\n    candidate(\"apple pi e\") \u279e False\n    candidate(\"apple pi e \") \u279e True\n    candidate(\"\") \u279e True \n    '''\n",
+    "prompt3acp": "\ndef candidate(txt):\n    '''\n    Create a function that returns True if the first or last character\n    of a given string is , and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    candidate(\"apple pie\") \u279e True\n    candidate(\"apple pi e\") \u279e False\n    candidate(\"apple pi e \") \u279e True\n    candidate(\"\") \u279e True \n    '''\n",
     "solution": "\ndef check_if_last_char_is_a_letter(txt):\n    '''\n    Create a function that returns True if the last character\n    of a given string is an alphabetical character and is not\n    a part of a word, and False otherwise.\n    Note: \"word\" is a group of characters separated by space.\n\n    Examples:\n    check_if_last_char_is_a_letter(\"apple pie\") \u279e False\n    check_if_last_char_is_a_letter(\"apple pi e\") \u279e True\n    check_if_last_char_is_a_letter(\"apple pi e \") \u279e False\n    check_if_last_char_is_a_letter(\"\") \u279e False \n    '''\n \n    check = txt.split(' ')[-1]\n    return True if len(check) == 1 and (97 <= ord(check.lower()) <= 122) else False\n",
     "test_case": [
         {
@@ -8741,7 +8708,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/135",
     "entry_point": "can_arrange",
