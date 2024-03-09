@@ -751,6 +751,9 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
         # Reflection
         communicator_response = generate_response_str(ok_model, messages, temperature, args, open_source_model, tokenizer)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+        print("!!!!!!!!!!!!!!! Okanagan !!!!!! communicator_response: \n" + communicator_response, file=print_file)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
         messages.append({"role": "assistant","content": communicator_response})
         if  re.search('no_questions', communicator_response, re.IGNORECASE):
             response_list.append(coder_response)
