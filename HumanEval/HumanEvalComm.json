@@ -8713,13 +8713,11 @@
     "name": "HumanEval/135",
     "entry_point": "can_arrange",
     "prompt": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the largest index of an element which\n    is not greater than or equal to the element immediately preceding it. If\n    no such element exists then return -1. The given array will not contain\n    duplicate values.\n\n    Examples:\n    can_arrange([1,2,4,3,5]) = 3\n    can_arrange([1,2,3]) = -1\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the smallest or largest index of an element which\n    is not greater than or equal to the element immediately preceding it. If\n    no such element exists then return -1. The given array will not contain\n    duplicate values.\n\n    Examples:\n    can_arrange([1,2,4,3,5]) = 3\n    can_arrange([1,2,3]) = -1\n    \"\"\"\n",
+    "prompt1c": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the largest index of an element which\n    is not greater than or equal to the element immediately preceding it. If\n    no such element exists then return -1. The given array will not contain\n    duplicate values.\n\n    Examples:\n    can_arrange([1,2,4,3,5]) = 2\n    can_arrange([1,2,3]) = 2\n    \"\"\"\n",
+    "prompt1p": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the largest index of an element which\n    is not greater than or equal to \n    \"\"\"\n",
+    "prompt2ac": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the smallest or largest index of an element which\n    is not greater than or equal to the element immediately preceding it. If\n    no such element exists then return -1. The given array will not contain\n    duplicate values.\n\n    Examples:\n    can_arrange([1,2,4,3,5]) = 2\n    can_arrange([1,2,3]) = 2\n    \"\"\"\n",
+    "prompt2ap": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the smallest or largest index of an element which\n    is not greater than or equal to \n    \"\"\"\n",
     "solution": "\ndef can_arrange(arr):\n    \"\"\"Create a function which returns the largest index of an element which\n    is not greater than or equal to the element immediately preceding it. If\n    no such element exists then return -1. The given array will not contain\n    duplicate values.\n\n    Examples:\n    can_arrange([1,2,4,3,5]) = 3\n    can_arrange([1,2,3]) = -1\n    \"\"\"\n    ind=-1\n    i=1\n    while i<len(arr):\n      if arr[i]<arr[i-1]:\n        ind=i\n      i+=1\n    return ind\n",
     "test_case": [
         {
@@ -8748,18 +8746,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/136",
     "entry_point": "largest_smallest_integers",
     "prompt": "\ndef largest_smallest_integers(lst):\n    '''\n    Create a function that returns a tuple (a, b), where 'a' is\n    the largest of negative integers, and 'b' is the smallest\n    of positive integers in a list.\n    If there is no negative or positive integers, return them as None.\n\n    Examples:\n    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (None, 1)\n    largest_smallest_integers([]) == (None, None)\n    largest_smallest_integers([0]) == (None, None)\n    '''\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef largest_smallest_integers(lst):\n    '''\n    Create a function that returns a tuple (a, b), where 'a' is\n    the smallest or largest of negative integers, and 'b' is the smallest or largest\n    of positive integers in a list.\n    If there is no negative or positive integers, return them as None.\n\n    Examples:\n    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (None, 1)\n    largest_smallest_integers([]) == (None, None)\n    largest_smallest_integers([0]) == (None, None)\n    '''\n",
+    "prompt1c": "\ndef largest_smallest_integers(lst):\n    '''\n    Create a function that returns a tuple (a, b), where 'a' is\n    the largest of negative integers, and 'b' is the smallest\n    of positive integers in a list.\n    If there is no negative or positive integers, return them as None.\n\n    Examples:\n    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (2, 1)\n    largest_smallest_integers([]) == (2, 2)\n    largest_smallest_integers([0]) == (1, 1)\n    '''\n",
+    "prompt1p": "\ndef largest_smallest_integers(lst):\n    '''\n    Create a function that returns a tuple (a, b), where 'a' is\n    the largest of negative integers\n    '''\n",
+    "prompt2ac": "\ndef largest_smallest_integers(lst):\n    '''\n    Create a function that returns a tuple (a, b), where 'a' is\n    the smallest or largest of negative integers, and 'b' is the smallest or largest\n    of positive integers in a list.\n    If there is no negative or positive integers, return them as None.\n\n    Examples:\n    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (2, 1)\n    largest_smallest_integers([]) == (2, 2)\n    largest_smallest_integers([0]) == (1, 1)\n    '''\n",
     "solution": "\ndef largest_smallest_integers(lst):\n    '''\n    Create a function that returns a tuple (a, b), where 'a' is\n    the largest of negative integers, and 'b' is the smallest\n    of positive integers in a list.\n    If there is no negative or positive integers, return them as None.\n\n    Examples:\n    largest_smallest_integers([2, 4, 1, 3, 5, 7]) == (None, 1)\n    largest_smallest_integers([]) == (None, None)\n    largest_smallest_integers([0]) == (None, None)\n    '''\n    smallest = list(filter(lambda x: x < 0, lst))\n    largest = list(filter(lambda x: x > 0, lst))\n    return (max(smallest) if smallest else None, min(largest) if largest else None)\n",
     "test_case": [
         {
@@ -8818,18 +8813,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/137",
     "entry_point": "compare_one",
     "prompt": "\ndef compare_one(a, b):\n    \"\"\"\n    Create a function that takes integers, floats, or strings representing\n    real numbers, and returns the larger variable in its given variable type.\n    Return None if the values are equal.\n    Note: If a real number is represented as a string, the floating point might be . or ,\n\n    compare_one(1, 2.5) \u279e 2.5\n    compare_one(1, \"2,3\") \u279e \"2,3\"\n    compare_one(\"5,1\", \"6\") \u279e \"6\"\n    compare_one(\"1\", 1) \u279e None\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef compare_one(a, b):\n    \"\"\"\n    Create a function that takes integers, floats, or strings representing\n    real numbers, and returns the smaller or larger variable in its given variable type.\n    Return None if the values are equal.\n    Note: If a real number is represented as a string, the floating point might be . or ,\n\n    compare_one(1, 2.5) \u279e 2.5\n    compare_one(1, \"2,3\") \u279e \"2,3\"\n    compare_one(\"5,1\", \"6\") \u279e \"6\"\n    compare_one(\"1\", 1) \u279e None\n    \"\"\"\n",
+    "prompt1c": "\ndef compare_one(a, b):\n    \"\"\"\n    Create a function that takes integers, floats, or strings representing\n    real numbers, and returns the larger variable in its given variable type.\n    Return None if the values are equal.\n    Note: If a real number is represented as a string, the floating point might be . or ,\n\n    compare_one(1, 2.5) \u279e 1\n    compare_one(1, \"2,3\") \u279e \"1\"\n    compare_one(\"5,1\", \"6\") \u279e \"5,1\"\n    compare_one(\"1\", 1) \u279e \"1\"\n    \"\"\"\n",
+    "prompt1p": "\ndef compare_one(a, b):\n    \"\"\"\n    Create a function that takes integers, floats, or strings representing\n    real numbers, and returns the \n    \"\"\"\n",
+    "prompt2ac": "\ndef compare_one(a, b):\n    \"\"\"\n    Create a function that takes integers, floats, or strings representing\n    real numbers, and returns the smaller or larger variable in its given variable type.\n    Return None if the values are equal.\n    Note: If a real number is represented as a string, the floating point might be . or ,\n\n    compare_one(1, 2.5) \u279e 1\n    compare_one(1, \"2,3\") \u279e \"1\"\n    compare_one(\"5,1\", \"6\") \u279e \"5,1\"\n    compare_one(\"1\", 1) \u279e \"1\"\n    \"\"\"\n",
     "solution": "\ndef compare_one(a, b):\n    \"\"\"\n    Create a function that takes integers, floats, or strings representing\n    real numbers, and returns the larger variable in its given variable type.\n    Return None if the values are equal.\n    Note: If a real number is represented as a string, the floating point might be . or ,\n\n    compare_one(1, 2.5) \u279e 2.5\n    compare_one(1, \"2,3\") \u279e \"2,3\"\n    compare_one(\"5,1\", \"6\") \u279e \"6\"\n    compare_one(\"1\", 1) \u279e None\n    \"\"\"\n    temp_a, temp_b = a, b\n    if isinstance(temp_a, str): temp_a = temp_a.replace(',','.')\n    if isinstance(temp_b, str): temp_b = temp_b.replace(',','.')\n    if float(temp_a) == float(temp_b): return None\n    return a if float(temp_a) > float(temp_b) else b \n",
     "test_case": [
         {
@@ -8873,18 +8865,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/138",
     "entry_point": "is_equal_to_sum_even",
     "prompt": "\ndef is_equal_to_sum_even(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of exactly 4 positive even numbers\n    Example\n    is_equal_to_sum_even(4) == False\n    is_equal_to_sum_even(6) == False\n    is_equal_to_sum_even(8) == True\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of less than or exactly 4 positive even numbers\n    Example\n    candidate(4) == False\n    candidate(6) == False\n    candidate(8) == True\n    \"\"\"\n",
+    "prompt1c": "\ndef is_equal_to_sum_even(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of exactly 4 positive even numbers\n    Example\n    is_equal_to_sum_even(4) == True\n    is_equal_to_sum_even(6) == True\n    is_equal_to_sum_even(8) == False\n    \"\"\"\n",
+    "prompt1p": "\ndef is_equal_to_sum_even(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of exactly 4 \n    \"\"\"\n",
+    "prompt2ac": "\ndef candidate(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of less than or exactly 4 positive even numbers\n    Example\n    candidate(4) == True\n    candidate(6) == True\n    candidate(8) == False\n    \"\"\"\n",
+    "prompt2ap": "\ndef candidate(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of less than or exactly 4 \n    \"\"\"\n",
     "solution": "\ndef is_equal_to_sum_even(n):\n    \"\"\"Evaluate whether the given number n can be written as the sum of exactly 4 positive even numbers\n    Example\n    is_equal_to_sum_even(4) == False\n    is_equal_to_sum_even(6) == False\n    is_equal_to_sum_even(8) == True\n    \"\"\"\n    return n%2 == 0 and n >= 8\n",
     "test_case": [
         {
@@ -8928,18 +8918,15 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/139",
     "entry_point": "special_factorial",
     "prompt": "\ndef special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> special_factorial(4)\n    288\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n!, or, brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> candidate(4)\n    288\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"\n",
+    "prompt1c": "\ndef special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> special_factorial(4)\n    2\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"\n",
+    "prompt1p": "\ndef special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = \n   \"\"\"\n",
+    "prompt2ac": "\ndef special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n!, or, brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> special_factorial(4)\n    2\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"\n",
     "solution": "\ndef special_factorial(n):\n    \"\"\"The Brazilian factorial is defined as:\n    brazilian_factorial(n) = n! * (n-1)! * (n-2)! * ... * 1!\n    where n > 0\n\n    For example:\n    >>> special_factorial(4)\n    288\n\n    The function will receive an integer as input and should return the special\n    factorial of this integer.\n    \"\"\"\n    fact_i = 1\n    special_fact = 1\n    for i in range(1, n+1):\n        fact_i *= i\n        special_fact *= fact_i\n    return special_fact\n",
     "test_case": [
         {
@@ -8963,18 +8950,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/140",
     "entry_point": "fix_spaces",
     "prompt": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"Example\"\n    fix_spaces(\"Example 1\") == \"Example_1\"\n    fix_spaces(\" Example 2\") == \"_Example_2\"\n    fix_spaces(\" Example   3\") == \"_Example-3\"\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has less than or more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"Example\"\n    fix_spaces(\"Example 1\") == \"Example_1\"\n    fix_spaces(\" Example 2\") == \"_Example_2\"\n    fix_spaces(\" Example   3\") == \"_Example-3\"\n    \"\"\"\n",
+    "prompt1c": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"_Example\"\n    fix_spaces(\"Example 1\") == \"Example-1\"\n    fix_spaces(\" Example 2\") == \"-Example-2\"\n    fix_spaces(\" Example   3\") == \"-Example_3\"\n    \"\"\"\n",
+    "prompt1p": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has more than 2 consecutive spaces, \n    then \n    \"\"\"\n",
+    "prompt2ac": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has less than or more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"_Example\"\n    fix_spaces(\"Example 1\") == \"Example-1\"\n    fix_spaces(\" Example 2\") == \"-Example-2\"\n    fix_spaces(\" Example   3\") == \"-Example_3\"\n    \"\"\"\n",
+    "prompt2ap": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has less than or more than 2 consecutive spaces, \n    then \n    \"\"\"\n",
     "solution": "\ndef fix_spaces(text):\n    \"\"\"\n    Given a string text, replace all spaces in it with underscores, \n    and if a string has more than 2 consecutive spaces, \n    then replace all consecutive spaces with - \n    \n    fix_spaces(\"Example\") == \"Example\"\n    fix_spaces(\"Example 1\") == \"Example_1\"\n    fix_spaces(\" Example 2\") == \"_Example_2\"\n    fix_spaces(\" Example   3\") == \"_Example-3\"\n    \"\"\"\n    new_text = \"\"\n    i = 0\n    start, end = 0, 0\n    while i < len(text):\n        if text[i] == \" \":\n            end += 1\n        else:\n            if end - start > 2:\n                new_text += \"-\"+text[i]\n            elif end - start > 0:\n                new_text += \"_\"*(end - start)+text[i]\n            else:\n                new_text += text[i]\n            start, end = i+1, i+1\n        i+=1\n    if end - start > 2:\n        new_text += \"-\"\n    elif end - start > 0:\n        new_text += \"_\"\n    return new_text\n",
     "test_case": [
         {
@@ -9003,7 +8988,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/141",
     "entry_point": "file_name_check",
