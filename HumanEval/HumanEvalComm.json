@@ -10138,18 +10138,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/160",
     "entry_point": "do_algebra",
     "prompt": "\ndef do_algebra(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations, and \n    the second list is a list of integers. Use the two given lists to build the algebric \n    expression and return the evaluation of this expression.\n\n    The basic algebra operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Floor division ( // ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n        The length of operator list is equal to the length of operand list minus one.\n        Operand is a list of of non-negative integers.\n        Operator list has at least one operator, and operand list has at least two operands.\n\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef do_algebra(a, b):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations or a list of integers, and \n    the second list is a list of integers. Use the two given lists to build the algebric \n    expression and return the evaluation of this expression.\n\n    The basic algebra operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Floor division ( // ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n        The length of operator list is equal to the length of operand list minus one.\n        Operand is a list of of non-negative integers.\n        Operator list has at least one operator, and operand list has at least two operands.\n\n    \"\"\"\n",
+    "prompt1c": "\ndef do_algebra(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations, and \n    the second list is a list of integers. Use the two given lists to build the algebric \n    expression and return the evaluation of this expression.\n\n    The basic algebra operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Floor division ( // ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 2 * 4 - 5\n    => result = 5\n\n    Note:\n        The length of operator list is equal to the length of operand list minus one.\n        Operand is a list of of non-negative integers.\n        Operator list has at least one operator, and operand list has at least two operands.\n\n    \"\"\"\n",
+    "prompt1p": "\ndef do_algebra(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations, and \n    the second list is a list of integers. \n    \"\"\"\n",
+    "prompt2ac": "\ndef do_algebra(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations or a list of integers, and \n    the second list is a list of integers. Use the two given lists to build the algebric \n    expression and return the evaluation of this expression.\n\n    The basic algebra operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Floor division ( // ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 2 * 4 - 5\n    => result = 5\n\n    Note:\n        The length of operator list is equal to the length of operand list minus one.\n        Operand is a list of of non-negative integers.\n        Operator list has at least one operator, and operand list has at least two operands.\n\n    \"\"\"\n",
+    "prompt2ap": "\ndef do_algebra(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations or a list of integers, and \n    the second list is a list of integers. \n    \"\"\"\n",
     "solution": "\ndef do_algebra(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations, and \n    the second list is a list of integers. Use the two given lists to build the algebric \n    expression and return the evaluation of this expression.\n\n    The basic algebra operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Floor division ( // ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n        The length of operator list is equal to the length of operand list minus one.\n        Operand is a list of of non-negative integers.\n        Operator list has at least one operator, and operand list has at least two operands.\n\n    \"\"\"\n    expression = str(operand[0])\n    for oprt, oprn in zip(operator, operand[1:]):\n        expression+= oprt + str(oprn)\n    return eval(expression)\n",
     "test_case": [
         {
@@ -10168,18 +10166,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/161",
     "entry_point": "solve",
     "prompt": "\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, perform some transformation.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n",
+    "prompt1c": "\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"1234\"\n    solve(\"ab\") = \"ab\"\n    solve(\"#a@C\") = \"#a@C\"\n    \"\"\"\n",
+    "prompt1p": "\ndef solve(s):\n    \"\"\"\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n",
+    "prompt2ac": "\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, perform some transformation.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"1234\"\n    solve(\"ab\") = \"ab\"\n    solve(\"#a@C\") = \"#a@C\"\n    \"\"\"\n",
+    "prompt2cp": "\ndef solve(s):\n    \"\"\"\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"1234\"\n    solve(\"ab\") = \"ab\"\n    solve(\"#a@C\") = \"#a@C\"\n    \"\"\"\n",
     "solution": "\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n    flg = 0\n    idx = 0\n    new_str = list(s)\n    for i in s:\n        if i.isalpha():\n            new_str[idx] = i.swapcase()\n            flg = 1\n        idx += 1\n    s = \"\"\n    for i in new_str:\n        s += i\n    if flg == 0:\n        return s[len(s)::-1]\n    return s\n",
     "test_case": [
         {
@@ -10223,18 +10219,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/162",
     "entry_point": "string_to_md5",
     "prompt": "\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef candidate(text):\n    \"\"\"\n    Given a string 'text', return its ideal hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> candidate('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n",
+    "prompt1c": "\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '12345'\n    \"\"\"\n",
+    "prompt1p": "\ndef candidate(text):\n    \"\"\"\n    >>> candidate('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n",
+    "prompt2ac": "\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its ideal hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '12345'\n    \"\"\"\n",
+    "prompt2cp": "\ndef candidate(text):\n    \"\"\"\n    >>> candidate('Hello world') == '12345'\n    \"\"\"\n",
     "solution": "\ndef string_to_md5(text):\n    \"\"\"\n    Given a string 'text', return its md5 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n    import hashlib\n    return hashlib.md5(text.encode('ascii')).hexdigest() if text else None\n",
     "test_case": [
         {
@@ -10258,18 +10252,16 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/163",
     "entry_point": "generate_integers",
     "prompt": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the odd or even digits between a\n    and b, in descending or ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n",
+    "prompt1c": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [8]\n    generate_integers(8, 2) => [8]\n    generate_integers(10, 14) => [14]\n    \"\"\"\n",
+    "prompt1p": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between\n    \"\"\"\n",
+    "prompt2ac": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the odd or even digits between a\n    and b, in descending or ascending order.\n\n    For example:\n    generate_integers(2, 8) => [8]\n    generate_integers(8, 2) => [8]\n    generate_integers(10, 14) => [14]\n    \"\"\"\n",
+    "prompt2ap": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the odd or even digits between\n    \"\"\"\n",
     "solution": "\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n    lower = max(2, min(a, b))\n    upper = min(8, max(a, b))\n\n    return [i for i in range(lower, upper+1) if i % 2 == 0]\n",
     "test_case": [
         {
