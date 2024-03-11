@@ -865,17 +865,16 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             line_cnt += 1
             if args.max_num_problems >= 0 and line_cnt==args.max_num_problems:
                 break
+    # names with prompt type (e.g. 'HumanEval/X_promptX')
     names = set()
     if os.path.exists(log_file):
         with open(log_file, 'r') as f:
             for line in f:
                 content = json.loads(line)
-                names.add(content['name'])
+                names.add(content['name']+'_'+content['prompt_type'])
 
     response_list = []
     for problem in problem_list:
-        if problem['task_id'] in names:
-            continue
         print('----------------------problem name: %s--------------------------------' % (problem['task_id']), flush=True)
         print('using %s to generate response' % (model), flush=True)
         
@@ -888,6 +887,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             if input_prompt not in problem:
                 continue
             
+            if problem['task_id'] + '_' + input_prompt in names:
+                continue
             print("********************************************************************", file=print_file)
             print("****** new problem (name="+problem['task_id']+" input_prompt="+input_prompt+") ******", file=print_file)
             print("********************************************************************", file=print_file)
