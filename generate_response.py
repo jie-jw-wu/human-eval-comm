@@ -30,10 +30,11 @@ PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! \n ANSWERS=```[your answer]``` \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
-OK_PROMPT_CLARIFY_Q = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
+OK_PROMPT_CLARIFY_Q = 'Given the programming problem, ask clarifying questions if the requirements in the given problem description are incomplete, inconsistent or ambiguous for solving the problem correctly and passing the tests. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n ### Problem: \n {problem}'
+OK_PROMPT_CLARIFY_Q_V1 = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
 
 # Instruction-tuned Models and Foundation Models have different nl_2_pl/pl_2_nl prompts and functions
 INSTRUCTION_MODELS = [
@@ -747,14 +748,16 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         model_2nd_round = ok_model
         messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
         coder_response = generate_response_str(ok_model, messages, temperature, args, open_source_model, tokenizer)
-        messages.append({"role": "assistant","content": coder_response})
-        messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
+
         # Reflection
-        communicator_response = generate_response_str(ok_model, messages, temperature, args, open_source_model, tokenizer)
+        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input)}]
+        # messages.append({"role": "assistant","content": coder_response})
+        # messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
+        communicator_response = generate_response_str(ok_model, reflect_messages, temperature, args, open_source_model, tokenizer)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
         print("!!!!!!!!!!!!!!! Okanagan !!!!!! communicator_response: \n" + communicator_response, file=print_file)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
-        messages.append({"role": "assistant","content": communicator_response})
+        #messages.append({"role": "assistant","content": communicator_response})
         if  re.search('no_questions', communicator_response, re.IGNORECASE):
             response_list.append(coder_response)
         else:
@@ -789,12 +792,13 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             msgs_i.append({"role":"assistant","content": response})
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
+
             response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
             code = response_2_code_if_no_text(response_2nd[0])
             
             print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
-            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
             print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
+            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         qq_list.append(question_quality)
         code_list.append(code)
@@ -917,6 +921,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
                 with open(log_file, 'a') as f:
                     f.write(json_str + '\n')
             print('%s finish!' % (problem['task_id']), flush=True)
+            # stop with 1 prompt for debugging
+            #break
     print('Done!', flush=True)
 
 def test_starcoder(tokenizer, model):
