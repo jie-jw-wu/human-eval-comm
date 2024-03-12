@@ -854,7 +854,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
     # write printed output to a file (print_file)
     print_file_str = './log/print' + log_file[5:]
     global print_file
-    print_file = open(print_file_str, 'w')
+    print_file = open(print_file_str, 'a') # append new content if exists already
     
     problem_list = []
     line_cnt = 0

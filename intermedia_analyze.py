@@ -49,7 +49,7 @@ def solution_evaluation_HumanEval(solution, test_cases, demo_file, call_demo_fil
     
     # not print anything if solution has code that print stuff
     solution = solution.replace('print(', '# print(')
-    
+
     with open(demo_file, 'w', encoding='utf-8') as f:
         f.write(solution)
     for i in range(len(test_cases)):
@@ -183,7 +183,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 continue
 
             if index == 0:
-                print('----------------------problem name: %s--------------------------------' % (name),
+                print('----------------------problem name and prompt_type: %s--------------------------------' % (problem_key),
                       flush=True)
             
             # initialize
