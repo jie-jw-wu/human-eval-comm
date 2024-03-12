@@ -1,5 +1,5 @@
 
-python generate_response.py -d HumanEvalComm -m Okanagan -n 1 -t 1 -s 0 -o manualRemove -maxp 1
+python generate_response.py -d HumanEvalComm -m Okanagan -n 1 -t 1 -s 0 -o manualRemove -maxp -1
 
 python intermedia_analyze.py -f log/manualRemove_dataset_HumanEvalComm_model_Okanagan_topn_1_temperature_1.0.log_0 -n 1
 
