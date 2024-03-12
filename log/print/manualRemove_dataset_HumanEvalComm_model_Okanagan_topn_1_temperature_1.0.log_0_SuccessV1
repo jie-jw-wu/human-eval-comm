@@ -1,0 +1,85 @@
+********************************************************************
+****** new problem (name=HumanEval/0 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(...) -> bool:
+ """ Check given a list of number."""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!! Okanagan !!!!!! communicator_response: 
+What specific criteria should be checked in order to determine if the list of numbers qualifies as a candidate?
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! 1st CodeLLM response:
+What specific criteria should be checked in order to determine if the list of numbers qualifies as a candidate?
+!!!!!!!!!!!!! 1st CodeLLM response code:
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!! 2nd evaluate_clarifying_questions START !!!!!!!!!!!
+!!!!!!!PROMPT_EVALUATE_QUESTIONS=The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).
+  QUALITY=[your int] 
+ Please also provide answers to the questions to recover the missing requirements! Finally, add what's new or different in the original descrpition in your answer, compared with the modified problem description!
+ ANSWERS=```[your answer]```  
+ Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! 
+
+ ### Questions: What specific criteria should be checked in order to determine if the list of numbers qualifies as a candidate? 
+ ### Problem Description: You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(...) -> bool:
+ """ Check given a list of number."""
+ 
+ ### Original Description: You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """ Check if in given list of numbers, are any two numbers closer to each other than
+    given threshold.
+    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+    True
+    """
+ 
+
+!!!!!!!Completion=QUALITY=2
+ANSWERS=```To determine if the list of numbers qualifies as a candidate, we should check if all numbers are positive integers.```
+!!!!!!!answer_str To determine if the list of numbers qualifies as a candidate, we should check if all numbers are positive integers.
+!!!!!!!question_quality_str 2
+!!!!!!! 2nd evaluate_clarifying_questions END !!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! 3rd CodeLLM prompt:
+ To determine if the list of numbers qualifies as a candidate, we should check if all numbers are positive integers.
+ Given above conversations, generate Python code directly (Markdown) to solve the coding problem:
+
+!!!!!!!!!!!!! 3rd CodeLLM response:
+ ['```python\nfrom typing import List\n\ndef candidate(numbers: List[int]) -> bool:\n    """ Check if all numbers in the list are positive integers."""\n    for num in numbers:\n        if not isinstance(num, int) or num <= 0:\n            return False\n    return True\n```']
+!!!!!!!!!!!!! 3rd CodeLLM input messages:
+ [{'role': 'user', 'content': 'Generate Python code directly (Markdown) to solve the coding problem. \n\nfrom typing import List\n\n\ndef candidate(...) -> bool:\n """ Check given a list of number."""\n'}, {'role': 'assistant', 'content': 'What specific criteria should be checked in order to determine if the list of numbers qualifies as a candidate?'}, {'role': 'user', 'content': 'To determine if the list of numbers qualifies as a candidate, we should check if all numbers are positive integers.\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'}]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
