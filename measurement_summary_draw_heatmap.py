@@ -126,6 +126,7 @@ def get_correlation():
                    'question quality mean': [],
                    'question quality variance': [],
                    'question quality max diff': [],
+                   'pass@k': [],
                    }
 
     test_pass_rate_var = [np.var(i) for i in test_pass_rate]
