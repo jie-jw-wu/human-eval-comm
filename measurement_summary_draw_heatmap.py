@@ -8,6 +8,7 @@ import openpyxl
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import math
 
 MAX_NUM_PROBLEMS = 0 # from generate_response.py
 
@@ -140,6 +141,8 @@ def get_correlation():
             correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
             correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
             correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
+            passPerProblem = 1.0 if (math.isclose(max(test_pass_rate[i]), 1.0)) else 0.0
+            correlation['pass@k'].append(passPerProblem)
 
             correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
             correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
@@ -246,6 +249,10 @@ def store_data_in_xlsx(correlation, file_suffix):
     data[0].append(np.mean(correlation['question quality variance']))
     data[0].append(np.mean(correlation['question quality max diff']))
     data[0].append(ratio_of_worst(correlation['question quality max diff'], 1))
+
+    passk = np.mean(correlation['pass@k'])
+    print("pass@k is", passk)
+    data[0].append(passk)
 
     for row in data:
         sheet.append(row)
