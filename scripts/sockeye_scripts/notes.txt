@@ -1,0 +1,1 @@
+run dos2unix XXX.sh before running sbatch XXX.sh in Sockeye
