@@ -929,7 +929,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
 def test_starcoder(tokenizer, model):
     device = 'cpu'
     inputs = tokenizer.encode(
-        "def helloworld():",
+        "def str_length(str):",
         # compute a + b 
         #"def print_hello_world():", 
         return_tensors="pt"
@@ -1007,7 +1007,7 @@ if __name__ == "__main__":
     parser.add_argument('--input_path', type=str, help='Path to the input file')
     parser.add_argument('--output_dir', type=str, help='Path to the output directory')
     parser.add_argument('--chain_length', type=int, default=5, help='Number of steps in the Identity Chain')
-    parser.add_argument('--seq_length', type=int, default=2048, help='max length of the sequence')
+    parser.add_argument('--seq_length', type=int, default=8192, help='max length of the sequence')#2048
     parser.add_argument('--gen_length', type=int, default=None, help='max length of the generated sequence')
     parser.add_argument('--do_sample', action='store_true', help='whether to do sampling')
     parser.add_argument('--greedy_early_stop', action='store_true', help='whether to stop inference when fixed point')
@@ -1080,7 +1080,7 @@ if __name__ == "__main__":
             offload_folder=offload_folder,
         )
 
-    # test_starcoder(tokenizer, model)
+    test_starcoder(tokenizer, model)
     
-    if args.dataset.startswith('HumanEval'):
-        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
+    #if args.dataset.startswith('HumanEval'):
+    #    HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
