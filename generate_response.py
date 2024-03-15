@@ -714,11 +714,17 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     return response_list[0]
     
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer):
-    if model == 'OpenSourceModel':
+    if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
+        return response_list        
+    elif args.model.startswith('CodeLlama'):
+        user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
+        response_list = []
+        for i in range(topn):
+            response_list.append(get_completion_codellama('', user_input, open_source_model, tokenizer, args))
         return response_list        
     else:
         completion = openai.ChatCompletion.create(
@@ -927,13 +933,14 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
     print('Done!', flush=True)
 
 def test_starcoder(tokenizer, model):
-    device = 'cpu'
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
     inputs = tokenizer.encode(
         "def str_length(str):",
         # compute a + b 
         #"def print_hello_world():", 
         return_tensors="pt"
         ).to(device)
+    print('device=', device)
     outputs = model.generate(inputs)
     print('!!!!!!!!!!')
     print(tokenizer.decode(outputs[0]))
@@ -1029,7 +1036,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     model = None
     tokenizer = None
-    if args.model == 'OpenSourceModel':
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    print('device: ', device)
+    if args.model.startswith('CodeLlama') or args.model.startswith('starcoder'):
         # set huggingface cache directory
         HF_HOME = args.hf_dir
         offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
@@ -1067,6 +1076,8 @@ if __name__ == "__main__":
                 offload_folder=offload_folder,            
             )
 
+        print('model device: ', model.device)
+        
         # configure tokenizer
         tokenizer = AutoTokenizer.from_pretrained(
             args.model_name_or_path,
@@ -1080,7 +1091,7 @@ if __name__ == "__main__":
             offload_folder=offload_folder,
         )
 
-    test_starcoder(tokenizer, model)
+    #test_starcoder(tokenizer, model)
     
-    #if args.dataset.startswith('HumanEval'):
-    #    HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
+    if args.dataset.startswith('HumanEval'):
+        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)

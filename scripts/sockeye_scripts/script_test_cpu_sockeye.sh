@@ -10,8 +10,6 @@
 #SBATCH --mail-user=jie.jw.wu@ubc.ca   # Email address for job notifications
 #SBATCH --mail-type=ALL                 # Receive email notifications for all job events
     
-# Define the range of array indices and step value
-#SBATCH --array=1-10
 
 cd $SLURM_SUBMIT_DIR
 

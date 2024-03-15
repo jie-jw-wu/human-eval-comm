@@ -1,1 +1,4 @@
 run dos2unix XXX.sh before running sbatch XXX.sh in Sockeye
+
+module load CVMFS_CC
+pip install nltk transformers openai torch
