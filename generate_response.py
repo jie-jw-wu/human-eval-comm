@@ -1017,6 +1017,7 @@ if __name__ == "__main__":
     parser.add_argument('--seq_length', type=int, default=8192, help='max length of the sequence')#2048
     parser.add_argument('--gen_length', type=int, default=None, help='max length of the generated sequence')
     parser.add_argument('--do_sample', action='store_true', help='whether to do sampling')
+    parser.add_argument('--do_save_model', action='store_true', help='whether to save the model files to a specific directory')
     parser.add_argument('--greedy_early_stop', action='store_true', help='whether to stop inference when fixed point')
     #parser.add_argument('--temperature', type=float, default=0, help='temperature for sampling')
     parser.add_argument('--top_k', type=int, default=0, help='top k for sampling')
@@ -1093,5 +1094,8 @@ if __name__ == "__main__":
 
     #test_starcoder(tokenizer, model)
     
-    if args.dataset.startswith('HumanEval'):
+    if args.do_save_model:
+        tokenizer.save_pretrained(args.model_name_or_path)
+        model.save_pretrained(args.model_name_or_path)
+    elif args.dataset.startswith('HumanEval'):
         HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
