@@ -50,5 +50,17 @@ activate conda env:
 
 
 
-python generate_response.py -d HumanEvalComm -m starcoderbase-7b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-7b -maxp -1
+python generate_response.py -d HumanEvalComm -m starcoderbase-7b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/bigcode/starcoderbase-7b -maxp -1 --seq_length 1000000000
 python generate_response.py -d HumanEvalComm -m starcoderbase-7b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-7b --saved_model_path /scratch/st-fhendija-1/jwu/bigcode/starcoderbase-7b -maxp -1 --do_save_model
+
+
+NOTE: should put data in /project instead of /scratch!
+
+run:
+python generate_response.py -d HumanEvalComm -m CodeLlama-7b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path codellama/CodeLlama-7b-hf --saved_model_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-hf -maxp -1 --do_save_model \
+python generate_response.py -d HumanEvalComm -m CodeLlama-13b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path codellama/CodeLlama-13b-hf --saved_model_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-13b-hf -maxp -1 --do_save_model \
+python generate_response.py -d HumanEvalComm -m CodeLlama-34b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path codellama/CodeLlama-34b-hf --saved_model_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-34b-hf -maxp -1 --do_save_model \
+python generate_response.py -d HumanEvalComm -m CodeLlama-7b-Instruct-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path codellama/CodeLlama-7b-Instruct-hf --saved_model_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-Instruct-hf -maxp -1 --do_save_model \
+python generate_response.py -d HumanEvalComm -m CodeLlama-13b-Instruct-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path codellama/CodeLlama-13b-Instruct-hf --saved_model_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-13b-Instruct-hf -maxp -1 --do_save_model \
+python generate_response.py -d HumanEvalComm -m CodeLlama-34b-Instruct-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path codellama/CodeLlama-34b-Instruct-hf --saved_model_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-34b-Instruct-hf -maxp -1 --do_save_model \
+python generate_response.py -d HumanEvalComm -m starcoderbase-3b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-3b --saved_model_path /arc/project/st-fhendija-1/jwu/bigcode/starcoderbase-3b -maxp -1 --do_save_model \

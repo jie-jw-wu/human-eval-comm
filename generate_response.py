@@ -784,28 +784,29 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         question_quality = '0'
         answer = ''
-        if code == '':
+        ### comment out this due to GPU machine having no internet access to call openai
+        #if code == '':
             ## 2nd round: question & answer round
             
             # use LLM-based Evaluator to
             # 1) generate answer,
             # 2) evaluate quality of clarifying questions,
             # 3) generate new code with Q&A
-            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
+            #answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
             
             ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
-            msgs_i = messages.copy()
-            msgs_i.append({"role":"assistant","content": response})
-            msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
+            #msgs_i = messages.copy()
+            #msgs_i.append({"role":"assistant","content": response})
+            #msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
 
-            response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
-            code = response_2_code_if_no_text(response_2nd[0])
+            #response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
+            #code = response_2_code_if_no_text(response_2nd[0])
             
-            print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
-            print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
-            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
+            #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+            #print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
+            #print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
+            #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         qq_list.append(question_quality)
         code_list.append(code)
         ans_list.append(answer)
