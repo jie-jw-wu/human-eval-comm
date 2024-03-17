@@ -1083,9 +1083,9 @@ if __name__ == "__main__":
         # If you want to use multiple GPUs
         if torch.cuda.device_count() > 1:
             model = torch.nn.DataParallel(model)
-
-        print('model device: ', model.device)
         
+        print('model device: ', model.module.device if isinstance(model, torch.nn.DataParallel) else model.device)
+
         # configure tokenizer
         tokenizer = AutoTokenizer.from_pretrained(
             args.model_name_or_path,
