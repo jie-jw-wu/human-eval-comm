@@ -1,4 +1,53 @@
+# very random notes
+
 run dos2unix XXX.sh before running sbatch XXX.sh in Sockeye
 
-module load CVMFS_CC
-pip install nltk transformers openai torch
+module load CVMFS_CC python/3.8.10 gcc/11.3.0 py-virtualenv/16.7.6
+pip install nltk transformers openai accelerate
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+salloc  --account=st-fhendija-1-gpu --partition=interactive_gpu --time=1:0:0 -N 1 -n 2 --mem=8G --gpus=1
+
+not available:
+pip install -U pip
+no gpu being used (using cuda.available())  
+
+TODO: install conda
+
+https://confluence.it.ubc.ca/display/UARC/Using+Virtual+Environments+on+Sockeye#UsingVirtualEnvironmentsonSockeye-Creatingandusingacondaenvironment
+
+
+module load gcc/9.4.0 python/3.8.10 py-virtualenv/16.7.6
+source env_jw_py3.8.10/bin/activate
+
+
+Currently Loaded Modules:
+  1) shared           3) gmp/6.2.1   5) ncurses/6.2     7) py-setuptools/50.3.2   9) miniconda3/4.9.2
+  2) DefaultModules   4) gcc/9.4.0   6) python/3.8.10   8) py-virtualenv/16.7.6
+
+
+# for sockeye:  
+python generate_response.py -d HumanEvalComm -m starcoderbase-1b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-1b -maxp -1
+save model: 
+python generate_response.py -d HumanEvalComm -m starcoderbase-1b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /scratch/st-fhendija-1/jwu/bigcode/starcoderbase-1b -maxp -1 --do_save_model
+
+
+create folder(s): /scratch/st-fhendija-1/jwu/bigcode/starcoderbase-1b
+
+
+go into interactive gpu node:
+ module load gcc python miniconda3 cuda cudnn (see https://confluence.it.ubc.ca/display/UARC/TensorFlow+with+Conda. this is essential)
+    (base) [jwu153@se061 ~]$ python
+    Python 3.8.5 (default, Sep  4 2020, 07:30:14)
+    [GCC 7.3.0] :: Anaconda, Inc. on linux
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import torch
+    >>> print(torch.cuda.is_available())
+    True
+
+activate conda env: 
+    conda activate /arc/project/st-fhendija-1/jwu/jw-gpu
+
+
+
+
+python generate_response.py -d HumanEvalComm -m starcoderbase-7b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-7b -maxp -1
