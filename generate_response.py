@@ -933,10 +933,10 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             #break
     print('Done!', flush=True)
 
-def test_starcoder(tokenizer, model):
+def test_starcoder(tokenizer, model, user_input):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     inputs = tokenizer.encode(
-        "def str_length(str):",
+        user_input,
         # compute a + b 
         #"def print_hello_world():", 
         return_tensors="pt"
@@ -1014,6 +1014,7 @@ if __name__ == "__main__":
     parser.add_argument('--saved_model_path', type=str, help='Path to save the model files')
     parser.add_argument('--hf_dir', type=str, help='Path to the huggingface cache directory')
     parser.add_argument('--input_path', type=str, help='Path to the input file')
+    parser.add_argument('--user_input', type=str, help='user input for LLM (testing)')
     parser.add_argument('--output_dir', type=str, help='Path to the output directory')
     parser.add_argument('--chain_length', type=int, default=5, help='Number of steps in the Identity Chain')
     parser.add_argument('--seq_length', type=int, default=8192, help='max length of the sequence')#2048
@@ -1081,10 +1082,9 @@ if __name__ == "__main__":
             )
         
         # If you want to use multiple GPUs
-        if torch.cuda.device_count() > 1:
-            model = torch.nn.DataParallel(model)
-        
-        print('model device: ', model.module.device if isinstance(model, torch.nn.DataParallel) else model.device)
+        #if torch.cuda.device_count() > 1:
+        #    model = torch.nn.DataParallel(model)
+        print('model device: ', model.device)
 
         # configure tokenizer
         tokenizer = AutoTokenizer.from_pretrained(
@@ -1101,7 +1101,7 @@ if __name__ == "__main__":
 
     
     if args.do_test_only:
-        test_starcoder(tokenizer, model)
+        test_starcoder(tokenizer, model, args.user_input)
     elif args.do_save_model:
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
