@@ -934,7 +934,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
     print('Done!', flush=True)
 
 def test_starcoder(tokenizer, model):
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     inputs = tokenizer.encode(
         "def str_length(str):",
         # compute a + b 
@@ -1019,6 +1019,7 @@ if __name__ == "__main__":
     parser.add_argument('--seq_length', type=int, default=8192, help='max length of the sequence')#2048
     parser.add_argument('--gen_length', type=int, default=None, help='max length of the generated sequence')
     parser.add_argument('--do_sample', action='store_true', help='whether to do sampling')
+    parser.add_argument('--do_test_only', action='store_true', help='whether to run test for model')
     parser.add_argument('--do_save_model', action='store_true', help='whether to save the model files to a specific directory')
     parser.add_argument('--greedy_early_stop', action='store_true', help='whether to stop inference when fixed point')
     #parser.add_argument('--temperature', type=float, default=0, help='temperature for sampling')
@@ -1078,6 +1079,10 @@ if __name__ == "__main__":
                 cache_dir=HF_HOME,
                 offload_folder=offload_folder,            
             )
+        
+        # If you want to use multiple GPUs
+        #if torch.cuda.device_count() > 1:
+        #    model = torch.nn.DataParallel(model)
 
         print('model device: ', model.device)
         
@@ -1094,9 +1099,10 @@ if __name__ == "__main__":
             offload_folder=offload_folder,
         )
 
-    #test_starcoder(tokenizer, model)
     
-    if args.do_save_model:
+    if args.do_test_only:
+        test_starcoder(tokenizer, model)
+    elif args.do_save_model:
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
     elif args.dataset.startswith('HumanEval'):
