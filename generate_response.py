@@ -1081,8 +1081,8 @@ if __name__ == "__main__":
             )
         
         # If you want to use multiple GPUs
-        #if torch.cuda.device_count() > 1:
-        #    model = torch.nn.DataParallel(model)
+        if torch.cuda.device_count() > 1:
+            model = torch.nn.DataParallel(model)
 
         print('model device: ', model.device)
         
