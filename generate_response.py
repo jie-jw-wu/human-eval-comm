@@ -1010,6 +1010,7 @@ if __name__ == "__main__":
     # args from open sources models
 
     parser.add_argument('--model_name_or_path', type=str, help='Path to the model')
+    parser.add_argument('--saved_model_path', type=str, help='Path to save the model files')
     parser.add_argument('--hf_dir', type=str, help='Path to the huggingface cache directory')
     parser.add_argument('--input_path', type=str, help='Path to the input file')
     parser.add_argument('--output_dir', type=str, help='Path to the output directory')
@@ -1095,7 +1096,7 @@ if __name__ == "__main__":
     #test_starcoder(tokenizer, model)
     
     if args.do_save_model:
-        tokenizer.save_pretrained(args.model_name_or_path)
-        model.save_pretrained(args.model_name_or_path)
+        tokenizer.save_pretrained(args.saved_model_path)
+        model.save_pretrained(args.saved_model_path)
     elif args.dataset.startswith('HumanEval'):
         HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)

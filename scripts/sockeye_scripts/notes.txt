@@ -51,3 +51,4 @@ activate conda env:
 
 
 python generate_response.py -d HumanEvalComm -m starcoderbase-7b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-7b -maxp -1
+python generate_response.py -d HumanEvalComm -m starcoderbase-7b -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path bigcode/starcoderbase-7b --saved_model_path /scratch/st-fhendija-1/jwu/bigcode/starcoderbase-7b -maxp -1 --do_save_model
