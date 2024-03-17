@@ -1049,7 +1049,12 @@ if __name__ == "__main__":
         offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
         print("Loading model...")
         # if specified, use int8 quantization
-        if args.use_int8:
+        if args.do_save_model:
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path,
+                cache_dir=HF_HOME,           
+            )
+        elif args.use_int8:
             print("**********************************")
             print("**** Using 8-bit quantization ****")
             print("**********************************")
