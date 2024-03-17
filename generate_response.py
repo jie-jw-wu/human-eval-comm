@@ -1051,8 +1051,7 @@ if __name__ == "__main__":
         # if specified, use int8 quantization
         if args.do_save_model:
             model = AutoModelForCausalLM.from_pretrained(
-                args.model_name_or_path,
-                cache_dir=HF_HOME,           
+                args.model_name_or_path      
             )
         elif args.use_int8:
             print("**********************************")
