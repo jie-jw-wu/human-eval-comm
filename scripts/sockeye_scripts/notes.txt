@@ -35,7 +35,7 @@ create folder(s): /scratch/st-fhendija-1/jwu/bigcode/starcoderbase-1b
 
 
 go into interactive gpu node:
- module load gcc python miniconda3 cuda cudnn (see https://confluence.it.ubc.ca/display/UARC/TensorFlow+with+Conda. this is essential)
+ module load gcc python miniconda3 cuda cudnn git (see https://confluence.it.ubc.ca/display/UARC/TensorFlow+with+Conda. this is essential)
     (base) [jwu153@se061 ~]$ python
     Python 3.8.5 (default, Sep  4 2020, 07:30:14)
     [GCC 7.3.0] :: Anaconda, Inc. on linux
