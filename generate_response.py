@@ -933,13 +933,14 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             #break
     print('Done!', flush=True)
 
-def test_starcoder(tokenizer, model, user_input):
+def test_starcoder(tokenizer, model, user_input, max_length):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     inputs = tokenizer.encode(
         user_input,
         # compute a + b 
         #"def print_hello_world():", 
-        return_tensors="pt"
+        return_tensors="pt",
+        max_length=max_length,
         ).to(device)
     print('device=', device)
     outputs = model.generate(inputs)
@@ -1105,7 +1106,7 @@ if __name__ == "__main__":
 
     
     if args.do_test_only:
-        test_starcoder(tokenizer, model, args.user_input)
+        test_starcoder(tokenizer, model, args.user_input, args.seq_length)
     elif args.do_save_model:
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
