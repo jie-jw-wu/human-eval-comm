@@ -951,13 +951,15 @@ def test_starcoder(tokenizer, model, user_input, max_length):
     print('!!!!!!!!!!')
 
 def test_codellama(tokenizer, model, user_input, max_length):
-    input_ids = tokenizer(user_input, return_tensors="pt")["input_ids"].to('cuda')
+    timea = time.time()
+    input_ids = tokenizer(user_input, return_tensors="pt")["input_ids"].to(model.device)
     generated_ids = model.generate(input_ids, max_new_tokens=max_length)
     filling = tokenizer.batch_decode(generated_ids[:, input_ids.shape[1]:], skip_special_tokens = True)[0]
     
     print('!!!!!!!!!!')
     print(filling)
     print('!!!!!!!!!!')
+    print("timea = time.time()",-timea + time.time())
 
 
 # call LLM to generate results from problems
