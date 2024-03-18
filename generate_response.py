@@ -950,6 +950,16 @@ def test_starcoder(tokenizer, model, user_input, max_length):
     print(tokenizer.decode(outputs[0]))
     print('!!!!!!!!!!')
 
+def test_codellama(tokenizer, model, user_input, max_length):
+    input_ids = tokenizer(PROMPT, return_tensors="pt")["input_ids"]
+    generated_ids = model.generate(input_ids, max_new_tokens=2048)
+    filling = tokenizer.batch_decode(generated_ids[:, input_ids.shape[1]:], skip_special_tokens = True)[0]
+    
+    print('!!!!!!!!!!')
+    print(filling)
+    print('!!!!!!!!!!')
+
+
 # call LLM to generate results from problems
 # input: HumanEval.jsonl
 # output: file in folder log/
@@ -1108,7 +1118,7 @@ if __name__ == "__main__":
 
     
     if args.do_test_only:
-        test_starcoder(tokenizer, model, args.user_input, args.seq_length)
+        test_codellama(tokenizer, model, args.user_input, args.seq_length)
     elif args.do_save_model:
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
