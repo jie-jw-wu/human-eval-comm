@@ -17,6 +17,8 @@ echo "This job ran on $HOSTNAME"
 cd $SLURM_SUBMIT_DIR
 echo "we are in dir $SLURM_SUBMIT_DIR"
 module restore jw-gpu
+conda init bash
+source ~/.bashrc
 conda activate /arc/project/st-fhendija-1/jwu/jw-gpu
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 echo "JOB 1:"
