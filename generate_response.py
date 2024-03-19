@@ -714,11 +714,17 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     return response_list[0]
     
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer):
-    if model == 'OpenSourceModel':
+    if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
+        return response_list        
+    elif args.model.startswith('CodeLlama'):
+        user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
+        response_list = []
+        for i in range(topn):
+            response_list.append(get_completion_codellama('', user_input, open_source_model, tokenizer, args))
         return response_list        
     else:
         completion = openai.ChatCompletion.create(
@@ -778,28 +784,29 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         question_quality = '0'
         answer = ''
-        if code == '':
+        ### comment out this due to GPU machine having no internet access to call openai
+        #if code == '':
             ## 2nd round: question & answer round
             
             # use LLM-based Evaluator to
             # 1) generate answer,
             # 2) evaluate quality of clarifying questions,
             # 3) generate new code with Q&A
-            answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
+            #answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
             
             ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
-            msgs_i = messages.copy()
-            msgs_i.append({"role":"assistant","content": response})
-            msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
+            #msgs_i = messages.copy()
+            #msgs_i.append({"role":"assistant","content": response})
+            #msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
 
-            response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
-            code = response_2_code_if_no_text(response_2nd[0])
+            #response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
+            #code = response_2_code_if_no_text(response_2nd[0])
             
-            print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
-            print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
-            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
+            #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+            #print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
+            #print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
+            #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         qq_list.append(question_quality)
         code_list.append(code)
         ans_list.append(answer)
@@ -926,18 +933,34 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             #break
     print('Done!', flush=True)
 
-def test_starcoder(tokenizer, model):
-    device = 'cpu'
+def test_starcoder(tokenizer, model, user_input, max_length):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     inputs = tokenizer.encode(
-        "def helloworld():",
+        input_ids=user_input,
         # compute a + b 
         #"def print_hello_world():", 
-        return_tensors="pt"
+        return_tensors="pt",
         ).to(device)
-    outputs = model.generate(inputs)
+    print('device=', device)
+    outputs = model.generate(
+        inputs,
+        max_length=max_length,
+        )
     print('!!!!!!!!!!')
     print(tokenizer.decode(outputs[0]))
     print('!!!!!!!!!!')
+
+def test_codellama(tokenizer, model, user_input, max_length):
+    timea = time.time()
+    input_ids = tokenizer(user_input, return_tensors="pt")["input_ids"].to(model.device)
+    generated_ids = model.generate(input_ids, max_new_tokens=max_length)
+    filling = tokenizer.batch_decode(generated_ids[:, input_ids.shape[1]:], skip_special_tokens = True)[0]
+    
+    print('!!!!!!!!!!')
+    print(filling)
+    print('!!!!!!!!!!')
+    print("timea = time.time()",-timea + time.time())
+
 
 # call LLM to generate results from problems
 # input: HumanEval.jsonl
@@ -1003,13 +1026,17 @@ if __name__ == "__main__":
     # args from open sources models
 
     parser.add_argument('--model_name_or_path', type=str, help='Path to the model')
+    parser.add_argument('--saved_model_path', type=str, help='Path to save the model files')
     parser.add_argument('--hf_dir', type=str, help='Path to the huggingface cache directory')
     parser.add_argument('--input_path', type=str, help='Path to the input file')
+    parser.add_argument('--user_input', type=str, help='user input for LLM (testing)')
     parser.add_argument('--output_dir', type=str, help='Path to the output directory')
     parser.add_argument('--chain_length', type=int, default=5, help='Number of steps in the Identity Chain')
-    parser.add_argument('--seq_length', type=int, default=2048, help='max length of the sequence')
+    parser.add_argument('--seq_length', type=int, default=8192, help='max length of the sequence')#2048
     parser.add_argument('--gen_length', type=int, default=None, help='max length of the generated sequence')
     parser.add_argument('--do_sample', action='store_true', help='whether to do sampling')
+    parser.add_argument('--do_test_only', action='store_true', help='whether to run test for model')
+    parser.add_argument('--do_save_model', action='store_true', help='whether to save the model files to a specific directory')
     parser.add_argument('--greedy_early_stop', action='store_true', help='whether to stop inference when fixed point')
     #parser.add_argument('--temperature', type=float, default=0, help='temperature for sampling')
     parser.add_argument('--top_k', type=int, default=0, help='top k for sampling')
@@ -1029,13 +1056,19 @@ if __name__ == "__main__":
     args = parser.parse_args()
     model = None
     tokenizer = None
-    if args.model == 'OpenSourceModel':
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print('device: ', device)
+    if args.model.startswith('CodeLlama') or args.model.startswith('starcoder'):
         # set huggingface cache directory
         HF_HOME = args.hf_dir
         offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
         print("Loading model...")
         # if specified, use int8 quantization
-        if args.use_int8:
+        if args.do_save_model:
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path      
+            )
+        elif args.use_int8:
             print("**********************************")
             print("**** Using 8-bit quantization ****")
             print("**********************************")
@@ -1066,6 +1099,11 @@ if __name__ == "__main__":
                 cache_dir=HF_HOME,
                 offload_folder=offload_folder,            
             )
+        
+        # If you want to use multiple GPUs
+        #if torch.cuda.device_count() > 1:
+        #    model = torch.nn.DataParallel(model)
+        print('model device: ', model.device)
 
         # configure tokenizer
         tokenizer = AutoTokenizer.from_pretrained(
@@ -1080,7 +1118,11 @@ if __name__ == "__main__":
             offload_folder=offload_folder,
         )
 
-    # test_starcoder(tokenizer, model)
     
-    if args.dataset.startswith('HumanEval'):
+    if args.do_test_only:
+        test_codellama(tokenizer, model, args.user_input, args.seq_length)
+    elif args.do_save_model:
+        tokenizer.save_pretrained(args.saved_model_path)
+        model.save_pretrained(args.saved_model_path)
+    elif args.dataset.startswith('HumanEval'):
         HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
