@@ -5,3 +5,4 @@ call_demo*.py
 demo*.py
 __pycache__/*
 tables/*
+recycle_bin/*
