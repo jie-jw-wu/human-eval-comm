@@ -84,3 +84,9 @@ python generate_response.py -d HumanEvalComm -m CodeLlama-7b-hf -n 1 -t 1 -s 0 -
 testing:
 python generate_response.py -d HumanEvalComm -m CodeLlama-7b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-hf -maxp -1 --seq_length 1000000000 --do_test_only --user_input="You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n"
 python generate_response.py -d HumanEvalComm -m CodeLlama-7b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-hf -maxp -1 --seq_length 20 --do_test_only --user_input="def string_length(s):"
+
+
+check disk quota:
+du -h --max-depth=1 /home/jwu153
+
+an issue: i moved miniconda3 from /home/jwu153 to /arc/project/.../jwu/miniconda3, but the path is messed up completely. Fortunately, I was able to 'module load miniconda3' and do the rest jobs about conda. So I'll leave it as is now.

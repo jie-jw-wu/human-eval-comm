@@ -22,7 +22,7 @@ source ~/.bashrc
 conda activate /arc/project/st-fhendija-1/jwu/jw-gpu
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 echo "JOB 1:"
-python generate_response.py -d HumanEvalComm -m CodeLlama-7b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-hf -maxp -1 --seq_length 20 --do_test_only --user_input="def string_length(s):"
+python generate_response.py -d HumanEvalComm -m CodeLlama-7b-Instruct-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-Instruct-hf -maxp -1 --seq_length 20 --do_test_only --user_input="def string_length(s):"
 echo "JOB 2:"
-python generate_response.py -d HumanEvalComm -m CodeLlama-7b-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-hf -maxp -1 --seq_length 200 --do_test_only --user_input="You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n"
+python generate_response.py -d HumanEvalComm -m CodeLlama-7b-Instruct-hf -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/codellama/CodeLlama-7b-Instruct-hf -maxp -1 --seq_length 200 --do_test_only --user_input="You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \nfrom typing import List\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n"
 conda deactivate
