@@ -901,7 +901,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
 
     response_list = []
     for problem in problem_list:
-        print('----------------------problem name: %s--------------------------------' % (problem['task_id']), flush=True)
+        print('----------------------problem name: %s--------------------------------' % (problem['name']), flush=True)
         print('using %s to generate response' % (model), flush=True)
         
         if dataset == "HumanEvalComm":
@@ -912,11 +912,11 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
         for input_prompt in input_prompt_fields:
             if input_prompt not in problem:
                 continue
-            key = problem['task_id'] + '_' + input_prompt
+            key = problem['name'] + '_' + input_prompt
             if args.log_phase_input == args.log_phase_output and key in cached_names:
                 continue
             print("********************************************************************", file=print_file)
-            print("****** new problem (name="+problem['task_id']+" input_prompt="+input_prompt+") ******", file=print_file)
+            print("****** new problem (name="+problem['name']+" input_prompt="+input_prompt+") ******", file=print_file)
             print("********************************************************************", file=print_file)
             description = problem[input_prompt]
             try:
@@ -928,10 +928,10 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     original_prompt = PROMPT_START_3_v2 + problem['prompt']
                     response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0))
             except Exception as e:
-                print('%s---------%s' % (problem['task_id'], e), flush=True)
+                print('%s---------%s' % (problem['name'], e), flush=True)
                 continue
             for i in range(len(response_list)):
-                if arg.log_phase_output >= 1:
+                if args.log_phase_output >= 1:
                     res = {
                         'name_with_type': key,
                         'index': i,
@@ -944,13 +944,13 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     # Find the last occurrence of '.log_' in the string
                     last_index = log_file.rfind('.log_')
                     # Remove the substring from the last occurrence of '.log_' to the end, then add new suffix
-                    log_file_output_str = log_file[:last_index] + '.log_' + str(args.log_file_output)
+                    log_file_output = log_file[:last_index] + '.log_' + str(args.log_phase_output)
                     
-                    with open(log_file_output_str, 'a') as f:
+                    with open(log_file_output, 'a') as f:
                         f.write(json_str + '\n')
                 else:
                     res = {
-                        'name': problem['task_id'],
+                        'name': problem['name'],
                         'index': i,
                         'response': response_list[i],
                         'original_prompt': description,
@@ -964,7 +964,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     json_str = json.dumps(res)
                     with open(log_file, 'a') as f:
                         f.write(json_str + '\n')
-            print('%s finish!' % (problem['task_id']), flush=True)
+            print('%s finish!' % (problem['name']), flush=True)
             # stop with 1 prompt for debugging
             #break
     print('Done!', flush=True)
@@ -1044,7 +1044,7 @@ if __name__ == "__main__":
         default='original'
     )
     parser.add_argument(
-        "-phase_in",
+        "-s", # legacy
         "--log_phase_input",
         choices=[0,1,2,3],
         type=int,
@@ -1052,7 +1052,7 @@ if __name__ == "__main__":
         default=0
     )
     parser.add_argument(
-        "-phase_out",
+        "-out",
         "--log_phase_output",
         choices=[0,1,2,3],
         type=int,
