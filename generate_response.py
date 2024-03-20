@@ -35,6 +35,7 @@ PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly 
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
 OK_PROMPT_CLARIFY_Q = 'Given the programming problem, ask clarifying questions if the requirements in the given problem description are incomplete, inconsistent or ambiguous for solving the problem correctly and passing the tests. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n ### Problem: \n {problem}'
 OK_PROMPT_CLARIFY_Q_V1 = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
+OK_MODEL = 'gpt-3.5-turbo-0125'
 
 # Instruction-tuned Models and Foundation Models have different nl_2_pl/pl_2_nl prompts and functions
 INSTRUCTION_MODELS = [
@@ -725,7 +726,27 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         response_list = []
         for i in range(topn):
             response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
-        return response_list        
+        return response_list
+    elif model == 'Okanagan':
+        # this code assume topn=1
+        # set the real model used by Okanagan
+        messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
+        coder_response = generate_response_str(OK_MODEL, messages, temperature, args, open_source_model, tokenizer)
+
+        # Reflection
+        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input)}]
+        # messages.append({"role": "assistant","content": coder_response})
+        # messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
+        communicator_response = generate_response_str(OK_MODEL, reflect_messages, temperature, args, open_source_model, tokenizer)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+        print("!!!!!!!!!!!!!!! Okanagan !!!!!! communicator_response: \n" + communicator_response, file=print_file)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
+        #messages.append({"role": "assistant","content": communicator_response})
+        if  re.search('no_questions', communicator_response, re.IGNORECASE):
+            response_list.append(coder_response)
+        else:
+            response_list.append(communicator_response)    
+        return response_list  
     else:
         completion = openai.ChatCompletion.create(
             model=model,
@@ -738,39 +759,25 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(i['message']['content'])
         return response_list
 
-def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer):
+def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_response, cached_qq):
     ## 1st round: initial code generation
-    full_prompt = prompt + user_input
+    full_prompt = OK_PROMPT_CODEGEN + user_input if model == 'Okanagan' else prompt + user_input
+    messages = []
+    response_list = []
+    model_2nd_round = OK_MODEL if model == 'Okanagan' else model
     print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
     print('!!!!!!!!!!!!! prompt:\n' + full_prompt, file=print_file)
     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
-    messages = []
-    response_list = []
-    model_2nd_round = model
-    if model == 'Okanagan':
-        # this code assume topn=1
-        # set the real model used by Okanagan
-        ok_model = 'gpt-3.5-turbo-0125'
-        model_2nd_round = ok_model
-        messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
-        coder_response = generate_response_str(ok_model, messages, temperature, args, open_source_model, tokenizer)
-
-        # Reflection
-        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input)}]
-        # messages.append({"role": "assistant","content": coder_response})
-        # messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
-        communicator_response = generate_response_str(ok_model, reflect_messages, temperature, args, open_source_model, tokenizer)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
-        print("!!!!!!!!!!!!!!! Okanagan !!!!!! communicator_response: \n" + communicator_response, file=print_file)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
-        #messages.append({"role": "assistant","content": communicator_response})
-        if  re.search('no_questions', communicator_response, re.IGNORECASE):
-            response_list.append(coder_response)
-        else:
-            response_list.append(communicator_response)
+    
+    messages.append({"role": "user","content": full_prompt})
+    if args.log_phase_output >= 2:
+        response_list.append(cached_response)
     else:
-        messages.append({"role": "user","content": full_prompt})
         response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
+    
+    if args.log_phase_output == 1:
+        return response_list, [], [], []
+
     code_list = []
     qq_list = []
     ans_list = []
@@ -784,29 +791,36 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         question_quality = '0'
         answer = ''
-        ### comment out this due to GPU machine having no internet access to call openai
-        #if code == '':
+        if args.log_phase_output != 1 and code == '':
             ## 2nd round: question & answer round
             
             # use LLM-based Evaluator to
             # 1) generate answer,
             # 2) evaluate quality of clarifying questions,
             # 3) generate new code with Q&A
-            #answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
+            if args.log_phase_output >= 3:
+                answer = cached_response
+                question_quality = cached_qq
+            else:
+                answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
             
-            ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
-            #msgs_i = messages.copy()
-            #msgs_i.append({"role":"assistant","content": response})
-            #msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
-            
+            if args.log_phase_output == 2:
+                response_list.append(answer)
+                qq_list.append(question_quality)
+                continue
 
-            #response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
-            #code = response_2_code_if_no_text(response_2nd[0])
+            ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
+            msgs_i = messages.copy()
+            msgs_i.append({"role":"assistant","content": response})
+            msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
-            #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
-            #print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
-            #print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
-            #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
+            response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
+            code = response_2_code_if_no_text(response_2nd[0])
+            
+            print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
+            print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
+            print('!!!!!!!!!!!!! 3rd CodeLLM response:\n', response_2nd, file=print_file)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         qq_list.append(question_quality)
         code_list.append(code)
         ans_list.append(answer)
@@ -847,15 +861,15 @@ def response_2_code_if_no_text(response):
         return code[-1]
     return ''
         
-def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, temperature, args, open_source_model, tokenizer):
+def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature, args, open_source_model, tokenizer):
     remove_percentage = 0
     log_file = ''
     if option == 'original':
         log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (dataset, model, topn, temperature, sequence)
+                   (dataset, model, topn, temperature, str(args.log_phase_input))
     else:
         log_file = './log/%s_dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (option, dataset, model, topn, temperature, sequence)
+                   (option, dataset, model, topn, temperature, str(args.log_phase_input))
         remove_percentage = string_to_int(get_ith_element(option, 1))
     
     # write printed output to a file (print_file)
@@ -873,12 +887,17 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
             if args.max_num_problems >= 0 and line_cnt==args.max_num_problems:
                 break
     # names with prompt type (e.g. 'HumanEval/X_promptX')
-    names = set()
+    cached_names = set()
+    cached_responses = {}
+    cached_qqs = {}
     if os.path.exists(log_file):
         with open(log_file, 'r') as f:
             for line in f:
                 content = json.loads(line)
-                names.add(content['name']+'_'+content['prompt_type'])
+                key = content['name']+'_'+content['prompt_type']
+                cached_names.add(key)
+                cached_responses[key] = content['response']
+                cached_qqs[key] = content['question_quality']
 
     response_list = []
     for problem in problem_list:
@@ -893,8 +912,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
         for input_prompt in input_prompt_fields:
             if input_prompt not in problem:
                 continue
-            
-            if problem['task_id'] + '_' + input_prompt in names:
+            key = problem['task_id'] + '_' + input_prompt
+            if args.log_phase_input == args.log_phase_output and key in cached_names:
                 continue
             print("********************************************************************", file=print_file)
             print("****** new problem (name="+problem['task_id']+" input_prompt="+input_prompt+") ******", file=print_file)
@@ -907,27 +926,44 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, sequence, topn, te
                     response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature, args, open_source_model, tokenizer)
                 else:
                     original_prompt = PROMPT_START_3_v2 + problem['prompt']
-                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer)
+                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0))
             except Exception as e:
                 print('%s---------%s' % (problem['task_id'], e), flush=True)
                 continue
             for i in range(len(response_list)):
-            
-                res = {
-                    'name': problem['task_id'],
-                    'index': i,
-                    'response': response_list[i],
-                    'original_prompt': description,
-                    'modified_prompt': prompt,
-                    'prompt_type': input_prompt,
-                    'code': code_list[i],
-                    'question_quality': qq_list[i],
-                    'answer': ans_list[i],
-                }
-                print('response %s is writting into file' % (i), flush=True)
-                json_str = json.dumps(res)
-                with open(log_file, 'a') as f:
-                    f.write(json_str + '\n')
+                if arg.log_phase_output >= 1:
+                    res = {
+                        'name_with_type': key,
+                        'index': i,
+                        'response': response_list[i],
+                        'question_quality': qq_list[i] if i < len(qq_list) else '0',
+                    }
+                    print('response %s is writting into file' % (i), flush=True)
+                    json_str = json.dumps(res)
+
+                    # Find the last occurrence of '.log_' in the string
+                    last_index = log_file.rfind('.log_')
+                    # Remove the substring from the last occurrence of '.log_' to the end, then add new suffix
+                    log_file_output_str = log_file[:last_index] + '.log_' + str(args.log_file_output)
+                    
+                    with open(log_file_output_str, 'a') as f:
+                        f.write(json_str + '\n')
+                else:
+                    res = {
+                        'name': problem['task_id'],
+                        'index': i,
+                        'response': response_list[i],
+                        'original_prompt': description,
+                        'modified_prompt': prompt,
+                        'prompt_type': input_prompt,
+                        'code': code_list[i],
+                        'question_quality': qq_list[i],
+                        'answer': ans_list[i],
+                    }
+                    print('response %s is writting into file' % (i), flush=True)
+                    json_str = json.dumps(res)
+                    with open(log_file, 'a') as f:
+                        f.write(json_str + '\n')
             print('%s finish!' % (problem['task_id']), flush=True)
             # stop with 1 prompt for debugging
             #break
@@ -1008,11 +1044,20 @@ if __name__ == "__main__":
         default='original'
     )
     parser.add_argument(
-        "-s",
-        "--sequence",
-        type=str,
-        help="Choose the order of the experiment",
-        default='0'
+        "-phase_in",
+        "--log_phase_input",
+        choices=[0,1,2,3],
+        type=int,
+        help="If not 0, this split the process into phase 1 (1st round LLM response),2 (2nd, answers to questions),3 (3rd, final code generation given chat history). This is name of input log file",
+        default=0
+    )
+    parser.add_argument(
+        "-phase_out",
+        "--log_phase_output",
+        choices=[0,1,2,3],
+        type=int,
+        help="If not 0, this split the process into phase 1 (1st round LLM response),2 (2nd, answers to questions),3 (3rd, final code generation given chat history). This is name of output log file",
+        default=0
     )
     parser.add_argument(
         "-maxp",
@@ -1125,4 +1170,4 @@ if __name__ == "__main__":
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
     elif args.dataset.startswith('HumanEval'):
-        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.sequence, args.topn, args.temperature, args, model, tokenizer)
+        HumanEval_experiment(args.dataset, './HumanEval/'+args.dataset+'.jsonl', args.option, args.model, args.topn, args.temperature, args, model, tokenizer)
