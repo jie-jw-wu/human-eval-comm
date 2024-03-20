@@ -1,5 +1,5 @@
 {
-    "task_id": "HumanEval/0",
+    "name": "HumanEval/0",
     "prompt": "from typing import List\n\n\ndef has_close_elements(numbers: List[float], threshold: float) -> bool:\n    \"\"\" Check if in given list of numbers, are any two numbers closer to each other than\n    given threshold.\n    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)\n    False\n    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    \"\"\"\n",
     "prompt1a": "from typing import List\n\n\ndef candidate(numbers: List[float], threshold: float) -> bool:\n    \"\"\" Check if in given list of numbers, are any two numbers closer to or larger than each other than\n    given threshold.\n    >>> candidate([1.0, 2.0, 3.0], 0.5)\n    False\n    >>> candidate([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    \"\"\"\n",
     "prompt1c": "from typing import List\n\n\ndef has_close_elements(numbers: List[float], threshold: float) -> bool:\n    \"\"\" Check if in given list of numbers, are any two numbers larger than each other than\n    given threshold.\n    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)\n    False\n    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    \"\"\"\n",
@@ -46,7 +46,7 @@
     ]
 };
 {
-    "task_id": "HumanEval/1",
+    "name": "HumanEval/1",
     "prompt": "from typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['()', '(())', '(()())']\n    \"\"\"\n",
     "prompt1c": "from typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n    separate those group into separate strings and return the list of those.\n    Separate groups are balanced (each open brace is properly closed) and not nested within each other\n    Ignore any spaces in the input string.\n    >>> separate_paren_groups('( ) (( )) (( )( ))')\n    ['(', '(', '(']\n    \"\"\"\n",
     "prompt1p": "from typing import List\n\n\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    \"\"\" Input to this function is a string containing multiple groups of nested parentheses. Your goal is to\n \"\"\"\n",
@@ -79,7 +79,7 @@
     ]
 };
 {
-    "task_id": "HumanEval/2",
+    "name": "HumanEval/2",
     "entry_point": "truncate_number",
     "prompt": "\n\ndef truncate_number(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the decimal part of the number.\n    >>> truncate_number(3.5)\n    0.5\n    \"\"\"\n",
     "prompt1a": "\n\ndef candidate(number: float) -> float:\n    \"\"\" Given a positive floating point number, it can be decomposed into\n    and integer part (largest integer smaller than given number) and decimals\n    (leftover part always smaller than 1).\n\n    Return the integer or decimal part of the number.\n    >>> candidate(3.5)\n    0.5\n    \"\"\"\n",
@@ -107,7 +107,7 @@
     ]
 };
 {
-    "task_id": "HumanEval/3",
+    "name": "HumanEval/3",
     "entry_point": "below_zero",
     "prompt": "from typing import List\n\n\ndef below_zero(operations: List[int]) -> bool:\n    \"\"\" You're given a list of deposit and withdrawal operations on a bank account that starts with\n    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\n    at that point function should return True. Otherwise it should return False.\n    >>> below_zero([1, 2, 3])\n    False\n    >>> below_zero([1, 2, -4, 5])\n    True\n    \"\"\"\n",
     "prompt1c": "from typing import List\n\n\ndef below_zero(operations: List[int]) -> bool:\n    \"\"\" You're given a list of deposit and withdrawal operations on a bank account that starts with\n    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and\n    at that point function should return True. Otherwise it should return False.\n    >>> below_zero([1, 2, 3])\n    False\n    >>> below_zero([1, 2, -4, 5])\n    False\n    \"\"\"\n",
@@ -150,7 +150,7 @@
     ]
 };
 {
-    "task_id": "HumanEval/4",
+    "name": "HumanEval/4",
     "prompt": "from typing import List\n\n\ndef mean_absolute_deviation(numbers: List[float]) -> float:\n    \"\"\" For a given list of input numbers, calculate Mean Absolute Deviation\n    around the mean of this dataset.\n    Mean Absolute Deviation is the average absolute difference between each\n    element and a centerpoint (mean in this case):\n    MAD = average | x - x_mean |\n    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])\n    1.0\n    \"\"\"\n",
     "prompt1c": "from typing import List\n\n\ndef mean_absolute_deviation(numbers: List[float]) -> float:\n    \"\"\" For a given list of input numbers, calculate Mean Absolute Deviation\n    around the mean of this dataset.\n    Mean Absolute Deviation is the average absolute difference between each\n    element and a centerpoint (mean in this case):\n    MAD = average | x - x_mean |\n    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])\n    3.0\n    \"\"\"\n",
     "prompt1a": "from typing import List\n\n\ndef candidate(numbers: List[float]) -> float:\n    \"\"\" For a given list of input numbers, calculate Mean Absolute Deviation\n    around the max or mean of this dataset.\n    Mean Absolute Deviation is the average absolute difference between each\n    element and a centerpoint (max or mean in this case):\n    MAD = average | x - (x_max or x_mean) |\n    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])\n    1.0\n    \"\"\"\n",
@@ -2249,7 +2249,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/36",
     "entry_point": "fizz_buzz",
@@ -2328,7 +2328,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/38",
     "entry_point": "decode_cyclic",
@@ -2964,13 +2964,13 @@
     "name": "HumanEval/41",
     "entry_point": "car_race_collision",
     "prompt": "\n\ndef car_race_collision(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n",
-    "prompt1a": "",
-    "prompt1c": "",
-    "prompt1p": "",
-    "prompt2ac": "",
-    "prompt2ap": "",
-    "prompt2cp": "",
-    "prompt3acp": "",
+    "prompt1a": "\n\ndef car_race_collision(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    2*n or n cars are driving left to right;  simultaneously, a different set of 2*n or n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n",
+    "prompt1c": "\n\ndef is_prime(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n",
+    "prompt1p": "\n\ndef candidate(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    \"\"\"\n",
+    "prompt2ac": "\n\ndef is_prime(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    2*n or n cars are driving left to right;  simultaneously, a different set of 2*n or n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n",
+    "prompt2ap": "\n\ndef candidate(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n  2*n or n cars are driving left to right;  simultaneously, a different set of 2*n or n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    \"\"\"\n",
+    "prompt2cp": "\n\ndef is_prime(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    \"\"\"\n",
+    "prompt3acp": "\n\ndef is_prime(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n  2*n or n cars are driving left to right;  simultaneously, a different set of 2*n or n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    \"\"\"\n",
     "solution": "\n\ndef car_race_collision(n: int):\n    \"\"\"\n    Imagine a road that's a perfectly straight infinitely long line.\n    n cars are driving left to right;  simultaneously, a different set of n cars\n    are driving right to left.   The two sets of cars start out being very far from\n    each other.  All cars move in the same speed.  Two cars are said to collide\n    when a car that's moving left to right hits a car that's moving right to left.\n    However, the cars are infinitely sturdy and strong; as a result, they continue moving\n    in their trajectory as if they did not collide.\n\n    This function outputs the number of such collisions.\n    \"\"\"\n    return n**2\n",
     "test_case": [
         {
@@ -5413,7 +5413,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/71",
     "entry_point": "triangle_area",
@@ -9686,7 +9686,7 @@
             "relation": "=="
         }
     ]
-}
+};
 {
     "name": "HumanEval/153",
     "entry_point": "Strongest_Extension",
@@ -10239,4 +10239,4 @@
             "relation": "=="
         }
     ]
-}
+};

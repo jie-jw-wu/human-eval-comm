@@ -14,12 +14,12 @@ def convert_to_jsonl(input_file, output_file):
     with open(input_file, 'r') as f:
         data = f.read()
 
-    # Split the data by '}\n{' to separate individual JSON objects
-    objects = data.split(';')
+    # Split the data by ';' to separate individual JSON objects
+    objects = data.split('};')
 
     # Add back the closing brace '}' to each object except for the last one
-    #for i in range(len(objects) - 1):
-    #    objects[i] += '}'
+    for i in range(len(objects) - 1):
+        objects[i] += '}'
 
     with open(output_file, 'w') as f:
         # Write each object as a separate line in the output JSONL file
@@ -30,10 +30,10 @@ def convert_to_jsonl(input_file, output_file):
                 f.write('\n')  # Add a newline character to separate each object
 
 # Example usage:
-# python json_to_jsonl.py ./HumanEval/HumanEvalComm.json ./HumanEval/HumanEvalComm.jsonl
+# python convert_to_jsonl ./HumanEval/HumanEvalComm.json ./HumanEval/HumanEvalComm.jsonl
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python json_to_jsonl.py input_file output_file")
+        print("Usage: python convert_to_jsonl.py input_file output_file")
         sys.exit(1)
     
     input_file = sys.argv[1]
