@@ -759,7 +759,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(i['message']['content'])
         return response_list
 
-def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_response, cached_qq):
+def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_response, cached_qq, cached_answer):
     ## 1st round: initial code generation
     full_prompt = OK_PROMPT_CODEGEN + user_input if model == 'Okanagan' else prompt + user_input
     messages = []
@@ -791,7 +791,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
         question_quality = '0'
         answer = ''
-        if args.log_phase_output != 1 and code == '':
+        if code == '':
             ## 2nd round: question & answer round
             
             # use LLM-based Evaluator to
@@ -799,13 +799,13 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             # 2) evaluate quality of clarifying questions,
             # 3) generate new code with Q&A
             if args.log_phase_output >= 3:
-                answer = cached_response
+                answer = cached_answer
                 question_quality = cached_qq
             else:
                 answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
             
             if args.log_phase_output == 2:
-                response_list.append(answer)
+                ans_list.append(answer)
                 qq_list.append(question_quality)
                 continue
 
@@ -889,6 +889,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
     # names with prompt type (e.g. 'HumanEval/X_promptX')
     cached_names = set()
     cached_responses = {}
+    cached_answers = {}
     cached_qqs = {}
     if os.path.exists(log_file):
         with open(log_file, 'r') as f:
@@ -897,6 +898,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                 key = content['name']+'_'+content['prompt_type']
                 cached_names.add(key)
                 cached_responses[key] = content['response']
+                cached_answers[key] = content['answer']
                 cached_qqs[key] = content['question_quality']
 
     response_list = []
@@ -926,16 +928,19 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature, args, open_source_model, tokenizer)
                 else:
                     original_prompt = PROMPT_START_3_v2 + problem['prompt']
-                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0))
+                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)
                 continue
             for i in range(len(response_list)):
                 if args.log_phase_output >= 1:
                     res = {
-                        'name_with_type': key,
+                        'key': key,
+                        'name': problem['name'],
+                        'prompt_type': input_prompt,
                         'index': i,
                         'response': response_list[i],
+                        'answer': ans_list[i] if i < len(ans_list) else '',
                         'question_quality': qq_list[i] if i < len(qq_list) else '0',
                     }
                     print('response %s is writting into file' % (i), flush=True)
@@ -1052,7 +1057,7 @@ if __name__ == "__main__":
         default=0
     )
     parser.add_argument(
-        "-out",
+        "-so",
         "--log_phase_output",
         choices=[0,1,2,3],
         type=int,
