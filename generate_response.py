@@ -30,7 +30,13 @@ PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS_V1 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS_V2 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+# pretty bad prompt as it returns code in answers...
+PROMPT_EVALUATE_QUESTIONS_V3 = 'The original description of a coding problem is modified so that the requirements become incomplete, inconsistent, or ambiguous. Given the modified description, some clarifying questions may be raised to clarify the description. Provide answers to the questions to recover the requirements in the original problem description compared to the modified one. Be sure to return empty answers if there is no valid clarifying question or code with markup! \n ANSWERS=```[your answer]```  \n Please also provide an integer representing the quality of clarifying questions (3: Good questions that recover the modified requirements. 2: Fair questions but they cannot help recover the modified requirements. 1: No valid questions).\n  QUALITY=[your int] \n Please strictly follow the format ANSWERS=```[the answer]``` and QUALITY=[the int] in the response! Surround your answer with markup! \n ### ORIGINAL PROBLEM DESCRIPTION:\n {missing_information} \n ### MODIFIED PROBLEM DESCRIPTION:\n {problem} \n ### CLARIFYING QUESTIONS:\n{clarifying_questions} \n'
+
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Provide also answers to the questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
 OK_PROMPT_CLARIFY_Q = 'Given the programming problem, ask clarifying questions if the requirements in the given problem description are incomplete, inconsistent or ambiguous for solving the problem correctly and passing the tests. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n ### Problem: \n {problem}'
@@ -854,13 +860,13 @@ def response_2_code(response):
 
 # returns code only if the response consists solely of code with markups
 def response_2_code_if_no_text(response):
-     # adding optional spaces (`\s*`) allowed surrounding the markup. Was using ^```.*\n([\s\S]+?)\n```$ 
+    # Adjusted regular expression to allow optional surrounding whitespace
     code_template = re.compile(r'^\s*```.*?\n([\s\S]+?)\n```\s*$', re.M)
-    code = code_template.findall(response)
-    if len(code) > 0:
-        return code[-1]
-    return ''
-        
+    match = code_template.match(response)
+    if match:
+        return match.group(1)  # Return the code block (group 1)
+    return ''  # Return empty string if no match is found
+
 def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature, args, open_source_model, tokenizer):
     remove_percentage = 0
     log_file = ''
@@ -881,10 +887,11 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
     line_cnt = 0
     with open(dataset_loc, 'r') as f:
         for line in f.readlines():
-            problem_list.append(json.loads(line))
+            if args.min_problem_idx < 0 or line_cnt >= args.min_problem_idx:
+                problem_list.append(json.loads(line))
             # added by JW
             line_cnt += 1
-            if args.max_num_problems >= 0 and line_cnt==args.max_num_problems:
+            if args.max_num_problems >= 0 and line_cnt >= args.max_num_problems:
                 break
     # names with prompt type (e.g. 'HumanEval/X_promptX')
     cached_names = set()
@@ -1069,7 +1076,13 @@ if __name__ == "__main__":
         "--max_num_problems",
         type=int,
         help="Max number of problems to run", # limit the number of problems to be run and call ChatGPT. -1 means no such limit
-        required=True,
+        default=-1,
+    )
+    parser.add_argument(
+        "-minp",
+        "--min_problem_idx",
+        type=int,
+        help="Min index of problems to run", # limit the number of problems to be run. -1 means no such limit
         default=-1,
     )
     
