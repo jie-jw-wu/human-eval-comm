@@ -362,7 +362,7 @@ def get_completion_starchat_pl_to_nl(prompt, user_input, model, tokenizer, args)
 
 
 def get_completion_codellama_instruct_nl_to_pl(
-    prompt, user_input, model, tokenizer, args
+    user_input, model, tokenizer, args
 ):  # reference: https://github.com/facebookresearch/codellama/blob/main/llama/generation.py
     # select the correct in-context learning prompt based on the task
     print("get_completion_codellama_instruct_nl_to_pl 1")
