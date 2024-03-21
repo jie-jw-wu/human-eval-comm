@@ -66,13 +66,15 @@ FOUNDATION_MODELS = [
 
 
 # prompt settings
-NL_2_PL_HUMANEVAL = [
+CODELLAMA_NL_2_PL_HUMANEVAL = [
     {  # Instructions
         "role": "system",
         "content": "You are an expert software developer who writes high quality code. Given a coding problem, please either generate Python code, or ask clarifying questions. "
         + "If you generate code, please respond directly with code only with markdown, and you need to return the complete function! "
         + "You’d better be sure. \n\n",
-    },
+    }
+]
+NL_2_PL_HUMANEVAL = [
     {  # Instructions
         "role": "system",
         "content": "Solve a coding problem in Python. "
@@ -742,7 +744,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
-            response_list.append(get_completion_codellama_instruct_nl_to_pl(NL_2_PL_HUMANEVAL[0], user_input_without_prompt, open_source_model, tokenizer, args))
+            response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
         return response_list
     elif model == 'Okanagan':
         # this code assume topn=1
