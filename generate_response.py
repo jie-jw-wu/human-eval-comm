@@ -69,6 +69,12 @@ FOUNDATION_MODELS = [
 NL_2_PL_HUMANEVAL = [
     {  # Instructions
         "role": "system",
+        "content": "You are an expert software developer who writes high quality code. Given a coding problem, please either generate Python code, or ask clarifying questions. "
+        + "If you generate code, please respond directly with code only with markdown, and you need to return the complete function! "
+        + "You’d better be sure. \n\n",
+    },
+    {  # Instructions
+        "role": "system",
         "content": "Solve a coding problem in Python. "
         + "Given the function signature and the problem description in the docstring, "
         + "you only need to continue to complete the function body. "
@@ -364,13 +370,11 @@ def get_completion_starchat_pl_to_nl(prompt, user_input, model, tokenizer, args)
 
 
 def get_completion_codellama_instruct_nl_to_pl(
-    user_input, model, tokenizer, args
+    prompt, user_input, model, tokenizer, args
 ):  # reference: https://github.com/facebookresearch/codellama/blob/main/llama/generation.py
     # select the correct in-context learning prompt based on the task
-    print("get_completion_codellama_instruct_nl_to_pl 1")
-    messages = [{"role": "user", "content": user_input}]
+    messages = prompt + [{"role": "user", "content": user_input}]
     
-    print("get_completion_codellama_instruct_nl_to_pl 2")
     formatted_prompt = ""
     for msg in messages:
         if msg["role"] == "user":
@@ -382,20 +386,19 @@ def get_completion_codellama_instruct_nl_to_pl(
         # elif msg["role"] == "system":
         #     formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
     # Debug
-    # print(formatted_prompt)
+    print('formatted_prompt:',formatted_prompt)
     
-    print("get_completion_codellama_instruct_nl_to_pl 3")
     output = generate_text(model, tokenizer, formatted_prompt, args)
     completion = output[0]["generated_text"]
 
     # post-processing
+    print('completion:',completion)
     completion_lines = completion.split("\n")
     processed_completion = ""
     for line in completion_lines:
         if line.startswith("    "):
             processed_completion += line + "\n"
 
-    print("get_completion_codellama_instruct_nl_to_pl 4")
     # remove extra docstring
     # find all occurrences of three consecutive double quotes
     res = [i for i in range(len(processed_completion)) if processed_completion.startswith('"""', i)]
@@ -413,9 +416,8 @@ def get_completion_codellama_instruct_nl_to_pl(
         except IndexError:
             pass
 
-    print("get_completion_codellama_instruct_nl_to_pl 5")
     # Debug
-    print(processed_completion)
+    print('processed_completion:',processed_completion)
     return processed_completion
 
 
@@ -729,7 +731,7 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     response_list = generate_response(model, msgs, 1, temperature, args, open_source_model, tokenizer)
     return response_list[0]
     
-def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer):
+def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = ''):
     if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
@@ -740,7 +742,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
-            response_list.append(get_completion_codellama_instruct_nl_to_pl(user_input, open_source_model, tokenizer, args))
+            response_list.append(get_completion_codellama_instruct_nl_to_pl(NL_2_PL_HUMANEVAL[0], user_input_without_prompt, open_source_model, tokenizer, args))
         return response_list
     elif model == 'Okanagan':
         # this code assume topn=1
@@ -788,7 +790,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
     if args.log_phase_output >= 2:
         response_list.append(cached_response)
     else:
-        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer)
+        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input)
     
     if args.log_phase_output == 1:
         return response_list, [], [], []
