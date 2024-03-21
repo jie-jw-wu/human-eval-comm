@@ -23,6 +23,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 set_seed(42)
 
 
+B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
+B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 openai.api_key = os.environ['OPENAI_KEY']
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
