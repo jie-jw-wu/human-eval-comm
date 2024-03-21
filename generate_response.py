@@ -366,7 +366,7 @@ def get_completion_codellama_instruct_nl_to_pl(
 ):  # reference: https://github.com/facebookresearch/codellama/blob/main/llama/generation.py
     # select the correct in-context learning prompt based on the task
     print("get_completion_codellama_instruct_nl_to_pl 1")
-    messages = prompt + [{"role": "user", "content": user_input}]
+    messages = [{"role": "user", "content": user_input}]
     
     print("get_completion_codellama_instruct_nl_to_pl 2")
     formatted_prompt = ""
@@ -738,7 +738,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
-            response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
+            response_list.append(get_completion_codellama_instruct_nl_to_pl(user_input, open_source_model, tokenizer, args))
         return response_list
     elif model == 'Okanagan':
         # this code assume topn=1
