@@ -365,7 +365,10 @@ def get_completion_codellama_instruct_nl_to_pl(
     prompt, user_input, model, tokenizer, args
 ):  # reference: https://github.com/facebookresearch/codellama/blob/main/llama/generation.py
     # select the correct in-context learning prompt based on the task
+    print("get_completion_codellama_instruct_nl_to_pl 1")
     messages = prompt + [{"role": "user", "content": user_input}]
+    
+    print("get_completion_codellama_instruct_nl_to_pl 2")
     formatted_prompt = ""
     for msg in messages:
         if msg["role"] == "user":
@@ -378,6 +381,8 @@ def get_completion_codellama_instruct_nl_to_pl(
         #     formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
     # Debug
     # print(formatted_prompt)
+    
+    print("get_completion_codellama_instruct_nl_to_pl 3")
     output = generate_text(model, tokenizer, formatted_prompt, args)
     completion = output[0]["generated_text"]
 
@@ -388,6 +393,7 @@ def get_completion_codellama_instruct_nl_to_pl(
         if line.startswith("    "):
             processed_completion += line + "\n"
 
+    print("get_completion_codellama_instruct_nl_to_pl 4")
     # remove extra docstring
     # find all occurrences of three consecutive double quotes
     res = [i for i in range(len(processed_completion)) if processed_completion.startswith('"""', i)]
@@ -405,6 +411,7 @@ def get_completion_codellama_instruct_nl_to_pl(
         except IndexError:
             pass
 
+    print("get_completion_codellama_instruct_nl_to_pl 5")
     # Debug
     print(processed_completion)
     return processed_completion
