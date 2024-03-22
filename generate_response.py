@@ -37,7 +37,7 @@ PROMPT_EVALUATE_QUESTIONS_V2 = 'The original description of a coding problem is 
 # pretty bad prompt as it returns code in answers...
 PROMPT_EVALUATE_QUESTIONS_V3 = 'The original description of a coding problem is modified so that the requirements become incomplete, inconsistent, or ambiguous. Given the modified description, some clarifying questions may be raised to clarify the description. Provide answers to the questions to recover the requirements in the original problem description compared to the modified one. Be sure to return empty answers if there is no valid clarifying question or code with markup! \n ANSWERS=```[your answer]```  \n Please also provide an integer representing the quality of clarifying questions (3: Good questions that recover the modified requirements. 2: Fair questions but they cannot help recover the modified requirements. 1: No valid questions).\n  QUALITY=[your int] \n Please strictly follow the format ANSWERS=```[the answer]``` and QUALITY=[the int] in the response! Surround your answer with markup! \n ### ORIGINAL PROBLEM DESCRIPTION:\n {missing_information} \n ### MODIFIED PROBLEM DESCRIPTION:\n {problem} \n ### CLARIFYING QUESTIONS:\n{clarifying_questions} \n'
 
-PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Provide also answers to the questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
@@ -70,7 +70,26 @@ CODELLAMA_NL_2_PL_HUMANEVAL = [
     {  # Instructions
         "role": "system",
         "content": PROMPT_START_3_v2
-        + " If you decide to generate code: please strictly follow these instructions: Respond directly with code only with markdown! You need to return the complete function! Please only return code surrounded by markdown. Don't write down any thought processes!  \n\n",
+        + " Note that if you decide to generate code, please respond directly with code only with markdown! You need to return the complete function! Please only return code surrounded by markdown. Don't write down any thought processes!  \n\n",
+    },
+    {  # One-Shot Example: user input = function signature + problem description in docstring format
+        "role": "user",
+        "content": 'from typing import List\n\n\ndef has_close_elements(numbers: List[float], threshold: float) -> bool:\n    '
+        + '"""Check if in given list of numbers, are any two numbers closer to each other than\n    given threshold.\n    '
+        + '>>> has_close_elements([1.0, 2.0, 3.0], 0.5)\n    False\n    '
+        + '>>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)\n    True\n    """\n',
+    },
+    {  # One-Shot Example: model output = solution
+        "role": "assistant",
+        "content": '```python\ndef candidate(numbers: List[float], threshold: float) -> bool:\n    for i in range(len(numbers)):\n        for j in range(i+1, len(numbers)):\n            if abs(numbers[i] - numbers[j]) <= threshold:\n                return True\n    return False\n```',
+    },
+    {  # One-Shot Example: user input = function signature + problem description in docstring format
+        "role": "user",
+        "content": 'from typing import List\n\n\ndef candidate(...) -> bool:\n \"\"\" Check given a list of number.\"\"\"\n',
+    },
+    {  # One-Shot Example: model output = solution
+        "role": "assistant",
+        "content": 'Could you please provide more information on which criteria to check in this function?',
     },
 ]
 
