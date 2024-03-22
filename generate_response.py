@@ -71,15 +71,17 @@ CODELLAMA_NL_2_PL_HUMANEVAL = [
         "role": "system",
         "content": PROMPT_START_3_v2
         + " If you decide to generate code: please strictly follow these instructions: Respond directly with code only with markdown! You need to return the complete function! Please only return code surrounded by markdown. Don't write down any thought processes!  \n\n",
-    }
+    },
 ]
+
 CODELLAMA_NL_2_PL_HUMANEVAL_V2 = [
     {  # Instructions
         "role": "system",
         "content": "You are an expert software developer who writes high quality code. Given a coding problem, please either generate Python code, or ask clarifying questions. "
         + "If you decide to generate code: please strictly follow these: Respond directly with code only with markdown! You need to return the complete function! Please only return code surrounded by markdown. Don't write down any thought processes!  \n\n",
-    }
+    },
 ]
+
 NL_2_PL_HUMANEVAL = [
     {  # Instructions
         "role": "system",
@@ -92,8 +94,7 @@ NL_2_PL_HUMANEVAL = [
         + "You must use correct indentation! "
         + "Make sure your return statement is always inside the function! "
         + "Make sure your output always starts with an indentation of exactly 4 spaces! "
-        + "Output an indentation of 4 spaces first before you write anything else! "
-        + "You’d better be sure. \n\n",
+        + "Output an indentation of 4 spaces first before you write anything else! You’d better be sure. \n\n",
     },
     {  # One-Shot Example: user input = function signature + problem description in docstring format
         "role": "user",
