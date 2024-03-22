@@ -70,7 +70,7 @@ CODELLAMA_NL_2_PL_HUMANEVAL = [
     {  # Instructions
         "role": "system",
         "content": PROMPT_START_3_v2
-        + " Note that if you decide to generate code, please respond directly with code only with markdown! You need to return the complete function! Please only return code surrounded by markdown. Don't write down any thought processes!  \n\n",
+        + " Note that if you decide to generate code, please respond directly with code only with markdown! You need to return the complete function! Please only return code surrounded by markdown! Don't write down any thought processes!  \n\n",
     },
     {  # One-Shot Example: user input = function signature + problem description in docstring format
         "role": "user",
