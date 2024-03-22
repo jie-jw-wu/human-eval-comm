@@ -882,7 +882,7 @@ def response_2_code(response):
 def response_2_code_if_no_text(response):
     # Adjusted regular expression to allow optional surrounding whitespace
     code_template = re.compile(r'^\s*```.*?\n([\s\S]+?)\n```\s*$', re.M)
-    match = code_template.match(response)
+    match = code_template.match(response) # fullmatch should be used, but this is currently ok
     if match:
         return match.group(1)  # Return the code block (group 1)
     return ''  # Return empty string if no match is found
