@@ -401,7 +401,7 @@ def get_completion_codellama_instruct_nl_to_pl(
     prompt, user_input, model, tokenizer, args
 ):  # reference: https://github.com/facebookresearch/codellama/blob/main/llama/generation.py
     # select the correct in-context learning prompt based on the task
-    messages = prompt + [{"role": "user", "content": user_input}]
+    messages = [{"role": "user", "content": user_input}] if prompt == '' else prompt + [{"role": "user", "content": user_input}]
     
     formatted_prompt = ""
     for msg in messages:
@@ -411,8 +411,8 @@ def get_completion_codellama_instruct_nl_to_pl(
         elif msg["role"] == "assistant":
             formatted_prompt += " " + msg["content"].strip() + " " + tokenizer.eos_token
         # system prompt doesn't work well for Code Llama-Instructs
-        # elif msg["role"] == "system":
-        #     formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
+        elif msg["role"] == "system":
+            formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
     # Debug
     print('formatted_prompt:',formatted_prompt)
     
@@ -772,7 +772,8 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         response_list = []
         for i in range(topn):
-            response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
+            #response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
+            response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
         return response_list
     elif model == 'Okanagan':
         # this code assume topn=1
