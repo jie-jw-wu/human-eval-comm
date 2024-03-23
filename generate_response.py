@@ -414,12 +414,12 @@ def get_completion_codellama_instruct_nl_to_pl(
         elif msg["role"] == "system":
             formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
     # Debug
-    print('formatted_prompt:',formatted_prompt)
+    print('\nformatted_prompt:\n',formatted_prompt)
     
     output = generate_text(model, tokenizer, formatted_prompt, args)
     completion = output[0]["generated_text"]
 
-    print(completion)
+    print('\ncompletion:\n',completion)
     return completion
 
     # post-processing
