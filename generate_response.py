@@ -419,34 +419,36 @@ def get_completion_codellama_instruct_nl_to_pl(
     output = generate_text(model, tokenizer, formatted_prompt, args)
     completion = output[0]["generated_text"]
 
+    print(completion)
+    return completion
+
     # post-processing
-    print('completion:',completion)
-    completion_lines = completion.split("\n")
-    processed_completion = ""
-    for line in completion_lines:
-        if line.startswith("    "):
-            processed_completion += line + "\n"
+    #completion_lines = completion.split("\n")
+    #processed_completion = ""
+    #for line in completion_lines:
+    #    if line.startswith("    "):
+    #        processed_completion += line + "\n"
 
     # remove extra docstring
     # find all occurrences of three consecutive double quotes
-    res = [i for i in range(len(processed_completion)) if processed_completion.startswith('"""', i)]
+    #res = [i for i in range(len(processed_completion)) if processed_completion.startswith('"""', i)]
     # if res is empty, check for both single quotes
-    if not res:
-        res = [i for i in range(len(processed_completion)) if processed_completion.startswith("'''", i)]
+    #if not res:
+    #    res = [i for i in range(len(processed_completion)) if processed_completion.startswith("'''", i)]
     # if found an extra docstring, remove it
-    if res:
+    #if res:
         # get end position of the extra docstring, remove everything before it
-        try:
-            end_position = res[1] + 3
-            processed_completion = processed_completion[end_position:]
-            if processed_completion.startswith("\n"):
-                processed_completion = processed_completion[1:]
-        except IndexError:
-            pass
+    #    try:
+    #        end_position = res[1] + 3
+    #        processed_completion = processed_completion[end_position:]
+    #        if processed_completion.startswith("\n"):
+    #            processed_completion = processed_completion[1:]
+    #    except IndexError:
+    #        pass
 
     # Debug
-    print('processed_completion:',processed_completion)
-    return processed_completion
+    #print(processed_completion)
+    #return processed_completion
 
 
 def get_completion_codellama_instruct_pl_to_nl(prompt, user_input, model, tokenizer, args):
