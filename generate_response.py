@@ -400,19 +400,25 @@ def get_completion_starchat_pl_to_nl(prompt, user_input, model, tokenizer, args)
 def get_completion_codellama_instruct_nl_to_pl(
     prompt, user_input, model, tokenizer, args
 ):  # reference: https://github.com/facebookresearch/codellama/blob/main/llama/generation.py
-    # select the correct in-context learning prompt based on the task
-    messages = [{"role": "user", "content": user_input}] if prompt == '' else prompt + [{"role": "user", "content": user_input}]
     
     formatted_prompt = ""
-    for msg in messages:
-        if msg["role"] == "user":
-            content = msg["content"].strip()
-            formatted_prompt += tokenizer.bos_token + f"{B_INST_CLLAMA} " + content + f" {E_INST_CLLAMA} "
-        elif msg["role"] == "assistant":
-            formatted_prompt += " " + msg["content"].strip() + " " + tokenizer.eos_token
-        # system prompt doesn't work well for Code Llama-Instructs
-        elif msg["role"] == "system":
-            formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
+    # the template is being used
+    if prompt == '':
+        formatted_prompt = user_input 
+    else:
+    # select the correct in-context learning prompt based on the task
+        messages = prompt + [{"role": "user", "content": user_input}]
+    
+        for msg in messages:
+            if msg["role"] == "user":
+                content = msg["content"].strip()
+                formatted_prompt += tokenizer.bos_token + f"{B_INST_CLLAMA} " + content + f" {E_INST_CLLAMA} "
+            elif msg["role"] == "assistant":
+                formatted_prompt += " " + msg["content"].strip() + " " + tokenizer.eos_token
+            # system prompt doesn't work well for Code Llama-Instructs
+            elif msg["role"] == "system":
+                formatted_prompt += f"{B_SYS_CLLAMA}" + msg["content"] + f"{E_SYS_CLLAMA}"
+
     # Debug
     print('\nformatted_prompt:\n',formatted_prompt)
     
