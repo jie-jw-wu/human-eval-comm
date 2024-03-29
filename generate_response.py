@@ -999,6 +999,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                         'response': response_list[i],
                         'answer': ans_list[i] if i < len(ans_list) else '',
                         'question_quality': qq_list[i] if i < len(qq_list) else '0',
+                        'code': code_list[i] if i < len(code_list) else '',
                     }
                     print('response %s is writting into file' % (i), flush=True)
                     json_str = json.dumps(res)
