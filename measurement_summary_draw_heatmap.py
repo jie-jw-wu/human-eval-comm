@@ -236,24 +236,24 @@ def store_data_in_xlsx(correlation, file_suffix):
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     data = [[]]
-    data[0].append(np.mean(correlation['test pass rate mean']))
-    data[0].append(np.mean(correlation['test pass rate variance']))
-    data[0].append(np.mean(correlation['test pass rate max diff']))
-    data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1))
+    data[0].append(np.mean(correlation['test pass rate mean'])) #A
+    data[0].append(np.mean(correlation['test pass rate variance'])) #B
+    data[0].append(np.mean(correlation['test pass rate max diff'])) #C
+    data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1)) #D
 
-    data[0].append(np.mean(correlation['ask question rate mean']))
-    data[0].append(np.mean(correlation['ask question rate variance']))
-    data[0].append(np.mean(correlation['ask question rate max diff']))
-    data[0].append(ratio_of_worst(correlation['ask question rate max diff'], 1))
+    data[0].append(np.mean(correlation['ask question rate mean'])) #E
+    data[0].append(np.mean(correlation['ask question rate variance'])) #F
+    data[0].append(np.mean(correlation['ask question rate max diff'])) #G
+    data[0].append(ratio_of_worst(correlation['ask question rate max diff'], 1)) #H
 
-    data[0].append(np.mean(correlation['question quality mean']))
-    data[0].append(np.mean(correlation['question quality variance']))
-    data[0].append(np.mean(correlation['question quality max diff']))
-    data[0].append(ratio_of_worst(correlation['question quality max diff'], 1))
+    data[0].append(np.mean(correlation['question quality mean'])) #I
+    data[0].append(np.mean(correlation['question quality variance'])) #J
+    data[0].append(np.mean(correlation['question quality max diff'])) #K
+    data[0].append(ratio_of_worst(correlation['question quality max diff'], 1)) #L
 
     passk = np.mean(correlation['pass@k'])
     print("pass@k is", passk)
-    data[0].append(passk)
+    data[0].append(passk) #M
 
     for row in data:
         sheet.append(row)

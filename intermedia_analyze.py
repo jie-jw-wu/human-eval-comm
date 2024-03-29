@@ -169,8 +169,8 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             prompt_type = content['prompt_type']
             index = content['index']
             response = content['response']
-            original_prompt = content['original_prompt']
-            modified_prompt = content['modified_prompt']
+            original_prompt = content.get('original_prompt', '')
+            modified_prompt = content.get('modified_prompt', '')
             code = content['code']
             question_quality = content['question_quality']
             
