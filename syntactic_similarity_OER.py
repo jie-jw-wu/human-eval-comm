@@ -17,6 +17,12 @@ def get_ask_question_rate(input_string):
     else:
         return 0
 
+def get_ask_question_rate_with_qq(question_quality):
+    if question_quality <= 1:
+        return 0
+    else:
+        return 1
+
 def analyze_among_top0_5(experiment, model, temperature):
     save_dir = './result_data/%s_%s_%s/' % (experiment, model, temperature)
     if not os.path.exists(save_dir):
@@ -142,7 +148,7 @@ def analyze_among_top0_5(experiment, model, temperature):
     with open(save_dir+'intermediate_result_top0_5.json', 'w') as f:
         f.write(json_str)
 
-def analyze_among_among5(experiment, model, temperature, topn):
+def analyze_among_among5(experiment, model, temperature, topn, log_phase):
     save_dir = './result_data/%s_%s_%s/' % (experiment, model, temperature)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -223,7 +229,7 @@ def analyze_among_among5(experiment, model, temperature, topn):
         return tmp_test_case_pass_rate
 
     problem_dic = {}
-    with open('log/record/%s_model_%s_topn_%s_temperature_%s.0.log_%s' % (experiment, model, topn, temperature, 0), 'r') as f:
+    with open('log/record/%s_model_%s_topn_%s_temperature_%s.0.log_%s' % (experiment, model, topn, temperature, log_phase), 'r') as f:
         for line in f.readlines():
             content = json.loads(line)
             name = content['name']
@@ -240,11 +246,12 @@ def analyze_among_among5(experiment, model, temperature, topn):
             ask_question_rate = []
             question_quality = []
             for code_res in problem_dic[name]['code_candidates']:
+                qq = int(code_res['question_quality'])
                 code_candidates.append(code_res['code'].split())
                 code_reference.append(code_res['code'])
                 case_status_list.append(code_res['case_status'])
-                ask_question_rate.append(get_ask_question_rate(code_res['code'])) 
-                question_quality.append(int(code_res['question_quality']))
+                ask_question_rate.append(get_ask_question_rate_with_qq(qq)) 
+                question_quality.append(qq)
             test_case_pass_rate = test_case_pass_rate_among5(problem_dic[name]['code_candidates'])
             syntatic_similarity_res = syntatic_similarity(problem_dic, name, code_candidates, case_status_list)
             problem_dic[name]['syntatic_similarity'] = syntatic_similarity_res
@@ -309,9 +316,19 @@ if __name__ == "__main__":
         help="Top N candidates",
         default=5,
     )
+
+    parser.add_argument(
+        "-s", # legacy
+        "--log_phase_input",
+        choices=[0,1,2,3],
+        type=int,
+        help="If not 0, this split the process into phase 1 (1st round LLM response),2 (2nd, answers to questions),3 (3rd, final code generation given chat history). This is name of input log file",
+        default=0
+    )
+
     args = parser.parse_args()
     if args.option == 'R1':
-        analyze_among_among5(args.experiment, args.model, args.temperature, args.topn)
+        analyze_among_among5(args.experiment, args.model, args.temperature, args.topn, args.log_phase_input)
     elif args.option == 'R2':
         analyze_among_top0_5(args.experiment, args.model, args.temperature)
 
