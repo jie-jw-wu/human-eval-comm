@@ -768,15 +768,14 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     return response_list[0]
     
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = ''):
+    response_list = []
     if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
-        response_list = []
         for i in range(topn):
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
         return response_list        
     elif args.model.startswith('CodeLlama'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
-        response_list = []
         for i in range(topn):
             if 'two-shot' in args.model:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
@@ -786,11 +785,10 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
     elif model == 'Okanagan':
         # this code assume topn=1
         # set the real model used by Okanagan
-        messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
-        coder_response = generate_response_str(OK_MODEL, messages, temperature, args, open_source_model, tokenizer)
+        coder_response = generate_response_str(OK_MODEL, msgs, temperature, args, open_source_model, tokenizer)
 
         # Reflection
-        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input)}]
+        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input_without_prompt)}]
         # messages.append({"role": "assistant","content": coder_response})
         # messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
         communicator_response = generate_response_str(OK_MODEL, reflect_messages, temperature, args, open_source_model, tokenizer)
@@ -810,7 +808,6 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             temperature=temperature,
             messages=msgs
         )
-        response_list = []
         for i in completion['choices']:
             response_list.append(i['message']['content'])
         return response_list
