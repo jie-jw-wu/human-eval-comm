@@ -1169,7 +1169,7 @@ if __name__ == "__main__":
     tokenizer = None
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print('device: ', device)
-    if args.model.startswith('CodeLlama') or args.model.startswith('starcoder'):
+    if (args.model.startswith('CodeLlama') or args.model.startswith('starcoder')) and args.log_phase_output != 2:
         # set huggingface cache directory
         HF_HOME = args.hf_dir
         offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
