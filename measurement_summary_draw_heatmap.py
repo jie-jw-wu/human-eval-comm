@@ -36,9 +36,12 @@ def ratio_of_worst(list, target):
     # print(dataset)
     # print(temperature)
     # print(count/len(list))
-    return (count/len(list))
+    if len(list) == 0:
+        return -1
+    else:
+        return (count/len(list))
 
-def semantic_syntactic_structural_similarity():
+def semantic_syntactic_structural_similarity(prompt_type):
     # get all measurement of semantic, syntactic, and structural similarity
     # where all the file_path could be modified directly with line 'with open(x) as f:'
 
@@ -72,6 +75,10 @@ def semantic_syntactic_structural_similarity():
         #     OER.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5'])
         #     OER_ow.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5_correct'])
         # else:
+        
+        #print('case=',case)
+        if prompt_type != '' and not case.endswith(prompt_type):
+            continue
         OER.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5'])
         OER_ow.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5_correct'])
         Levenshieten.append(intermediate_result[case]['syntatic_similarity']['Levenshtein_edit_distance'])
@@ -86,8 +93,8 @@ def semantic_syntactic_structural_similarity():
 
     return test_case_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality
 
-def get_boxplot(dataset):
-    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity()
+def get_boxplot(dataset, prompt_type):
+    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity(prompt_type)
     
     test_pass_rate_mean = [np.mean(i) for i in test_pass_rate]
     test_pass_rate_var = [np.var(i) for i in test_pass_rate]
@@ -108,10 +115,10 @@ def get_boxplot(dataset):
     create_boxplot(question_quality_var, "Box Plot of Question Quality", dataset, "Variance")
     create_boxplot(question_quality_max_diff, "Box Plot of Question Quality", dataset, "Max Diff")
 
-def get_correlation():
+def get_correlation(prompt_type):
     # store all the fine-grained measurement in the dic named correlation (for later draw the heatmap)
 
-    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity()
+    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity(prompt_type)
     correlation = {'problem': [],
                    'test pass rate mean': [],
                    'test pass rate variance': [],
@@ -259,135 +266,6 @@ def store_data_in_xlsx(correlation, file_suffix):
         sheet.append(row)
     workbook.save('./tables/result_'+file_suffix+'.xlsx')
 
-def draw_heatmap(correlation, save_dir):
-    correlation_rank = []
-    high_relavent = []
-    problem_features = ['description length', 'difficulty', 'time_limit', 'cf_rating']
-    for case in correlation_rank:
-        if (case[0] in problem_features or case[1] in problem_features) and case[2][1] < 0.05:
-            high_relavent.append(case)
-            # print('%s & %s\'s correlation: %s' % (list(correlation.keys())[i],
-            #                                       list(correlation.keys())[j],
-            #                                       stats.pearsonr(correlation[list(correlation.keys())[i]], correlation[list(correlation.keys())[j]])
-            #                                       )
-            #       )
-    correlation_list = []
-    # test pass rate
-    correlation_list.append(correlation['test pass rate mean'])
-    correlation_list.append(correlation['test pass rate variance'])
-    correlation_list.append(correlation['test pass rate max diff'])
-    # output equivalence rate
-    correlation_list.append(correlation['OER'])
-    correlation_list.append(correlation['OER_ow'])
-    # LCS
-    correlation_list.append(correlation['LCS mean'])
-    # correlation_list.append(correlation['LCS variance'])
-    correlation_list.append(correlation['LCS min'])
-    # Levenshieten
-    correlation_list.append(correlation['LED mean'])
-    # correlation_list.append(correlation['Levenshieten variance'])
-    correlation_list.append(correlation['LED max'])
-    # United_Diff
-    correlation_list.append(correlation['United_Diff mean'])
-    # correlation_list.append(correlation['United_Diff variance'])
-    correlation_list.append(correlation['United_Diff min'])
-    # Tree_Diff
-    correlation_list.append(correlation['Tree_Diff mean'])
-    # correlation_list.append(correlation['Tree_Diff variance'])
-    correlation_list.append(correlation['Tree_Diff min'])
-    # problem features
-    correlation_list.append(correlation['description length'])
-    if dataset == 'code_contest':
-        correlation_list.append(correlation['difficulty'])
-        correlation_list.append(correlation['time_limit'])
-        correlation_list.append(correlation['cf_rating'])
-
-    if dataset == 'code_contest':
-        column_names = ['TPR mean value',
-                        'TPR mean variance',
-                        'TPR mean max diff',
-
-                        'OER mean',
-                        'OER (no ex.) mean',
-
-                        'LCS mean',
-                        'LCS worst',
-
-                        'LED mean',
-                        'LED worst',
-
-                        'United_Diff mean',
-                        'United_Diff worst',
-
-                        'Tree_Diff mean',
-                        'Tree_Diff worst',
-
-                        'description length',
-                        'difficulty',
-                        'time_limit',
-                        'cf_rating'
-                        ]
-    else:
-        column_names = ['TPR mean value',
-                        'TPR mean variance',
-                        'TPR mean max diff',
-
-                        'OER mean',
-                        'OER_ow mean',
-
-                        'LCS mean',
-                        'LCS worst',
-
-                        'LED mean',
-                        'LED worst',
-
-                        'United_Diff mean',
-                        'United_Diff worst',
-
-                        'Tree_Diff mean',
-                        'Tree_Diff worst',
-
-                        'description length'
-                        ]
-
-    p_values = []
-    correlation_values = []
-    empty_values = []
-    for i in range(len(column_names)):
-        p_tmp = []
-        c_tmp = []
-        e_tmp = []
-        for j in range(len(column_names)):
-            p_tmp.append(stats.pearsonr(correlation_list[i], correlation_list[j])[1])
-            c_tmp.append(stats.pearsonr(correlation_list[i], correlation_list[j])[0])
-            e_tmp.append(0)
-        p_values.append(p_tmp)
-        correlation_values.append(c_tmp)
-        empty_values.append(e_tmp)
-
-    for i in range(len(column_names)):
-        for j in range(len(column_names)):
-            if p_values[i][j] > 0.05:
-                empty_values[i][j] = '-'
-            else:
-                empty_values[i][j] = round(correlation_values[i][j], 2)
-
-
-    fig, ax = plt.subplots(figsize=(20, 20))
-    fig.subplots_adjust(top=0.98, bottom=0.18, left=0.18)
-    p1 = sns.heatmap(correlation_values, annot=empty_values, cmap='Greys',
-                     xticklabels=column_names, yticklabels=column_names, annot_kws={"fontsize": 18}, fmt='')
-
-    cbar = p1.collections[0].colorbar
-    # Set the font size of the color bar labels
-    cbar.ax.tick_params(labelsize=20)
-    #
-    p1.set_xticklabels(p1.get_xticklabels(), fontsize=25)
-    p1.tick_params(axis='y', labelsize=25)
-
-    # plt.show()
-    plt.savefig(save_dir + 'heatmap_metric.pdf')
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -426,6 +304,14 @@ if __name__ == "__main__":
         help="Set the temperature",
         required=True,
     )
+    parser.add_argument(
+        "-pt",
+        "--prompt_type",
+        type=str,
+        choices=['', 'prompt1a', 'prompt1c', 'prompt1p', 'prompt2ac','prompt2ap','prompt2cp','prompt3acp'],
+        help="output results for a certain prompt type if not empty",
+        default='',
+    )
     args = parser.parse_args()
 
     for i in range(1):
@@ -450,6 +336,7 @@ if __name__ == "__main__":
         temperature = args.temperature
         model = args.model
         topn = args.topn
+        prompt_type = args.prompt_type
 
         if dataset == 'code_contest':
             # with open('./tmp2/code_contests_test.json', 'r') as f:
@@ -469,10 +356,8 @@ if __name__ == "__main__":
                         description = f.read()
                     problem_list.append({'name': dirname, 'description': description})
 
-
-        correlation = get_correlation()
-        output_file = '%s_dataset_%s_model_%s_topn_%s_temperature_%s' % \
-                   (experiment, dataset, model, topn, temperature)
+        correlation = get_correlation(prompt_type)
+        output_file = '%s_dataset_%s_model_%s_topn_%s_temperature_%s%s' % \
+                   (experiment, dataset, model, topn, temperature, prompt_type)
         store_data_in_xlsx(correlation, output_file)
-        get_boxplot(dataset)
-        #draw_heatmap(correlation, './')
+        #get_boxplot(dataset, prompt_type)
