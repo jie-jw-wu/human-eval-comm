@@ -869,7 +869,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
             response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
-            code = response_2_code_if_no_text(response_2nd[0])
+            code = response_2_code(response_2nd[0])
             
             print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
             print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
@@ -897,12 +897,12 @@ def string_to_int(input_string):
     except ValueError:
         return None  # Return None if the string cannot be converted to an integer
 
-# TODO(jwu): bug this code return last triple code snippet. 
+# Return the first triple code snippet. 
 def response_2_code(response):
     code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
     code = code_template.findall(response)
     if len(code) > 0:
-        return code[-1]
+        return code[0] # code[-1] is the last triple code snippet
     else:
         return ''
 
