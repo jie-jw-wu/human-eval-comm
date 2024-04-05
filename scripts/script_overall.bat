@@ -1,2 +1,4 @@
-./script_randRemove_30_temp_0_topn_5.bat
-./script_randRemoveGPT4_50_temp_1_topn_5.bat
+set PYTHONIOENCODING=utf-8
+set PYTHONLEGACYWINDOWSSTDIO=utf-8
+rem ./scripts/script_manualRemove_model_gpt-3.5-turbo-0125_temp_1_topn_1.bat 165
+./scripts/script_manualRemove_model_okanagan_temp_1_topn_1.bat 165

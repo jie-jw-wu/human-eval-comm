@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import math
 import time
 
@@ -768,15 +769,14 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     return response_list[0]
     
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = ''):
+    response_list = []
     if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
-        response_list = []
         for i in range(topn):
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
         return response_list        
     elif args.model.startswith('CodeLlama'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
-        response_list = []
         for i in range(topn):
             if 'two-shot' in args.model:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
@@ -786,11 +786,10 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
     elif model == 'Okanagan':
         # this code assume topn=1
         # set the real model used by Okanagan
-        messages.append({"role": "user","content": OK_PROMPT_CODEGEN + user_input})
-        coder_response = generate_response_str(OK_MODEL, messages, temperature, args, open_source_model, tokenizer)
+        coder_response = generate_response_str(OK_MODEL, msgs, temperature, args, open_source_model, tokenizer)
 
         # Reflection
-        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input)}]
+        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input_without_prompt)}]
         # messages.append({"role": "assistant","content": coder_response})
         # messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
         communicator_response = generate_response_str(OK_MODEL, reflect_messages, temperature, args, open_source_model, tokenizer)
@@ -810,7 +809,6 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             temperature=temperature,
             messages=msgs
         )
-        response_list = []
         for i in completion['choices']:
             response_list.append(i['message']['content'])
         return response_list
@@ -871,7 +869,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
             msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
             response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
-            code = response_2_code_if_no_text(response_2nd[0])
+            code = response_2_code(response_2nd[0])
             
             print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
             print('!!!!!!!!!!!!! 3rd CodeLLM input messages:\n', msgs_i, file=print_file)
@@ -899,12 +897,12 @@ def string_to_int(input_string):
     except ValueError:
         return None  # Return None if the string cannot be converted to an integer
 
-# TODO(jwu): bug this code return last triple code snippet. 
+# Return the first triple code snippet. 
 def response_2_code(response):
     code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
     code = code_template.findall(response)
     if len(code) > 0:
-        return code[-1]
+        return code[0] # code[-1] is the last triple code snippet
     else:
         return ''
 
@@ -1172,7 +1170,7 @@ if __name__ == "__main__":
     tokenizer = None
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print('device: ', device)
-    if args.model.startswith('CodeLlama') or args.model.startswith('starcoder'):
+    if (args.model.startswith('CodeLlama') or args.model.startswith('starcoder')) and args.log_phase_output != 2:
         # set huggingface cache directory
         HF_HOME = args.hf_dir
         offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
