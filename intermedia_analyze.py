@@ -223,6 +223,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
             question_quality_result = '0'
             test_case_solved = ['','']
             if code == '':
+                # this is deprecated now ('')
                 if original_prompt_file != '':
                 # response is asking questions. communication success. use original prompt results in this case
                 # TODO(jwu): we should continue to provide answers to the quetions, and ask to generate code again. Then compute test pass rate.
@@ -231,6 +232,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
                 test_case_solved = solution_evaluation_HumanEval(code, test_set, demo_file, call_demo_file, problem['entry_point'], time_limit)
             res = {
                 'code': code,
+                prompt_type + '_ask_q': True if code == '' else False, 
                 'index': index,
                 'passed_case': test_case_solved[0],
                 'case_status': test_case_solved[1],

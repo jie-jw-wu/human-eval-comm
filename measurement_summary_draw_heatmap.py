@@ -85,8 +85,10 @@ def semantic_syntactic_structural_similarity(prompt_type):
         test_case_pass_rate.append(intermediate_result[case]['test_case_pass_rate'])
         LCS.append(intermediate_result[case]['LCS'])
         ask_question_rate.append(intermediate_result[case]['ask_question_rate'])
-        question_quality.append(intermediate_result[case]['question_quality'])
-
+        #print('intermediate_result[case][question_quality]', intermediate_result[case]['question_quality'])
+        #question_quality.append(intermediate_result[case]['question_quality'])
+        question_quality.append([1] if len(intermediate_result[case]['question_quality'])==1 and intermediate_result[case]['question_quality'][-1] == 3 else [0])
+        
     # get structural similarity
     United_Diff = []
     Tree_Diff = []

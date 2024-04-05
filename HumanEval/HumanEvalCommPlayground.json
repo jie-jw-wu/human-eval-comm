@@ -1,10 +1,40 @@
 {
-    "key": "HumanEval/7_prompt2ac",
-    "name": "HumanEval/7",
-    "prompt_type": "prompt2ac",
-    "index": 0,
-    "response": "  Here is the Python 3 code for the `candidate` function:\n```\nfrom typing import List\n\ndef candidate(strings: List[str], x: str) -> List[str]:\n    return [s for s in strings if x in s]\n```\nThis code uses a list comprehension to filter the input list `strings` based on whether the string `x` is a substring of any of the elements in the list. The resulting list is returned.\n\nNote that the function signature is `candidate(strings: List[str], x: str) -> List[str]`, which means that the function takes two arguments: a list of strings `strings` and a string `x`, and returns a list of strings. The `typing` module is used to specify the types of the function arguments and return value.",
-    "answer": "Empty answers",
-    "question_quality": "1",
-    "code": ""
+    "name": "HumanEval/1_prompt1p",
+    "response_candidates": [
+        "```python\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    count = 0\n    start = 0\n    result = []\n    \n    for i, char in enumerate(paren_string):\n        if char == '(':\n            count += 1\n        elif char == ')':\n            count -= 1\n\n        if count == 0:\n            result.append(paren_string[start:i+1])\n            start = i+1\n    \n    return result\n```"
+    ],
+    "code_candidates": [
+        {
+            "code": "def separate_paren_groups(paren_string: str) -> List[str]:\n    count = 0\n    start = 0\n    result = []\n    \n    for i, char in enumerate(paren_string):\n        if char == '(':\n            count += 1\n        elif char == ')':\n            count -= 1\n\n        if count == 0:\n            result.append(paren_string[start:i+1])\n            start = i+1\n    \n    return result",
+            "index": 0,
+            "passed_case": [],
+            "case_status": [
+                "execution error: 1",
+                "execution error: 1",
+                "execution error: 1",
+                "execution error: 1"
+            ],
+            "question_quality": "0"
+        }
+    ]
+}
+{
+    "name": "HumanEval/1_prompt1p",
+    "response_candidates": [
+        "```python\ndef separate_paren_groups(paren_string: str) -> List[str]:\n    count = 0\n    start = 0\n    result = []\n    \n    for i, char in enumerate(paren_string):\n        if char == '(':\n            count += 1\n        elif char == ')':\n            count -= 1\n\n        if count == 0:\n            result.append(paren_string[start:i+1])\n            start = i+1\n    \n    return result\n```"
+    ],
+    "code_candidates": [
+        {
+            "code": "def separate_paren_groups(paren_string: str) -> List[str]:\n    count = 0\n    start = 0\n    result = []\n    \n    for i, char in enumerate(paren_string):\n        if char == '(':\n            count += 1\n        elif char == ')':\n            count -= 1\n\n        if count == 0:\n            result.append(paren_string[start:i+1])\n            start = i+1\n    \n    return result",
+            "index": 0,
+            "passed_case": [],
+            "case_status": [
+                "execution error: 1",
+                "execution error: 1",
+                "execution error: 1",
+                "execution error: 1"
+            ],
+            "question_quality": "0"
+        }
+    ]
 }
