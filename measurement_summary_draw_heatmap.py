@@ -345,7 +345,7 @@ if __name__ == "__main__":
             with open('./dataset/code_contests_test.json', 'r') as f:
                 problem_list = json.load(f)
         elif dataset == 'HumanEval' or dataset == 'HumanEvalComm':
-            with open('./HumanEval/HumanEval.jsonl', 'r') as f:
+            with open('./Benchmark/HumanEval.jsonl', 'r') as f:
                 for line in f.readlines():
                     problem_list.append(json.loads(line))
         elif dataset == 'APPS':
