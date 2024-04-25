@@ -1172,7 +1172,7 @@ if __name__ == "__main__":
     print('device: ', device)
     if ('Llama' in args.model 
         or args.model.startswith('starcoder')
-        or args.model.startswith('deepseek-coder')
+        or args.model.startswith('deepseek')
         or args.model.startswith('CodeQwen')
         ) and args.log_phase_output != 2:
         # set huggingface cache directory
