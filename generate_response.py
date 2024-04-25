@@ -1170,10 +1170,14 @@ if __name__ == "__main__":
     tokenizer = None
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print('device: ', device)
-    if (args.model.startswith('CodeLlama') or args.model.startswith('starcoder')) and args.log_phase_output != 2:
+    if ('Llama' in args.model 
+        or args.model.startswith('starcoder')
+        or args.model.startswith('deepseek-coder')
+        or args.model.startswith('CodeQwen')
+        ) and args.log_phase_output != 2:
         # set huggingface cache directory
         HF_HOME = args.hf_dir
-        offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
+        offload_folder = "offload_folder"
         print("Loading model...")
         # if specified, use int8 quantization
         if args.do_save_model:
