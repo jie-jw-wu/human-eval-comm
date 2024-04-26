@@ -1,6 +1,6 @@
 #!/bin/bash
  
-#SBATCH --job-name=jw_phase1_$1            
+#SBATCH --job-name=jw"$1"            
 #SBATCH --account=st-fhendija-1-gpu    
 #SBATCH --nodes=1                  
 #SBATCH --ntasks=3
