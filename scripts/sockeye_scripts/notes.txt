@@ -90,3 +90,10 @@ check disk quota:
 du -h --max-depth=1 /home/jwu153
 
 an issue: i moved miniconda3 from /home/jwu153 to /arc/project/.../jwu/miniconda3, but the path is messed up completely. Fortunately, I was able to 'module load miniconda3' and do the rest jobs about conda. So I'll leave it as is now.
+
+4/25
+test_gpu_phase1.sh deepseek-coder-6.7b-instruct deepseek-ai/deepseek-coder-6.7b-instruct
+test_gpu_phase1.sh deepseek-llm-7b-chat deepseek-ai/deepseek-llm-7b-chat
+test_gpu_phase1.sh CodeQwen1.5-7B-Chat Qwen/CodeQwen1.5-7B-Chat
+test_gpu_phase1.sh Meta-Llama-3-8B-Instruct meta-llama/Meta-Llama-3-8B-Instruct
+test_gpu_phase1.sh deepseek-coder-33b-instruct deepseek-ai/deepseek-coder-33b-instruct
