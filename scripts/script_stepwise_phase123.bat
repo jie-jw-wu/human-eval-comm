@@ -1,17 +1,24 @@
-@echo off
+REM @echo off
 
-REM ./scripts/script_phase2.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct" 0 165
+REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct CodeLlama-13b-Instruct-hf" 1 0 165
+REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
+
 
 REM Check if no arguments are passed
-if "%1"=="" (
+if %1=="" (
     echo Usage: %~nx0 "<string_list>"
     exit /b 1
 )
 
 REM Split the string list into an array
 setlocal enabledelayedexpansion
-set "string_list=%1"
-for %%i in (%string_list%) do (
+REM %1 is: "cars plans others", %~1" is: cars plans others", (%~1) is: (cars plans others)
+
+set "string_of_strings=%~1"
+set "string_of_strings=!string_of_strings:"=!"
+
+REM Split the string list into an array
+for %%i in (!string_of_strings!) do (
     if "%2"=="0" (
         REM only for Okanagan, GPT 3.5 and GPT 4
         python generate_response.py -d HumanEvalComm -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 0 --log_phase_output 1
