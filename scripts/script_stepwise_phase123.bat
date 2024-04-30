@@ -1,13 +1,22 @@
 REM @echo off
 
 REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct CodeLlama-13b-Instruct-hf" 1 0 165
-REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
-
+REM run phase 1: ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
+REM run phase 2: ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
+REM run phase 3: 
 
 REM Check if no arguments are passed
 if %1=="" (
     echo Usage: %~nx0 "<string_list>"
     exit /b 1
+)
+REM Check if %5 is empty
+if "%~5"=="" (
+    REM Set default value for %5
+    set "DATASET=HumanEvalComm"
+) else (
+    REM %5 has a value
+    set "DATASET=%~5"
 )
 
 REM Split the string list into an array
@@ -21,7 +30,7 @@ REM Split the string list into an array
 for %%i in (!string_of_strings!) do (
     if "%2"=="0" (
         REM only for Okanagan, GPT 3.5 and GPT 4
-        python generate_response.py -d HumanEvalComm -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 0 --log_phase_output 1
+        python generate_response.py -d %DATASET% -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 0 --log_phase_output 1
     ) else if "%2"=="1" (
         python generate_response.py -d HumanEvalComm -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 1 --log_phase_output 2
     ) else if "%2"=="2" (
