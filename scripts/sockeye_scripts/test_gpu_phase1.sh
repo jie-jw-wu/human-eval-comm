@@ -21,5 +21,5 @@ source ~/.bashrc
 conda activate /arc/project/st-fhendija-1/jwu/jw-gpu
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 echo "Full JOB:"
-python generate_response.py -d HumanEvalComm -m $1 -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/$2 -maxp -1 --seq_length 512 --log_phase_input 0 --log_phase_output 1 --use_fp16
+python generate_response.py -d $3 -m $1 -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/$2 -maxp -1 --seq_length 512 --log_phase_input 0 --log_phase_output 1 --use_fp16
 conda deactivate

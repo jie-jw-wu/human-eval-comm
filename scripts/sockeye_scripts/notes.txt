@@ -115,3 +115,13 @@ python generate_response.py -d HumanEvalComm -m deepseek-llm-7b-chat -n 1 -t 1 -
 python generate_response.py -d HumanEvalComm -m CodeQwen1.5-7B-Chat -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/Qwen/CodeQwen1.5-7B-Chat -maxp -1 --seq_length 512 --log_phase_input 0 --log_phase_output 1 --use_fp16
 
 python generate_response.py -d HumanEvalComm -m Meta-Llama-3-8B-Instruct -n 1 -t 1 -s 0 -o manualRemove --hf_dir /scratch/st-fhendija-1/jwu/cache --model_name_or_path /arc/project/st-fhendija-1/jwu/meta-llama/Meta-Llama-3-8B-Instruct -maxp -1 --seq_length 512 --log_phase_input 0 --log_phase_output 1 --use_fp16
+
+
+4/30 
+run job for HumanEval, without removing descriptions. 
+PHASE1:
+sbatch scripts/sockeye_scripts/test_gpu_phase1.sh deepseek-coder-6.7b-instruct deepseek-ai/deepseek-coder-6.7b-instruct HumanEval
+sbatch scripts/sockeye_scripts/test_gpu_phase1.sh deepseek-llm-7b-chat deepseek-ai/deepseek-llm-7b-chat HumanEval
+sbatch scripts/sockeye_scripts/test_gpu_phase1.sh CodeQwen1.5-7B-Chat Qwen/CodeQwen1.5-7B-Chat HumanEval
+sbatch scripts/sockeye_scripts/test_gpu_phase1.sh CodeLlama-13b-hf codellama/CodeLlama-13b-hf HumanEval
+sbatch scripts/sockeye_scripts/test_gpu_phase1.sh CodeLlama-7b-hf codellama/CodeLlama-7b-hf HumanEval
