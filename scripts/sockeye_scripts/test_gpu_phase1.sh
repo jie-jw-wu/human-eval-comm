@@ -3,11 +3,11 @@
 #SBATCH --job-name=jw_phase1          
 #SBATCH --account=st-fhendija-1-gpu    
 #SBATCH --nodes=1                  
-#SBATCH --ntasks=3
+#SBATCH --ntasks=2
 #SBATCH --cpus-per-task=8                          
 #SBATCH --mem=44G                  
-#SBATCH --time=35:00:00             
-#SBATCH --gpus-per-node=4
+#SBATCH --time=10:00:00             
+#SBATCH --gpus-per-node=3
 #SBATCH --output=%x-%j.log         
 #SBATCH --error=%x-%j.err         
 #SBATCH --mail-user=jie.jw.wu@ubc.ca
