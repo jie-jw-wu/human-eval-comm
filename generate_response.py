@@ -775,7 +775,7 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     response_list = generate_response(model, msgs, 1, temperature, args, open_source_model, tokenizer)
     return response_list[0]
     
-def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = ''):
+def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = '', prompt = ''):
     response_list = []
     if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
@@ -783,10 +783,12 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
         return response_list        
     elif 'Llama' in args.model or 'deepseek' in args.model or 'CodeQwen' in args.model:
-        user_input = tokenizer.apply_chat_template(msgs, tokenize=False) if 'Llama' in args.model else tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
+        user_input = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
         for i in range(topn):
             if 'two-shot' in args.model:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
+            else if 'Llama' in args.model:
+                response_list.append(get_completion_codellama_instruct_nl_to_pl(prompt, user_input_without_prompt, open_source_model, tokenizer, args))
             else:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
         return response_list
@@ -834,7 +836,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
     if args.log_phase_output >= 2:
         response_list.append(cached_response)
     else:
-        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input)
+        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input, prompt)
     
     if args.log_phase_output == 1:
         return response_list, [], [], []

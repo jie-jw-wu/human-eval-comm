@@ -146,56 +146,21 @@ def get_correlation(prompt_type):
     print('sizes')
     print(len(problem_list))
     print(len(test_pass_rate))
-    if dataset == 'HumanEvalComm':
-        for i in range(len(test_pass_rate)):
-            correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
-            correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
-            correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
-            passPerProblem = 1.0 if (math.isclose(max(test_pass_rate[i]), 1.0)) else 0.0
-            correlation['pass@k'].append(passPerProblem)
 
-            correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
-            correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
-            correlation['ask question rate max diff'].append(max(ask_question_rate[i])-min(ask_question_rate[i]))
+    for i in range(len(test_pass_rate)):
+        correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
+        correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
+        correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
+        passPerProblem = 1.0 if (math.isclose(max(test_pass_rate[i]), 1.0)) else 0.0
+        correlation['pass@k'].append(passPerProblem)
 
-            correlation['question quality mean'].append(np.mean(question_quality[i]))
-            correlation['question quality variance'].append(np.var(question_quality[i]))
-            correlation['question quality max diff'].append(max(question_quality[i])-min(question_quality[i]))
+        correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
+        correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
+        correlation['ask question rate max diff'].append(max(ask_question_rate[i])-min(ask_question_rate[i]))
 
-    else:
-        for i in range(len(problem_list)):
-            problem = problem_list[i]
-
-            if dataset == 'HumanEval':
-                correlation['problem'].append(problem['task_id'])
-                correlation['description length'].append(len(problem['prompt']))
-
-            elif dataset == 'APPS':
-                correlation['problem'].append(problem['name'])
-                correlation['description length'].append(len(problem['description']))
-            else:
-                correlation['problem'].append(problem['name'])
-                correlation['description length'].append(len(problem['description']))
-                correlation['difficulty'].append(problem['difficulty'])
-
-                pattern = re.compile(r'(?<=seconds:=)*\d+')
-                time_limit = pattern.findall(problem['time_limit'].split('\n')[0])[0]
-                if 'seconds' in problem['time_limit']:
-                    correlation['time_limit'].append(int(time_limit))
-                else:
-                    correlation['time_limit'].append(3)
-                correlation['cf_rating'].append(problem['cf_rating'])
-            
-            if MAX_NUM_PROBLEMS > 0 and i == MAX_NUM_PROBLEMS:
-                break
-
-            correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
-            correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
-            correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
-
-            correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
-            correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
-            correlation['ask question rate max diff'].append(max(ask_question_rate[i])-min(ask_question_rate[i]))
+        correlation['question quality mean'].append(np.mean(question_quality[i]))
+        correlation['question quality variance'].append(np.var(question_quality[i]))
+        correlation['question quality max diff'].append(max(question_quality[i])-min(question_quality[i]))
 
     correlation['OER'] = OER
     correlation['OER_ow'] = OER_ow

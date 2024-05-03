@@ -4,6 +4,12 @@ REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepsee
 REM run phase 1: ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
 REM run phase 2: ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
 REM run phase 3: 
+REM run original problem without modification:
+REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 165 HumanEval
+REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 3-1 0 165 HumanEval
+REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 4-1 0 165 HumanEval
+REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 5-1 0 165 HumanEval
+
 
 REM Check if no arguments are passed
 if %1=="" (
@@ -47,7 +53,7 @@ for %%i in (!string_of_strings!) do (
         python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEvalComm -m %%i -t 1 -o R1 -n 1 -s 3
     ) else if "%2"=="4-1" (
         rem # compute more metrics for each problem, such as test pass rate, question quality rate, comm. rate, etc. input: file in ./log/record/ output: file in ./result_data/
-        python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEval -m %%i -t 1 -o R1 -n 1 -s 3
+        python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEval -m %%i -t 1 -o R1 -n 1 -s 1
     ) else if "%2"=="5" (
         rem # aggregate and display metrics for all problems
         python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1
