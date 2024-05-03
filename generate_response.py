@@ -788,7 +788,13 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             if 'two-shot' in args.model:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
             elif 'Llama' in args.model:
-                response_list.append(get_completion_codellama_instruct_nl_to_pl(prompt, user_input_without_prompt, open_source_model, tokenizer, args))
+                CODELLAMA_NL_2_PL_PROMPT = [
+                    {  # Instructions
+                        "role": "system",
+                        "content": prompt,
+                    },
+                ]
+                response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_PROMPT, user_input_without_prompt, open_source_model, tokenizer, args))
             else:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
         return response_list
