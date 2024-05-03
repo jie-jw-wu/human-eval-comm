@@ -415,7 +415,7 @@ def get_completion_codellama_instruct_nl_to_pl(
         formatted_prompt = user_input 
     else:
     # select the correct in-context learning prompt based on the task
-        messages = prompt + [{"role": "user", "content": user_input}]
+        messages = [{"role": "user", "content": user_input}]
     
         for msg in messages:
             if msg["role"] == "user":
@@ -794,7 +794,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
                         "content": prompt,
                     },
                 ]
-                response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_PROMPT, user_input_without_prompt, open_source_model, tokenizer, args))
+                response_list.append(get_completion_codellama_instruct_nl_to_pl('CODELLAMA', prompt + user_input_without_prompt, open_source_model, tokenizer, args))
             else:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
         return response_list
