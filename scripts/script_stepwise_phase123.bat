@@ -39,12 +39,21 @@ for %%i in (!string_of_strings!) do (
     ) else if "%2"=="3" (
         rem # extract code and run test cases and other metrics for each problem. input: file in log/  output: file in log/record/
         python intermedia_analyze.py -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_3 -n 1
+    ) else if "%2"=="3-1" (
+        rem # extract code and run test cases and other metrics for each problem. input: file in log/  output: file in log/record/
+        python intermedia_analyze.py -f log/manualRemove_dataset_HumanEval_model_%%i_topn_1_temperature_1.0.log_1 -n 1
     ) else if "%2"=="4" (
         rem # compute more metrics for each problem, such as test pass rate, question quality rate, comm. rate, etc. input: file in ./log/record/ output: file in ./result_data/
         python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEvalComm -m %%i -t 1 -o R1 -n 1 -s 3
+    ) else if "%2"=="4-1" (
+        rem # compute more metrics for each problem, such as test pass rate, question quality rate, comm. rate, etc. input: file in ./log/record/ output: file in ./result_data/
+        python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEval -m %%i -t 1 -o R1 -n 1 -s 3
     ) else if "%2"=="5" (
         rem # aggregate and display metrics for all problems
         python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1
+    ) else if "%2"=="5-1" (
+        rem # aggregate and display metrics for all problems
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEval -m %%i -t 1 -n 1
     ) else if "%2"=="6" (
         python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1a
         python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1c

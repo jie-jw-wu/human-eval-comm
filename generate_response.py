@@ -783,7 +783,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
         return response_list        
     elif 'Llama' in args.model or 'deepseek' in args.model or 'CodeQwen' in args.model:
-        user_input = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
+        user_input = tokenizer.apply_chat_template(msgs, tokenize=False) if 'Llama' in args.model else tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
         for i in range(topn):
             if 'two-shot' in args.model:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
