@@ -205,29 +205,59 @@ def get_correlation(prompt_type):
 
     return correlation
 
-def store_data_in_xlsx(correlation, file_suffix):
+# Return the first triple code snippet. 
+def response_2_code(response):
+    code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
+    code = code_template.findall(response)
+    if len(code) > 0:
+        return code[0] # code[-1] is the last triple code snippet
+    else:
+        return ''
+
+def get_empty_code_percentage(file_path, prompt_type):
+    with open(file_path, 'r') as f:
+        empty_code_lines = 0
+        total_lines = 0
+        for line in f.readlines():
+            content = json.loads(line)
+            if prompt_type != '' and not content['prompt_type'].endswith(prompt_type):
+                continue
+            code = response_2_code(content['response'])
+            if code == '':
+                empty_code_lines += 1
+            total_lines += 1
+        print('empty_code_lines', empty_code_lines)
+        print('total_lines', total_lines)
+        return 0 if total_lines == 0 else (empty_code_lines / total_lines) * 100
+
+def store_data_in_xlsx(correlation, file_suffix, first_round_empty_code_rate):
     # store in .xlsx
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     data = [[]]
-    data[0].append(np.mean(correlation['test pass rate mean'])) #A
-    data[0].append(np.mean(correlation['test pass rate variance'])) #B
-    data[0].append(np.mean(correlation['test pass rate max diff'])) #C
-    data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1)) #D
 
-    data[0].append(np.mean(correlation['ask question rate mean'])) #E
-    data[0].append(np.mean(correlation['ask question rate variance'])) #F
-    data[0].append(np.mean(correlation['ask question rate max diff'])) #G
-    data[0].append(ratio_of_worst(correlation['ask question rate max diff'], 1)) #H
-
-    data[0].append(np.mean(correlation['question quality mean'])) #I
-    data[0].append(np.mean(correlation['question quality variance'])) #J
-    data[0].append(np.mean(correlation['question quality max diff'])) #K
-    data[0].append(ratio_of_worst(correlation['question quality max diff'], 1)) #L
 
     passk = np.mean(correlation['pass@k'])
     print("pass@k is", passk)
-    data[0].append(passk) #M
+    data[0].append(round(passk * 100, 2)) #M
+
+    data[0].append(round(np.mean(correlation['test pass rate mean']) * 100, 2)) #A
+    #data[0].append(np.mean(correlation['test pass rate variance'])) #B
+    #data[0].append(np.mean(correlation['test pass rate max diff'])) #C
+    #data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1)) #D
+
+    print("first_round_empty_code_rate is", first_round_empty_code_rate)
+    data[0].append(round(first_round_empty_code_rate, 2)) #N
+
+    #data[0].append(np.mean(correlation['ask question rate mean'])) #E
+    #data[0].append(np.mean(correlation['ask question rate variance'])) #F
+    #data[0].append(np.mean(correlation['ask question rate max diff'])) #G
+    #data[0].append(ratio_of_worst(correlation['ask question rate max diff'], 1)) #H
+
+    data[0].append(round(np.mean(correlation['question quality mean']) * 100, 2)) #I
+    #data[0].append(np.mean(correlation['question quality variance'])) #J
+    #data[0].append(np.mean(correlation['question quality max diff'])) #K
+    #data[0].append(ratio_of_worst(correlation['question quality max diff'], 1)) #L
 
     for row in data:
         sheet.append(row)
@@ -279,6 +309,13 @@ if __name__ == "__main__":
         help="output results for a certain prompt type if not empty",
         default='',
     )
+    parser.add_argument(
+        "-f",
+        "--file",
+        type=str,
+        help="Choose file",
+        default='',
+    )
     args = parser.parse_args()
 
     for i in range(1):
@@ -326,5 +363,7 @@ if __name__ == "__main__":
         correlation = get_correlation(prompt_type)
         output_file = '%s_dataset_%s_model_%s_topn_%s_temperature_%s%s' % \
                    (experiment, dataset, model, topn, temperature, prompt_type)
-        store_data_in_xlsx(correlation, output_file)
+        
+        first_round_empty_code_rate = 0 if args.file == '' else get_empty_code_percentage(args.file,prompt_type)
+        store_data_in_xlsx(correlation, output_file, first_round_empty_code_rate)
         #get_boxplot(dataset, prompt_type)

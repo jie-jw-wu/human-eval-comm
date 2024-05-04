@@ -4,12 +4,17 @@ REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepsee
 REM run phase 1: ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
 REM run phase 2: ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
 REM run phase 3: 
+REM analyze remaining open models:
+    REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 3
+    REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 4
+    REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 5
+    REM ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 6
 REM run original problem without modification:
-REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 165 HumanEval
-REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 3-1 0 165 HumanEval
-REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 4-1 0 165 HumanEval
-REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 5-1 0 165 HumanEval
-
+    REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 165 HumanEval
+    REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 3-1 0 165 HumanEval
+    REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 4-1 0 165 HumanEval
+    REM ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 5-1 0 165 HumanEval
+REM phase 5: ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf gpt-3.5-turbo-0125 Okanagan" 5
 
 REM Check if no arguments are passed
 if %1=="" (
@@ -56,18 +61,18 @@ for %%i in (!string_of_strings!) do (
         python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEval -m %%i -t 1 -o R1 -n 1 -s 1
     ) else if "%2"=="5" (
         rem # aggregate and display metrics for all problems
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
     ) else if "%2"=="5-1" (
         rem # aggregate and display metrics for all problems
         python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEval -m %%i -t 1 -n 1
     ) else if "%2"=="6" (
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1a
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1c
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1p
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt2ac
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt2ap
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt2cp
-        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt3acp
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1a -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1c -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt1p -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt2ac -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt2ap -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt2cp -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
+        python measurement_summary_draw_heatmap.py -e manualRemove -d HumanEvalComm -m %%i -t 1 -n 1 -pt prompt3acp -f log/manualRemove_dataset_HumanEvalComm_model_%%i_topn_1_temperature_1.0.log_2
     )
 )
 
