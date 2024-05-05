@@ -9,6 +9,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import math
+from scipy import stats
 
 MAX_NUM_PROBLEMS = 0 # from generate_response.py
 
@@ -41,6 +42,18 @@ def ratio_of_worst(list, target):
     else:
         return (count/len(list))
 
+def extract_prefix(string):
+    # Find the index of the underscore
+    underscore_index = string.find('_')
+    
+    # Extract the substring before the underscore
+    if underscore_index != -1:
+        prefix = string[:underscore_index]
+    else:
+        prefix = string  # If underscore not found, return the original string
+    
+    return prefix
+
 def semantic_syntactic_structural_similarity(prompt_type):
     # get all measurement of semantic, syntactic, and structural similarity
     # where all the file_path could be modified directly with line 'with open(x) as f:'
@@ -60,6 +73,9 @@ def semantic_syntactic_structural_similarity(prompt_type):
         else:
             with open(file_path + '/%s_dataset_%s_%s_%s/intermediate_result_top0_5.json' % (experiment, dataset, model, temperature), 'r') as f:
                 intermediate_result = json.load(f)
+    
+    with open(file_path + '/%s_dataset_%s_%s_%s/intermediate_result_among5.json' % (experiment, 'HumanEval', model, temperature), 'r') as fo:
+        original_result = json.load(fo)
 
     test_case_pass_rate = []
     OER = []
@@ -68,6 +84,7 @@ def semantic_syntactic_structural_similarity(prompt_type):
     Levenshieten = []
     ask_question_rate = []
     question_quality = []
+    ori_test_case_pass_rate = []
     # if request_way == 'R1':
     #     Levenshieten.append(intermediate_result['syntatic_similarity']['Levenshtein_edit_distance'])
     for case in intermediate_result:
@@ -79,6 +96,13 @@ def semantic_syntactic_structural_similarity(prompt_type):
         #print('case=',case)
         if prompt_type != '' and not case.endswith(prompt_type):
             continue
+        if prompt_type != '':
+            ori_case = extract_prefix(case)
+            if ori_case in original_result:
+                ori_test_case_pass_rate.append(original_result[ori_case]['test_case_pass_rate'])
+            else:
+                print('key not found in original', ori_case)
+
         OER.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5'])
         OER_ow.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5_correct'])
         Levenshieten.append(intermediate_result[case]['syntatic_similarity']['Levenshtein_edit_distance'])
@@ -93,7 +117,7 @@ def semantic_syntactic_structural_similarity(prompt_type):
     United_Diff = []
     Tree_Diff = []
 
-    return test_case_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality
+    return test_case_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality, ori_test_case_pass_rate
 
 def get_boxplot(dataset, prompt_type):
     test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity(prompt_type)
@@ -120,9 +144,10 @@ def get_boxplot(dataset, prompt_type):
 def get_correlation(prompt_type):
     # store all the fine-grained measurement in the dic named correlation (for later draw the heatmap)
 
-    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity(prompt_type)
+    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality, ori_test_pass_rate = semantic_syntactic_structural_similarity(prompt_type)
     correlation = {'problem': [],
                    'test pass rate mean': [],
+                   'ori test pass rate mean': [],
                    'test pass rate variance': [],
                    'test pass rate max diff': [],
                    'description length': [],
@@ -136,6 +161,7 @@ def get_correlation(prompt_type):
                    'question quality variance': [],
                    'question quality max diff': [],
                    'pass@k': [],
+                   'ori pass@k': [],
                    }
 
     test_pass_rate_var = [np.var(i) for i in test_pass_rate]
@@ -161,6 +187,11 @@ def get_correlation(prompt_type):
         correlation['question quality mean'].append(np.mean(question_quality[i]))
         correlation['question quality variance'].append(np.var(question_quality[i]))
         correlation['question quality max diff'].append(max(question_quality[i])-min(question_quality[i]))
+
+    for i in range(len(ori_test_pass_rate)):
+        correlation['ori test pass rate mean'].append(np.mean(ori_test_pass_rate[i]))
+        passPerProblemOri = 1.0 if (math.isclose(max(ori_test_pass_rate[i]), 1.0)) else 0.0
+        correlation['ori pass@k'].append(passPerProblemOri)
 
     correlation['OER'] = OER
     correlation['OER_ow'] = OER_ow
@@ -258,6 +289,20 @@ def store_data_in_xlsx(correlation, file_suffix, first_round_empty_code_rate):
     #data[0].append(np.mean(correlation['question quality variance'])) #J
     #data[0].append(np.mean(correlation['question quality max diff'])) #K
     #data[0].append(ratio_of_worst(correlation['question quality max diff'], 1)) #L
+
+    # Assuming you have two lists of values: list1 and list2
+    # Perform t-test
+    t_statistic, p_value = stats.ttest_ind(correlation['ori pass@k'], correlation['pass@k'])
+    print('t_statistic for ori pass@k: ', t_statistic)
+    print('p_value for ori pass@k: ', p_value)
+    data[0].append(round(t_statistic, 2)) 
+    data[0].append(round(p_value, 3))
+
+    t_statistic, p_value = stats.ttest_ind(correlation['ori test pass rate mean'], correlation['test pass rate mean'])
+    print('t_statistic for ori pass rate: ', t_statistic)
+    print('p_value for ori pass rate: ', p_value)
+    data[0].append(round(t_statistic, 2)) 
+    data[0].append(round(p_value, 3))
 
     for row in data:
         sheet.append(row)
