@@ -1,3 +1,5 @@
+![1632041413-huge-scaled-1-1440x466](https://github.com/jie-jw-wu/human-eval-comm/assets/122728498/14395bdb-c82d-42a6-a2d6-8b9453d9e321)
+
 # HumanEvalComm: Evaluating the Communication Skill of Code LLMs and LLM Agent (Okanagan)
 
 ## Overview
