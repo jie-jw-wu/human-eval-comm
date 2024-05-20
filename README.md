@@ -1,28 +1,18 @@
-# HumanEvalComm: Evaluating the Communication Skill of Code LLM and LLM Agent
+# HumanEvalComm: Evaluating the Communication Skill of Code LLMs and LLM Agent (Okanagan)
 
 ## Overview
-Large language models (LLMs) have significantly improved their ability to perform tasks in the field of code generation. However, there
-is still a gap between LLMs being capable coders and being top-tier software engineers. The most recent trends are using agent-based
-LLMs to iterate the code generation process. Based on the observation that top-level software engineers often ask clarifying questions
-to reduce ambiguity in both requirements and coding solutions, we argue that the same should be applied to LLMs for code generation
-tasks. For this purpose, we define communication skills of LLMs as “being able to ask clarifying questions when the description
-of the code generation problem has issues”. In this study, we restrict these issues to three matters from the software requirement
-engineering field: inconsistent requirements, ambiguous requirements, and incomplete requirements. By asking probing questions
-about requirements of problem descriptions before generating the final code, the challenges of programming with LLMs, such as
-unclear intent specification may be alleviated, resulting to a correct code in the initial iterations.
 
-In this work, we conducted an empirical study on the benchmark and analysis of the communication skills of LLMs for code
-generation. We created a new benchmark, HumanEvalComm, by modifying problem descriptions according to three issues mentioned
-above, inconsistency, ambiguity, incompleteness. We then experimented on HumanEvalComm with different Code LLMs, and a new
-LLM Agent approach, Code Clarification and Generation Agent (Okanagan), to identify and ask questions in ambiguous parts from code
-and descriptions for further refining the generated code. We defined Communication Rate and Good Question Rate as the evaluation
-metrics to represent the ratio of questions asked and questions with good quality in responses. We found that 95% of responses from
-Code LLMs still generate code even when half of the problem descriptions are randomly removed. More than 80% of responses from
-Code LLMs still generate code even when the problem descriptions are manually modified according to the taxonomy of clarification
-types, with a lower test pass rate due to a lack of necessary information. Compared with Code LLMs, we also found that the proposed
-LLM Agent approach, Okaganan, effectively increased Communication Rate and Good Question Rate by an absolute 59% and 5%,
-respectively. This resulted in an increase in Test Pass Rate and Pass@1 by 25% and 15%, respectively. This indicates more effective
-communication capability for LLM Agent compared with Code LLMs.
+Large language models (LLMs) have significantly improved their ability to perform tasks in the field of code generation. However, there is still a gap between LLMs being capable coders and being top-tier software engineers. The most recent trends involve using LLM-based agents to iterate the code generation process.
+Based on the observation that top-level software engineers often ask clarifying questions to reduce *Ambiguity* in both requirements and coding solutions, we argue that the same should be applied to LLMs for code generation tasks. For this purpose, we define the communication skills of LLMs as "being able to ask clarifying questions when the description of the code generation problem has issues." In this study, we restrict these issues to three matters from the software requirement engineering field: inconsistent requirements, ambiguous requirements, and incomplete requirements. By asking probing questions about the requirements of problem descriptions before generating the final code, the challenges of programming with LLMs, such as unclear intent specification, may be alleviated, resulting in correct code in the initial iterations.
+
+
+In this work, we conducted an empirical study on the benchmark and analysis of the communication skills of LLMs for code generation. We created a new benchmark, HumanEvalComm, by modifying problem descriptions according to three issues mentioned above: *Inconsistency*, *Ambiguity*, and *Incompleteness*. We then experimented on HumanEvalComm with different Code LLMs and a new LLM agent approach, **Code Clarification and Generation Agent (Okanagan)**, to identify and ask questions in ambiguous parts of code and descriptions for further refining the generated code.
+In the evaluation, we introduced an *LLM-based evaluator* and created *Communication Rate* and *Good Question Rate* as the evaluation metrics to represent the ratio of questions asked and questions with good quality in responses. We found that more than 60% of responses from Code LLMs still generate code rather than ask questions when the problem descriptions are manually modified according to different clarification categories.
+The Pass@1 and Test Pass Rate of most Code LLMs drop by 35% to 52% and by 17% to 35% respectively, with statistical significance in each category for over 75% numbers. Okanagan, as an LLM agent approach that uses LLMs such as ChatGPT 3.5, effectively increases the Communication Rate and Good Question Rate by an absolute 58% and 38% respectively, and thus boosts Pass@1 and Test Pass Rate by an absolute 8% and 7% respectively, when the problem descriptions are modified based on given clarification categories. This indicates the potential for achieving more effective communication capability using the LLM agent.
+
+
+
+<img width="1501" alt="HumanEvalComm" src="https://github.com/jie-jw-wu/human-eval-comm/assets/122728498/9a7d2142-7ac5-4f64-8557-225e8b221dc7">
 
 ## Acknowledgements
 This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
