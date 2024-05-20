@@ -271,8 +271,11 @@ def store_data_in_xlsx(correlation, file_suffix, first_round_empty_code_rate):
     passk = np.mean(correlation['pass@k'])
     print("pass@k is", passk)
     data[0].append(round(passk * 100, 2)) #M
+    ori_passk = np.mean(correlation['ori pass@k'])
+    data[0].append(round(ori_passk * 100, 2))
 
     data[0].append(round(np.mean(correlation['test pass rate mean']) * 100, 2)) #A
+    data[0].append(round(np.mean(correlation['ori test pass rate mean']) * 100, 2)) #A
     #data[0].append(np.mean(correlation['test pass rate variance'])) #B
     #data[0].append(np.mean(correlation['test pass rate max diff'])) #C
     #data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1)) #D
