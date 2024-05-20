@@ -144,7 +144,7 @@ def analyze_process_HumanEval(log_file, original_prompt_file, topn):
     # TODO(jwu): we can read from HumanEval.jsonl instead of HumanEval_new.jsonl, and delete all about HumanEval_new. 
     # Update: no need because HumanEval_new has 'test_case' field, which is essential.
     # with open('HumanEval/HumanEval.jsonl', 'r') as f:
-    with open('HumanEval/HumanEval_new.jsonl', 'r') as f:
+    with open('Benchmark/HumanEval_new.jsonl', 'r') as f:
         for line in f.readlines():
             problem_list.append(json.loads(line))
             # added by JW. not needed since it's just loading HumanEval problems.

@@ -32,11 +32,18 @@ PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
 PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (code must has Markdown in response) in below information. Alternatively, you can ask clarifying questions: \n'
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
+# TODO: try this new prompt
+PROMPT_START_3_v3 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (only one code block with markdown in response), or ask clarifying questions (no markdown in response): \n'
+ORIGINAL_PROMPT_START_0 = 'You are an expert software developer who writes high quality code. With below information, please generate Python3 code (Respond directly with code only with markdown): \n'
 
 PROMPT_EVALUATE_QUESTIONS_V1 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 PROMPT_EVALUATE_QUESTIONS_V2 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 # pretty bad prompt as it returns code in answers...
 PROMPT_EVALUATE_QUESTIONS_V3 = 'The original description of a coding problem is modified so that the requirements become incomplete, inconsistent, or ambiguous. Given the modified description, some clarifying questions may be raised to clarify the description. Provide answers to the questions to recover the requirements in the original problem description compared to the modified one. Be sure to return empty answers if there is no valid clarifying question or code with markup! \n ANSWERS=```[your answer]```  \n Please also provide an integer representing the quality of clarifying questions (3: Good questions that recover the modified requirements. 2: Fair questions but they cannot help recover the modified requirements. 1: No valid questions).\n  QUALITY=[your int] \n Please strictly follow the format ANSWERS=```[the answer]``` and QUALITY=[the int] in the response! Surround your answer with markup! \n ### ORIGINAL PROBLEM DESCRIPTION:\n {missing_information} \n ### MODIFIED PROBLEM DESCRIPTION:\n {problem} \n ### CLARIFYING QUESTIONS:\n{clarifying_questions} \n'
+
+# TODO: try this new prompt
+# tried once but got no 0 Quality for 5 problems (0-5), so disable this
+PROMPT_EVALUATE_QUESTIONS_V4 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: Certainly! Can you please provide more specific details on what the `candidate` function needs to do with the input list of strings and the string `x`? This will help me generate the Python3 code according to your requirements. \n ### Modified Problem Description: def candidate(strings: List[str], x: str) -> List[str]:\n    """ Process an input list of strings\n    """ \n ### Original Description: def filter_by_substring(strings: List[str], substring: str) -> List[str]:\n    """ Filter an input list of strings only for ones that contain given substring\n    >>> filter_by_substring([], \'a\')\n    []\n    >>> filter_by_substring([\'abc\', \'bacd\', \'cde\', \'array\'], \'a\')\n    [\'abc\', \'bacd\', \'array\']\n    """ \n ### Response: QUALITY=3\nANSWERS=```The `candidate` function needs to filter the input list of strings such that only strings containing the substring `x` are included in the output list.```\n\n ### Questions: Sure, I can help you with that! Here\'s the Python 3 code for the `candidate` function:\n```python\ndef candidate(num):\n    if num < 0:\n        return (1, 1)\n    else:\n        return (1, num)\n```\n ### Modified Problem Description: def candidate(num):\n    """Example:\n        candidate(-12) ==> (1, 1)\n        candidate(123) ==> (1, 2)\n    """\n ### Original Description: def even_odd_count(num):\n    """Given an integer. return a tuple that has the number of even and odd digits respectively.\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    """\n ### Response: QUALITY=1\nANSWERS=```no questions```\n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n ### Response: \n'
 
 PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 
@@ -408,7 +415,7 @@ def get_completion_codellama_instruct_nl_to_pl(
         formatted_prompt = user_input 
     else:
     # select the correct in-context learning prompt based on the task
-        messages = prompt + [{"role": "user", "content": user_input}]
+        messages = [{"role": "user", "content": user_input}]
     
         for msg in messages:
             if msg["role"] == "user":
@@ -768,18 +775,26 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     response_list = generate_response(model, msgs, 1, temperature, args, open_source_model, tokenizer)
     return response_list[0]
     
-def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = ''):
+def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = '', prompt = ''):
     response_list = []
     if args.model.startswith('starcoder'):
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
         for i in range(topn):
             response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
         return response_list        
-    elif args.model.startswith('CodeLlama'):
-        user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
+    elif 'Llama' in args.model or 'deepseek' in args.model or 'CodeQwen' in args.model:
+        user_input = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
         for i in range(topn):
             if 'two-shot' in args.model:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl(CODELLAMA_NL_2_PL_HUMANEVAL, user_input_without_prompt, open_source_model, tokenizer, args))
+            elif 'Llama' in args.model:
+                CODELLAMA_NL_2_PL_PROMPT = [
+                    {  # Instructions
+                        "role": "system",
+                        "content": prompt,
+                    },
+                ]
+                response_list.append(get_completion_codellama_instruct_nl_to_pl('CODELLAMA', prompt + user_input_without_prompt, open_source_model, tokenizer, args))
             else:
                 response_list.append(get_completion_codellama_instruct_nl_to_pl('', user_input, open_source_model, tokenizer, args))
         return response_list
@@ -827,7 +842,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
     if args.log_phase_output >= 2:
         response_list.append(cached_response)
     else:
-        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input)
+        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input, prompt)
     
     if args.log_phase_output == 1:
         return response_list, [], [], []
@@ -856,7 +871,7 @@ def description_2_code_multi_rounds(prompt, user_input, original_prompt, model, 
                 answer = cached_answer
                 question_quality = cached_qq
             else:
-                answer, question_quality = evaluate_clarifying_questions(original_prompt,response,full_prompt)
+                answer, question_quality = evaluate_clarifying_questions(original_prompt,response,user_input)
             
             if args.log_phase_output == 2:
                 ans_list.append(answer)
@@ -982,8 +997,9 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     # legacy part
                     response_list, code_list, qq_list = description_2_code_one_round(prompt, model, topn, temperature, args, open_source_model, tokenizer)
                 else:
-                    original_prompt = PROMPT_START_3_v2 + problem['prompt']
-                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(PROMPT_START_3_v2, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
+                    original_prompt = problem['prompt']
+                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
+                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)
                 continue
@@ -1170,10 +1186,14 @@ if __name__ == "__main__":
     tokenizer = None
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print('device: ', device)
-    if (args.model.startswith('CodeLlama') or args.model.startswith('starcoder')) and args.log_phase_output != 2:
+    if ('Llama' in args.model 
+        or args.model.startswith('starcoder')
+        or args.model.startswith('deepseek')
+        or args.model.startswith('CodeQwen')
+        ) and args.log_phase_output != 2:
         # set huggingface cache directory
         HF_HOME = args.hf_dir
-        offload_folder = "D:\Study\Research\Projects\huggingface\offload_folder"
+        offload_folder = "offload_folder"
         print("Loading model...")
         # if specified, use int8 quantization
         if args.do_save_model:
@@ -1218,18 +1238,25 @@ if __name__ == "__main__":
         print('model device: ', model.device)
 
         # configure tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(
-            args.model_name_or_path,
-            model_max_length=args.seq_length,
-            # Bug: A decoder-only architecture is being used, but right-padding was detected! For correct generation results, please set `padding_side='left'` when initializing the tokenizer.
-            # setting padding_side='left' doesn't fix the issue.
-            padding_side="right",
-            use_fast=False,
-            trust_remote_code=True,
-            cache_dir=HF_HOME,
-            offload_folder=offload_folder,
-        )
-
+        if (args.model.startswith('Meta-Llama')
+            or args.model.startswith('deepseek')
+            or args.model.startswith('CodeQwen')):
+            tokenizer = AutoTokenizer.from_pretrained(
+                args.model_name_or_path,
+                trust_remote_code=True,
+            )
+        else:
+            tokenizer = AutoTokenizer.from_pretrained(
+                args.model_name_or_path,
+                model_max_length=args.seq_length,
+                # Bug: A decoder-only architecture is being used, but right-padding was detected! For correct generation results, please set `padding_side='left'` when initializing the tokenizer.
+                # setting padding_side='left' doesn't fix the issue.
+                padding_side="right",
+                use_fast=False,
+                trust_remote_code=True,
+                cache_dir=HF_HOME,
+                offload_folder=offload_folder,
+            )
     
     if args.do_test_only:
         test_codellama(tokenizer, model, args.user_input, args.seq_length)
@@ -1237,4 +1264,4 @@ if __name__ == "__main__":
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
     elif args.dataset.startswith('HumanEval'):
-        HumanEval_experiment(args.dataset, './Benchmark/'+args.dataset+'.jsonl', args.option, args.model, args.topn, args.temperature, args, model, tokenizer)
+        HumanEval_experiment(args.dataset, './Benchmark/HumanEvalComm.jsonl', args.option, args.model, args.topn, args.temperature, args, model, tokenizer)

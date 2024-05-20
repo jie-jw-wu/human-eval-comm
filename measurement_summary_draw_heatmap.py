@@ -9,6 +9,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import math
+from scipy import stats
 
 MAX_NUM_PROBLEMS = 0 # from generate_response.py
 
@@ -41,6 +42,18 @@ def ratio_of_worst(list, target):
     else:
         return (count/len(list))
 
+def extract_prefix(string):
+    # Find the index of the underscore
+    underscore_index = string.find('_')
+    
+    # Extract the substring before the underscore
+    if underscore_index != -1:
+        prefix = string[:underscore_index]
+    else:
+        prefix = string  # If underscore not found, return the original string
+    
+    return prefix
+
 def semantic_syntactic_structural_similarity(prompt_type):
     # get all measurement of semantic, syntactic, and structural similarity
     # where all the file_path could be modified directly with line 'with open(x) as f:'
@@ -60,6 +73,9 @@ def semantic_syntactic_structural_similarity(prompt_type):
         else:
             with open(file_path + '/%s_dataset_%s_%s_%s/intermediate_result_top0_5.json' % (experiment, dataset, model, temperature), 'r') as f:
                 intermediate_result = json.load(f)
+    
+    with open(file_path + '/%s_dataset_%s_%s_%s/intermediate_result_among5.json' % (experiment, 'HumanEval', model, temperature), 'r') as fo:
+        original_result = json.load(fo)
 
     test_case_pass_rate = []
     OER = []
@@ -68,6 +84,7 @@ def semantic_syntactic_structural_similarity(prompt_type):
     Levenshieten = []
     ask_question_rate = []
     question_quality = []
+    ori_test_case_pass_rate = []
     # if request_way == 'R1':
     #     Levenshieten.append(intermediate_result['syntatic_similarity']['Levenshtein_edit_distance'])
     for case in intermediate_result:
@@ -79,6 +96,13 @@ def semantic_syntactic_structural_similarity(prompt_type):
         #print('case=',case)
         if prompt_type != '' and not case.endswith(prompt_type):
             continue
+        if prompt_type != '':
+            ori_case = extract_prefix(case)
+            if ori_case in original_result:
+                ori_test_case_pass_rate.append(original_result[ori_case]['test_case_pass_rate'])
+            else:
+                print('key not found in original', ori_case)
+
         OER.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5'])
         OER_ow.append(intermediate_result[case]['syntatic_similarity']['same_output_between_5_correct'])
         Levenshieten.append(intermediate_result[case]['syntatic_similarity']['Levenshtein_edit_distance'])
@@ -93,7 +117,7 @@ def semantic_syntactic_structural_similarity(prompt_type):
     United_Diff = []
     Tree_Diff = []
 
-    return test_case_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality
+    return test_case_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality, ori_test_case_pass_rate
 
 def get_boxplot(dataset, prompt_type):
     test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity(prompt_type)
@@ -120,9 +144,10 @@ def get_boxplot(dataset, prompt_type):
 def get_correlation(prompt_type):
     # store all the fine-grained measurement in the dic named correlation (for later draw the heatmap)
 
-    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality = semantic_syntactic_structural_similarity(prompt_type)
+    test_pass_rate, OER, OER_ow, Levenshieten, LCS, United_Diff, Tree_Diff, ask_question_rate, question_quality, ori_test_pass_rate = semantic_syntactic_structural_similarity(prompt_type)
     correlation = {'problem': [],
                    'test pass rate mean': [],
+                   'ori test pass rate mean': [],
                    'test pass rate variance': [],
                    'test pass rate max diff': [],
                    'description length': [],
@@ -136,6 +161,7 @@ def get_correlation(prompt_type):
                    'question quality variance': [],
                    'question quality max diff': [],
                    'pass@k': [],
+                   'ori pass@k': [],
                    }
 
     test_pass_rate_var = [np.var(i) for i in test_pass_rate]
@@ -146,56 +172,26 @@ def get_correlation(prompt_type):
     print('sizes')
     print(len(problem_list))
     print(len(test_pass_rate))
-    if dataset == 'HumanEvalComm':
-        for i in range(len(test_pass_rate)):
-            correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
-            correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
-            correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
-            passPerProblem = 1.0 if (math.isclose(max(test_pass_rate[i]), 1.0)) else 0.0
-            correlation['pass@k'].append(passPerProblem)
 
-            correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
-            correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
-            correlation['ask question rate max diff'].append(max(ask_question_rate[i])-min(ask_question_rate[i]))
+    for i in range(len(test_pass_rate)):
+        correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
+        correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
+        correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
+        passPerProblem = 1.0 if (math.isclose(max(test_pass_rate[i]), 1.0)) else 0.0
+        correlation['pass@k'].append(passPerProblem)
 
-            correlation['question quality mean'].append(np.mean(question_quality[i]))
-            correlation['question quality variance'].append(np.var(question_quality[i]))
-            correlation['question quality max diff'].append(max(question_quality[i])-min(question_quality[i]))
+        correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
+        correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
+        correlation['ask question rate max diff'].append(max(ask_question_rate[i])-min(ask_question_rate[i]))
 
-    else:
-        for i in range(len(problem_list)):
-            problem = problem_list[i]
+        correlation['question quality mean'].append(np.mean(question_quality[i]))
+        correlation['question quality variance'].append(np.var(question_quality[i]))
+        correlation['question quality max diff'].append(max(question_quality[i])-min(question_quality[i]))
 
-            if dataset == 'HumanEval':
-                correlation['problem'].append(problem['task_id'])
-                correlation['description length'].append(len(problem['prompt']))
-
-            elif dataset == 'APPS':
-                correlation['problem'].append(problem['name'])
-                correlation['description length'].append(len(problem['description']))
-            else:
-                correlation['problem'].append(problem['name'])
-                correlation['description length'].append(len(problem['description']))
-                correlation['difficulty'].append(problem['difficulty'])
-
-                pattern = re.compile(r'(?<=seconds:=)*\d+')
-                time_limit = pattern.findall(problem['time_limit'].split('\n')[0])[0]
-                if 'seconds' in problem['time_limit']:
-                    correlation['time_limit'].append(int(time_limit))
-                else:
-                    correlation['time_limit'].append(3)
-                correlation['cf_rating'].append(problem['cf_rating'])
-            
-            if MAX_NUM_PROBLEMS > 0 and i == MAX_NUM_PROBLEMS:
-                break
-
-            correlation['test pass rate mean'].append(np.mean(test_pass_rate[i]))
-            correlation['test pass rate variance'].append(np.var(test_pass_rate[i]))
-            correlation['test pass rate max diff'].append(max(test_pass_rate[i])-min(test_pass_rate[i]))
-
-            correlation['ask question rate mean'].append(np.mean(ask_question_rate[i]))
-            correlation['ask question rate variance'].append(np.var(ask_question_rate[i]))
-            correlation['ask question rate max diff'].append(max(ask_question_rate[i])-min(ask_question_rate[i]))
+    for i in range(len(ori_test_pass_rate)):
+        correlation['ori test pass rate mean'].append(np.mean(ori_test_pass_rate[i]))
+        passPerProblemOri = 1.0 if (math.isclose(max(ori_test_pass_rate[i]), 1.0)) else 0.0
+        correlation['ori pass@k'].append(passPerProblemOri)
 
     correlation['OER'] = OER
     correlation['OER_ow'] = OER_ow
@@ -240,29 +236,76 @@ def get_correlation(prompt_type):
 
     return correlation
 
-def store_data_in_xlsx(correlation, file_suffix):
+# Return the first triple code snippet. 
+def response_2_code(response):
+    code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
+    code = code_template.findall(response)
+    if len(code) > 0:
+        return code[0] # code[-1] is the last triple code snippet
+    else:
+        return ''
+
+def get_empty_code_percentage(file_path, prompt_type):
+    with open(file_path, 'r') as f:
+        empty_code_lines = 0
+        total_lines = 0
+        for line in f.readlines():
+            content = json.loads(line)
+            if prompt_type != '' and not content['prompt_type'].endswith(prompt_type):
+                continue
+            code = response_2_code(content['response'])
+            if code == '':
+                empty_code_lines += 1
+            total_lines += 1
+        print('empty_code_lines', empty_code_lines)
+        print('total_lines', total_lines)
+        return 0 if total_lines == 0 else (empty_code_lines / total_lines) * 100
+
+def store_data_in_xlsx(correlation, file_suffix, first_round_empty_code_rate):
     # store in .xlsx
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     data = [[]]
-    data[0].append(np.mean(correlation['test pass rate mean'])) #A
-    data[0].append(np.mean(correlation['test pass rate variance'])) #B
-    data[0].append(np.mean(correlation['test pass rate max diff'])) #C
-    data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1)) #D
 
-    data[0].append(np.mean(correlation['ask question rate mean'])) #E
-    data[0].append(np.mean(correlation['ask question rate variance'])) #F
-    data[0].append(np.mean(correlation['ask question rate max diff'])) #G
-    data[0].append(ratio_of_worst(correlation['ask question rate max diff'], 1)) #H
-
-    data[0].append(np.mean(correlation['question quality mean'])) #I
-    data[0].append(np.mean(correlation['question quality variance'])) #J
-    data[0].append(np.mean(correlation['question quality max diff'])) #K
-    data[0].append(ratio_of_worst(correlation['question quality max diff'], 1)) #L
 
     passk = np.mean(correlation['pass@k'])
     print("pass@k is", passk)
-    data[0].append(passk) #M
+    data[0].append(round(passk * 100, 2)) #M
+    ori_passk = np.mean(correlation['ori pass@k'])
+    data[0].append(round(ori_passk * 100, 2))
+
+    data[0].append(round(np.mean(correlation['test pass rate mean']) * 100, 2)) #A
+    data[0].append(round(np.mean(correlation['ori test pass rate mean']) * 100, 2)) #A
+    #data[0].append(np.mean(correlation['test pass rate variance'])) #B
+    #data[0].append(np.mean(correlation['test pass rate max diff'])) #C
+    #data[0].append(ratio_of_worst(correlation['test pass rate max diff'], 1)) #D
+
+    print("first_round_empty_code_rate is", first_round_empty_code_rate)
+    data[0].append(round(first_round_empty_code_rate, 2)) #N
+
+    #data[0].append(np.mean(correlation['ask question rate mean'])) #E
+    #data[0].append(np.mean(correlation['ask question rate variance'])) #F
+    #data[0].append(np.mean(correlation['ask question rate max diff'])) #G
+    #data[0].append(ratio_of_worst(correlation['ask question rate max diff'], 1)) #H
+
+    data[0].append(round(np.mean(correlation['question quality mean']) * 100, 2)) #I
+    #data[0].append(np.mean(correlation['question quality variance'])) #J
+    #data[0].append(np.mean(correlation['question quality max diff'])) #K
+    #data[0].append(ratio_of_worst(correlation['question quality max diff'], 1)) #L
+
+    # Assuming you have two lists of values: list1 and list2
+    # Perform t-test
+    t_statistic, p_value = stats.ttest_ind(correlation['ori pass@k'], correlation['pass@k'])
+    print('t_statistic for ori pass@k: ', t_statistic)
+    print('p_value for ori pass@k: ', p_value)
+    data[0].append(round(t_statistic, 2)) 
+    data[0].append(round(p_value, 3))
+
+    t_statistic, p_value = stats.ttest_ind(correlation['ori test pass rate mean'], correlation['test pass rate mean'])
+    print('t_statistic for ori pass rate: ', t_statistic)
+    print('p_value for ori pass rate: ', p_value)
+    data[0].append(round(t_statistic, 2)) 
+    data[0].append(round(p_value, 3))
 
     for row in data:
         sheet.append(row)
@@ -314,6 +357,13 @@ if __name__ == "__main__":
         help="output results for a certain prompt type if not empty",
         default='',
     )
+    parser.add_argument(
+        "-f",
+        "--file",
+        type=str,
+        help="Choose file",
+        default='',
+    )
     args = parser.parse_args()
 
     for i in range(1):
@@ -361,5 +411,7 @@ if __name__ == "__main__":
         correlation = get_correlation(prompt_type)
         output_file = '%s_dataset_%s_model_%s_topn_%s_temperature_%s%s' % \
                    (experiment, dataset, model, topn, temperature, prompt_type)
-        store_data_in_xlsx(correlation, output_file)
+        
+        first_round_empty_code_rate = 0 if args.file == '' else get_empty_code_percentage(args.file,prompt_type)
+        store_data_in_xlsx(correlation, output_file, first_round_empty_code_rate)
         #get_boxplot(dataset, prompt_type)
