@@ -16,6 +16,45 @@ The Pass@1 and Test Pass Rate of most Code LLMs drop by 35% to 52% and by 17% to
 
 <img width="1501" alt="HumanEvalComm" src="https://github.com/jie-jw-wu/human-eval-comm/assets/122728498/9a7d2142-7ac5-4f64-8557-225e8b221dc7">
 
+## Run
+The main script to run the evaluation is `./scripts/script_stepwise_phase123.bat`. Below is the command:
+```bash
+./scripts/script_stepwise_phase123.bat {models} {phase} {starting_problem_num} {ending_problem_num}
+```
+`{phase}` defines the phase to be executed in the evaluation. Below are its values, representing each phase in the evaluation:
+- 0: run models to get the initial response for either HumanEvalComm or HumanEval. output: file in log/
+- 1: the initial responses are evaluated by the LLM-based evaluator (for HumanEvalComm only). output: file in log/
+- 2: run models again to get the 2nd response based on LLM-based evaluator output (for HumanEvalComm only). output: file in log/
+- 3: extract code and run test cases and other metrics for each problem. input: file in log/  output: file in log/record/
+- 4: compute more metrics for each problem, such as test pass rate, question quality rate, comm. rate, etc. input: file in ./log/record/ output: file in ./result_data/
+- 5: aggregate and display metrics for all problems. output: files in table/
+- 6: aggregate and display metrics for each clarification category for all problems. output: files in table/ 
+
+Here are some examples:
+```bash
+#phase 1:
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct CodeLlama-13b-Instruct-hf" 1 0 165
+#phase 1:
+    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
+#phase 2:
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
+#analyze remaining open models:
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 3
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 4
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 5
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 6
+#run original problem without modification:
+    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 165 HumanEval
+    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 3-1 0 165 HumanEval
+    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 4-1 0 165 HumanEval
+    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 5-1 0 165 HumanEval
+#phase 5:
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeLlama-7b-Instruct-hf gpt-3.5-turbo-0125 Okanagan" 5
+
+```
+
+In this work, for open-source models in phase 0-2, we run sockeye scripts (./scripts/sockeye_scripts/*.sh) to run model inferences in Sockeye (https://arc.ubc.ca/compute-storage/ubc-arc-sockeye), due to resource limitations of the authors' desktop.
+
 ## Acknowledgements
 This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
 
