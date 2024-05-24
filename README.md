@@ -21,7 +21,7 @@ The main script to run the evaluation is `./scripts/script_stepwise_phase123.bat
 ```bash
 ./scripts/script_stepwise_phase123.bat {models} {phase} {starting_problem_num} {ending_problem_num}
 ```
-`{phase}` defines the phase to be executed in the evaluation. Below are its values, representing each phase in the evaluation:
+`{phase}` defines the phase to be executed in the evaluation. Below are the values of `phase` in the evaluation:
 - 0: run models to get the initial response for either HumanEvalComm or HumanEval. output: file in log/
 - 1: the initial responses are evaluated by the LLM-based evaluator (for HumanEvalComm only). output: file in log/
 - 2: run models again to get the 2nd response based on LLM-based evaluator output (for HumanEvalComm only). output: file in log/
