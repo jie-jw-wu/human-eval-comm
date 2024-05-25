@@ -828,7 +828,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(i['message']['content'])
         return response_list
 
-def get_ok_base_model(model)
+def get_ok_base_model(model):
     if '~' in model:
         return model.split('~', 1)[1]
     else:
