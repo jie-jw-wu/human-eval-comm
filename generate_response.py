@@ -50,6 +50,8 @@ PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is mod
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
 OK_PROMPT_CLARIFY_Q = 'Given the programming problem, ask clarifying questions if the requirements in the given problem description are incomplete, inconsistent or ambiguous for solving the problem correctly and passing the tests. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n ### Problem: \n {problem}'
+OK_PROMPT_CLARIFY_Q_DEEPSEEKCODER = 'Given the programming problem, ask clarifying questions if the requirements in the given problem description are incomplete, inconsistent or ambiguous for solving the problem correctly and passing the tests. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. Don\'t return Python code to solve the problem!  Make sure you either return \'NO_QUESTIONS\' or clarifying questions!\n\n ### Problem: \n {problem}'
+
 OK_PROMPT_CLARIFY_Q_V1 = 'Given the coding problem description and the generated code above, decide whether to ask clarifying questions that are necessary to solve the problem correctly. \n If no need to ask clarifying questions, return strictly \'NO_QUESTIONS\' only. Otherwise, return the clarifying questions. \n\n'
 OK_MODEL_DEFAULT = 'gpt-3.5-turbo-0125'
 
@@ -785,13 +787,14 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
     elif model.startswith('Okanagan'):
         # this code assume topn=1
         # set the real model used by Okanagan
-        coder_response = generate_response_str(get_ok_base_model(model), msgs, temperature, args, open_source_model, tokenizer)
+        ok_base_model = get_ok_base_model(model)
+        coder_response = generate_response_str(ok_base_model, msgs, temperature, args, open_source_model, tokenizer)
 
         # Reflection
-        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input_without_prompt)}]
+        reflect_messages =  [{"role": "user","content": OK_PROMPT_CLARIFY_Q_DEEPSEEKCODER.format(code=coder_response, problem=user_input_without_prompt) if 'deepseek' in ok_base_model else OK_PROMPT_CLARIFY_Q.format(code=coder_response, problem=user_input_without_prompt)}]
         # messages.append({"role": "assistant","content": coder_response})
         # messages.append({"role": "user","content": OK_PROMPT_CLARIFY_Q})
-        communicator_response = generate_response_str(get_ok_base_model(model), reflect_messages, temperature, args, open_source_model, tokenizer)
+        communicator_response = generate_response_str(ok_base_model, reflect_messages, temperature, args, open_source_model, tokenizer)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
         print("!!!!!!!!!!!!!!! Okanagan !!!!!! communicator_response: \n" + communicator_response, file=print_file)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
