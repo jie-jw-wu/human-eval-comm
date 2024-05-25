@@ -1194,7 +1194,7 @@ if __name__ == "__main__":
     print('device: ', device)
     if ('Llama' in args.model 
         or args.model.startswith('starcoder')
-        or args.model.startswith('deepseek')
+        or 'deepseek' in args.model  # string like Okanagan~deepseek-coder-6.7b-instruct qualifies
         or args.model.startswith('CodeQwen')
         ) and args.log_phase_output != 2:
         # set huggingface cache directory
@@ -1245,7 +1245,7 @@ if __name__ == "__main__":
 
         # configure tokenizer
         if (args.model.startswith('Meta-Llama')
-            or args.model.startswith('deepseek')
+            or 'deepseek' in args.model
             or args.model.startswith('CodeQwen')):
             tokenizer = AutoTokenizer.from_pretrained(
                 args.model_name_or_path,
