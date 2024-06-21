@@ -59,4 +59,15 @@ In this work, for open-source models in phase 0-2, we run sockeye scripts (./scr
 This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
 
 ## Reference
-Wu, Jie JW, Fatemeh Hendijani Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agents." In Arxiv.
+Please consider citing this paper if you find this useful: 
+
+Wu, Jie JW, and Fatemeh H. Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." arXiv preprint arXiv:2406.00215 (2024).
+
+```
+@article{wu2024benchmarking,
+  title={Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
+  author={Wu, Jie JW and Fard, Fatemeh H},
+  journal={arXiv preprint arXiv:2406.00215},
+  year={2024}
+}
+```
