@@ -129,3 +129,5 @@ sbatch scripts/sockeye_scripts/test_gpu_phase1.sh CodeLlama-7b-hf codellama/Code
 5/25
 sbatch scripts/sockeye_scripts/test_gpu_phase1.sh Okanagan~deepseek-coder-6.7b-instruct deepseek-ai/deepseek-coder-6.7b-instruct HumanEvalComm
 sbatch scripts/sockeye_scripts/test_gpu_phase1.sh Okanagan~deepseek-coder-6.7b-instruct deepseek-ai/deepseek-coder-6.7b-instruct HumanEval
+
+ sbatch scripts/sockeye_scripts/test_gpu_phase3.sh Okanagan~deepseek-coder-6.7b-instruct deepseek-ai/deepseek-coder-6.7b-instruct HumanEvalComm

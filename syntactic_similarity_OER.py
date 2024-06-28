@@ -238,6 +238,9 @@ def analyze_among_among5(experiment, model, temperature, topn, log_phase):
             code_candidates = content['code_candidates']
             # code = code_candidates[0]
             for code in code_candidates:
+                #print('debug:')
+                #print(name)
+                #print(problem_dic[name])
                 problem_dic[name]['code_candidates'].append(code)
 
             code_candidates = []
