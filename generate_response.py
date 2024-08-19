@@ -23,6 +23,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 # set random seed
 set_seed(42)
 
+from AgentFramework/programmer import main as programmer_main
+from AgentFramework/designer import main as designer_main
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
@@ -817,6 +819,11 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         else:
             response_list.append(communicator_response)    
         return response_list  
+    elif model == 'AgentCoder':
+        responses = programmer_main(model, "python", msgs, openai.api_key)
+        test_cases = designer_main(model, "python", msgs, openai.api_key)
+        results = 2
+        return results
     else:
         completion = openai.ChatCompletion.create(
             model=model,
