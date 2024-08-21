@@ -1,26 +1,17 @@
-# test
-import random
 import json
 from typing import Optional, Callable, Dict
-import ast
-import doctest
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import inspect
 import numpy as np
 import sys
 sys.path.append('./CodeGeeX/')
 import contextlib
-import faulthandler
 import io
-import os
-import multiprocessing
-import platform
 import signal
 import concurrent.futures
 from tqdm import tqdm
 from tqdm import tqdm
-from programmer_humaneval import call_fetch_completion_helper
-from test_designer import call_fetch_test_completion_helper
+from programmer import call_fetch_completion_helper
+from designer import call_fetch_test_completion_helper
 from codegeex.benchmark.utils import read_dataset, IMPORT_HELPER
 from codegeex.benchmark.execution import check_correctness
 import tempfile
@@ -91,61 +82,11 @@ def process_humaneval_test(sample, problems, example_test=False,language=languag
     code = sample["completion"]
     # Pre-process for different languages
     if language == "python":
-        code_ = []
         test_setup = "\n".join(IMPORT_HELPER["python"]) + "\n"
         if f"class sample['entry_point']" in code:
             test_string = test_setup + code + "\n" + test + "\n" + f"check({sample['entry_point']})"
         else:
             test_string = test_setup + prompt + code + "\n" + test + "\n" + f"check({sample['entry_point']})"
-    elif language == "cpp":
-        test_set_up = ""
-        for s in IMPORT_HELPER["cpp"]:
-            if s not in prompt:
-                test_set_up += s + "\n"
-        # test_string = test_set_up + "\n" + prompt + code + "\n" + test
-        test_string = test_set_up + "\n" + code + "\n" + test
-    elif language == "java":
-        # if sample["declaration"] in code:
-        if "class Solution" in code:
-            test_string = code + "\n" + test
-        else:
-            test_string = prompt + code + "\n" + test
-        # else:
-        #     test_string = prompt + code + "\n" + test
-    elif language == "js" or language == "javascript":
-        # test_string = prompt + code + "\n" + test
-        test_string = code + "\n" + test
-    elif language == "go":
-        # import_string = problems[task_id]["import"]
-        # prompt = prompt.replace(import_string, "")
-        if example_test and "example_test" in problems[task_id]:
-            test = problems[task_id]["example_test"]
-        else:
-            test = problems[task_id]["test"]
-        candidate_import = ["math.","strings.","strconv.","sort.","time.","regexp.","fmt.","bytes.","md5.","rand."]
-        test_setup = "package main\nimport (\n	\"testing\"\n	\"github.com/stretchr/testify/assert\"\n)"
-        total_string = sample["declaration"] + code + "\n" + test
-        other_pkgs = []
-        for pkg in candidate_import:
-            if pkg in total_string:
-                if pkg != "md5." and pkg!="rand":
-                    other_pkgs.append("    " + "\"" + pkg[:len(pkg)-1] + "\"" + "\n")
-                elif pkg == "md5.":
-                    other_pkgs.append("    " + "\"" + "crypto/md5" + "\"" + "\n")
-                elif pkg == "rand.":
-                    other_pkgs.append("    " + "\"" + "math/rand" + "\"" + "\n")
-        if other_pkgs:
-            import_other_pkgs = "import (\n" + "    ".join([p + "\n" for p in other_pkgs]) + ")"
-            # test_string = test_setup + "\n" + import_other_pkgs + "\n" + prompt + code + "\n" + test
-            test_string = test_setup + "\n" + import_other_pkgs + "\n" + code + "\n" + test
-        else:
-            # test_string = test_setup + "\n" + prompt + code + "\n" + test
-            test_string = test_setup + "\n" + code + "\n" + test
-    elif language == "rust":
-        main = "\nfn main(){ \n } \n"
-        declaration = problems[task_id]["declaration"]
-        test_string = main + declaration + prompt + code + test
-    # print(test_string)
     return test_string
 
 
@@ -183,8 +124,6 @@ def test_report(dataset,lg):
             pass
     print("==============Start Report Testing==============")
     print(f"test_report: {(correct/len(dataset)*100):.1f}")
-
-
 
 def test_agent_concurrency(dataset, lg):
     test_setup = "\n".join(IMPORT_HELPER["python"]) + "\n"
@@ -234,14 +173,12 @@ def test_agent_concurrency(dataset, lg):
                 i = futures.index(future)
                 dataset[i]["completion"] = dataset[i]["completion_list"][idx]
 
-
     print("==============Start Agent Testing==============")
     print(f"test_report: {(total_correct/len(dataset)*100):.1f}")
     print(f"test_for_completion: {(_for_completion/len(dataset)*100):.1f}")
     return dataset
 
-
-if __name__ == "__main__":
+def executor_main():
     model_list = ["gpt-3.5-turbo-1106"]
     language = ["python"]
     for model in model_list:
@@ -259,3 +196,4 @@ if __name__ == "__main__":
                     json.dump(dataset, f, indent=4)
             dataset = test_agent_concurrency(dataset,lg)
             test_report(dataset,lg)
+    return dataset
