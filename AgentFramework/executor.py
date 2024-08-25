@@ -1,3 +1,7 @@
+# This file contains code copied and modified from the following repository:
+# Repository: https://github.com/huangd1999/AgentCoder/tree/main
+# Original Author: Dong Huang, Jie M.Zhang, Michael Luck, Qingwen Bu, Yuhao Qing, Heming Cui
+# License: MIT
 import json
 from typing import Optional, Callable, Dict
 from concurrent.futures import ThreadPoolExecutor, as_completed

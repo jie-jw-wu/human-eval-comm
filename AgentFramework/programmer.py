@@ -1,3 +1,7 @@
+# This file contains code copied and modified from the following repository:
+# Repository: https://github.com/huangd1999/AgentCoder/tree/main
+# Original Author: Dong Huang, Jie M.Zhang, Michael Luck, Qingwen Bu, Yuhao Qing, Heming Cui
+# License: MIT
 import json
 from tqdm import tqdm
 import copy
@@ -62,22 +66,26 @@ def fetch_completion(data_entry, model, times=5):
 def programmer_main(model, language, dataset, api_key):
     openai.api_key = api_key  # Set the API key here
 
+    dataset = list(dataset)
+
+    new_dataset = dataset[:2] # running only first two entries of the dataset
+
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {
             executor.submit(fetch_completion, copy.deepcopy(entry), model): entry
-            for entry in tqdm(dataset)
+            for entry in tqdm(new_dataset)
         }
         for future in tqdm(concurrent.futures.as_completed(future_to_entry)):
             entry = future_to_entry[future]
             try:
                 updated_entry = future.result()
-                idx = dataset.index(entry)
-                dataset[idx] = updated_entry
+                idx = new_dataset.index(entry)
+                new_dataset[idx] = updated_entry
             except Exception as e:
                 print(repr(e))
     
     with open(f"./dataset/{model}_{language}.json", "w") as f:
-        json.dump(dataset, f, indent=4)
+        json.dump(new_dataset, f, indent=4)
     
     return dataset
 

@@ -825,8 +825,9 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         responses = programmer_main(model, "python", msgs, openai.api_key)
         test_cases = designer_main(model, "python", msgs, openai.api_key)
         results = executor_main()
+        response_list.append(results)
         # mite need to change output format
-        return results
+        return response_list
     else:
         completion = openai.ChatCompletion.create(
             model=model,
