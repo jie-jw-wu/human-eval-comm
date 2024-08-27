@@ -28,7 +28,6 @@ def fetch_completion(data_entry, model, times=10):
     
     prompt = data_entry["prompt"]
     entry_point = data_entry["entry_point"]
-    
     text = f"""
 {construct_few_shot_prompt}
 
@@ -65,26 +64,26 @@ def fetch_completion(data_entry, model, times=10):
 
 def designer_main(model, language, dataset, api_key):
     openai.api_key = api_key
-
+    new_dataset = dataset[:2] # running only first two entries of the dataset
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {
-            executor.submit(fetch_completion, copy.deepcopy(entry), model): entry
-            for entry in tqdm(dataset)
+            executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry
+            for entry in tqdm(new_dataset)
         }
         for future in tqdm(concurrent.futures.as_completed(future_to_entry)):
             entry = future_to_entry[future]
             try:
                 updated_entry = future.result()
-                idx = dataset.index(entry)
-                dataset[idx] = updated_entry
+                idx = new_dataset.index(entry)
+                new_dataset[idx] = updated_entry
             except Exception as e:
                 print(repr(e))
     
     # Saving the updated dataset
     with open(f"./dataset/{model}_{language}.json", "w") as f:
-        json.dump(dataset, f, indent=4)
+        json.dump(new_dataset, f, indent=4)
     
-    return dataset
+    return new_dataset
 
 def call_fetch_test_completion_helper(dataset, model,lg):
     print("Fixing bug...")

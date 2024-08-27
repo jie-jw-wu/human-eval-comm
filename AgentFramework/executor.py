@@ -14,10 +14,10 @@ import signal
 import concurrent.futures
 from tqdm import tqdm
 from tqdm import tqdm
-from programmer import call_fetch_completion_helper
-from designer import call_fetch_test_completion_helper
-from codegeex.benchmark.utils import read_dataset, IMPORT_HELPER
-from codegeex.benchmark.execution import check_correctness
+from AgentFramework.programmer import call_fetch_completion_helper
+from AgentFramework.designer import call_fetch_test_completion_helper
+from CodeGeeX.codegeex.benchmark.utils import read_dataset, IMPORT_HELPER
+from CodeGeeX.codegeex.benchmark.execution import check_correctness
 import tempfile
 correct_doctest = 0
 correct_before_doctest = 0
@@ -183,7 +183,7 @@ def test_agent_concurrency(dataset, lg):
     return dataset
 
 def executor_main():
-    model_list = ["gpt-3.5-turbo-1106"]
+    model_list = ["AgentCoder"]
     language = ["python"]
     for model in model_list:
         for lg in language:

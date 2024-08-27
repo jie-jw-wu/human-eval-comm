@@ -9,8 +9,11 @@ import openai
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
 import time
+import os
 
-prompt_path = "../prompts/humaneval_prompt_update.txt"
+print("Current Working Directory:", os.getcwd())
+
+prompt_path = "/home/mnv2138/projects/def-fard/mnv2138/1. human-eval-comm/human-eval-comm/prompts/humaneval_prompt_update.txt"
 with open(prompt_path, "r") as f:
     construct_few_shot_prompt = f.read()
 
@@ -66,13 +69,11 @@ def fetch_completion(data_entry, model, times=5):
 def programmer_main(model, language, dataset, api_key):
     openai.api_key = api_key  # Set the API key here
 
-    dataset = list(dataset)
-
     new_dataset = dataset[:2] # running only first two entries of the dataset
 
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {
-            executor.submit(fetch_completion, copy.deepcopy(entry), model): entry
+            executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry
             for entry in tqdm(new_dataset)
         }
         for future in tqdm(concurrent.futures.as_completed(future_to_entry)):
@@ -87,7 +88,7 @@ def programmer_main(model, language, dataset, api_key):
     with open(f"./dataset/{model}_{language}.json", "w") as f:
         json.dump(new_dataset, f, indent=4)
     
-    return dataset
+    return new_dataset
 
 # if __name__ == "__main__":
 #     parser = argparse.ArgumentParser()
