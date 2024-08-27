@@ -64,7 +64,7 @@ def fetch_completion(data_entry, model, times=10):
 
 def designer_main(model, language, dataset, api_key):
     openai.api_key = api_key
-    new_dataset = dataset[:2] # running only first two entries of the dataset
+    new_dataset = dataset[:1] # running only first two entries of the dataset
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {
             executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry

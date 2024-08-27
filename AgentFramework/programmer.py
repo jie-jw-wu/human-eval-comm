@@ -64,12 +64,14 @@ def fetch_completion(data_entry, model, times=5):
         completions_code.append(completion)
 
     data_entry["completion_list"] = completions_code
+    # print("Completion List is created?")
+    # print(data_entry["completion_list"])
     return data_entry
 
 def programmer_main(model, language, dataset, api_key):
     openai.api_key = api_key  # Set the API key here
 
-    new_dataset = dataset[:2] # running only first two entries of the dataset
+    new_dataset = dataset[:1] # running only first two entries of the dataset
 
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {

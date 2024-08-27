@@ -190,7 +190,7 @@ def executor_main():
             path = f"./dataset/{model}_{lg}.json"
             with open(path, "r") as f:
                 dataset = json.load(f)
-            epoch = 5
+            epoch = 1
             for current_epoch in range(epoch):
                 dataset = test_agent_concurrency(dataset,lg)
                 test_report(dataset,lg)

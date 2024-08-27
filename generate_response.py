@@ -30,7 +30,7 @@ from AgentFramework.executor import executor_main
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
-openai.api_key = "YOUR-OPENAI-API-KEY"
+openai.api_key = "OPENAI-GPT-KEY"
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -826,13 +826,15 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         # this part of the code is for humaneval dataset only
         with open('Benchmark/HumanEvalComm.json', 'r') as file:
             human_eval_data = json.load(file)
-        
-        prompt_data = [{'prompt': item['prompt'], 'entry_point': item['entry_point']} for item in human_eval_data]
+
+        # Rename 'name' to 'task_id' for each item
+        for item in human_eval_data:
+            item['task_id'] = item.pop('name')
 
         print("Running Programmer")
-        responses = programmer_main(model, "python", prompt_data, openai.api_key)
+        responses = programmer_main(model, "python", human_eval_data, openai.api_key)
         print("Running Designer")
-        test_cases = designer_main(model, "python", prompt_data, openai.api_key)
+        test_cases = designer_main(model, "python", responses, openai.api_key)
         print("Running Executor")
         results = executor_main()
         response_list.append(results)
