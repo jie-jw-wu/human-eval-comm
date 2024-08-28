@@ -68,10 +68,8 @@ def fetch_completion(data_entry, model, times=5):
     # print(data_entry["completion_list"])
     return data_entry
 
-def programmer_main(model, language, dataset, api_key):
+def programmer_main(model, language, new_dataset, api_key):
     openai.api_key = api_key  # Set the API key here
-
-    new_dataset = dataset[:1] # running only first two entries of the dataset
 
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {
@@ -91,22 +89,6 @@ def programmer_main(model, language, dataset, api_key):
         json.dump(new_dataset, f, indent=4)
     
     return new_dataset
-
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("--api_key", type=str, required=True, help="OpenAI API key")
-#     parser.add_argument("--model", type=str, required=True, help="Model to use for completion")
-#     parser.add_argument("--language", type=str, default="python", help="Programming language")
-    
-#     args = parser.parse_args()
-
-#     model_list = [args.model]
-#     language = [args.language]
-    
-#     for model in model_list:
-#         for lg in language:
-#             updated_dataset = programmer_main(model, lg, dataset, args.api_key)
-
 
 def call_fetch_completion_helper(dataset, model,lg):
     print("Fixing bug...")

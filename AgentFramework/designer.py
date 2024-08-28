@@ -62,9 +62,9 @@ def fetch_completion(data_entry, model, times=10):
     data_entry["test_case_list"] = test_case_list
     return data_entry
 
-def designer_main(model, language, dataset, api_key):
+def designer_main(model, language, new_dataset, api_key):
     openai.api_key = api_key
-    new_dataset = dataset[:1] # running only first two entries of the dataset
+    
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_entry = {
             executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry
@@ -98,17 +98,3 @@ def call_fetch_test_completion_helper(dataset, model,lg):
             except Exception as e:
                 print(repr(e))
     return dataset
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("--api_key", type=str, required=True, help="OpenAI API key")
-#     parser.add_argument("--model", type=str, required=True, help="Model to use for completion")
-#     parser.add_argument("--language", type=str, default="python", help="Programming language")
-    
-#     args = parser.parse_args()
-
-#     model_list = [args.model]
-#     language = [args.language]
-    
-#     for model in model_list:
-#         for lg in language:
-#             updated_dataset = designer_main(model, lg, dataset, args.api_key)

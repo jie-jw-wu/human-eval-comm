@@ -3,6 +3,7 @@
 # Original Author: Dong Huang, Jie M.Zhang, Michael Luck, Qingwen Bu, Yuhao Qing, Heming Cui
 # License: MIT
 import json
+import random
 from typing import Optional, Callable, Dict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
@@ -131,9 +132,8 @@ def test_report(dataset,lg):
 
 def test_agent_concurrency(dataset, lg):
     test_setup = "\n".join(IMPORT_HELPER["python"]) + "\n"
-    total_correct = 0
+    # total_correct = 0
     _for_completion = 0
-
     def process_item(i):
         if "need_reproduce" in dataset[i].keys() and dataset[i]["need_reproduce"]==False:
             # dataset[i]["need_reproduce"] = True
@@ -141,6 +141,9 @@ def test_agent_concurrency(dataset, lg):
         completion_list = dataset[i]["completion_list"]
         test_case_list = dataset[i]["test_case_list"]
         correct_list = []
+        # Randomly sample one completion to initialize the "completion" entry
+        dataset[i]["completion"] = random.choice(completion_list)
+        # this entry is needed by check_correctness() to run properly
 
         for j in range(len(completion_list)):
             correct = 0
@@ -158,7 +161,6 @@ def test_agent_concurrency(dataset, lg):
 
         max_correct = max(correct_list)
         idx = correct_list.index(max_correct)
-
         return max_correct, idx
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -169,6 +171,7 @@ def test_agent_concurrency(dataset, lg):
             if max_correct >= 3: # GPT-3.5-turbo-1106's test case accuracy is about 67%. So we choice 60% as the bar.
                 i = futures.index(future)
                 dataset[i]["completion"] = dataset[i]["completion_list"][idx]
+                print("created completion list")
                 dataset[i]["need_reproduce"] = False
                 dataset[i]["idx"] = idx
                 dataset[i]["max_correct"] = max_correct
@@ -176,10 +179,11 @@ def test_agent_concurrency(dataset, lg):
             else:
                 i = futures.index(future)
                 dataset[i]["completion"] = dataset[i]["completion_list"][idx]
-
-    print("==============Start Agent Testing==============")
-    print(f"test_report: {(total_correct/len(dataset)*100):.1f}")
-    print(f"test_for_completion: {(_for_completion/len(dataset)*100):.1f}")
+    
+    # # This doesnt work either way
+    # print("==============Start Agent Testing==============")
+    # print(f"test_report: {(total_correct/len(dataset)*100):.1f}")
+    # print(f"test_for_completion: {(_for_completion/len(dataset)*100):.1f}")
     return dataset
 
 def executor_main():
