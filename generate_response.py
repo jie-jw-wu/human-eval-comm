@@ -828,7 +828,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         test_cases = designer_main(model, "python", responses, openai.api_key)
         print("Running Executor")
         results = executor_main()
-        response_list.append(results["completion"])
+        response_list.append(str(results[0]['completion']))
         return response_list
         '''
         input msgs {role: ,content:} round 1
