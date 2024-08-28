@@ -914,11 +914,15 @@ def description_2_code_multi_rounds(task_id, entry_point, prompt, user_input, or
                 # new_prompt = "Original Question: " + original_prompt + " First Response: " + response + " Feedback: " + answer + " " + PROMPT_2ND_ROUND
                 # messages[-1]["prompt"] = new_prompt
                 # msgs_i = messages.copy()
+
+                # directly send third round request to GPT
+                messages.clear()
+                messages.append({"role": "user","content": full_prompt})
                 model_2nd_round = "AgentCoder2_so_this_runs_GPT3.5_directly"
-            else:
-                msgs_i = messages.copy()
-                msgs_i.append({"role":"assistant","content": response})
-                msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
+            
+            msgs_i = messages.copy()
+            msgs_i.append({"role":"assistant","content": response})
+            msgs_i.append({"role":"user","content": answer + PROMPT_2ND_ROUND})
             
             response_2nd = generate_response(model_2nd_round, msgs_i, 1, temperature, args, open_source_model, tokenizer)
             code = response_2_code(response_2nd[0])
