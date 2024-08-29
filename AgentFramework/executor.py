@@ -123,7 +123,10 @@ def test_report(dataset,lg):
         try:
             with swallow_io():
                 with time_limit(2.0):
-                    exec(test_setup + "\n" + dataset[i]["completion"] + "\n" + dataset[i]["test"] + "\n" + f"check({dataset[i]['entry_point']})")
+                    try:
+                        exec(test_setup + "\n" + dataset[i]["completion"] + "\n" + dataset[i]["test"] + "\n" + f"check({dataset[i]['entry_point']})")
+                    except NameError:
+                        exec(test_setup + "\n" + dataset[i]["completion"] + "\n" + dataset[i]["test"] + "\n" + f"check(candidate)")
                 correct+=1
         except Exception as exc:
             pass
@@ -147,14 +150,18 @@ def test_agent_concurrency(dataset, lg):
 
         for j in range(len(completion_list)):
             correct = 0
-            if f"def {dataset[i]['entry_point']}" not in completion_list[j]:
+            if f"def {dataset[i]['entry_point']}" and f"def candidate" not in completion_list[j]:
                 correct_list.append(correct)
                 continue
             for k in range(len(test_case_list)):
-                if f"assert {dataset[i]['entry_point']}(" not in test_case_list[k]:
+                if f"assert {dataset[i]['entry_point']}(" and f"assert candidate(" not in test_case_list[k]:
                     continue
                 dataset[i]["full_code"] = test_setup + "\n" + completion_list[j] + "\n" + test_case_list[k]
-                result = check_correctness(dataset[i]["task_id"], dataset[i], lg, 3, "./tmp")
+                try:
+                    result = check_correctness(dataset[i]["task_id"], dataset[i], lg, 3, "./tmp")
+                except NameError:
+                    dataset[i]["full_code"] = test_setup + "\n" + completion_list[j].replace(entry_point, "candidate") + "\n" + test_case_list[k].replace(entry_point, "candidate")
+                    result = check_correctness(dataset[i]["task_id"], dataset[i], lg, 3, "./tmp")
                 if result["passed"]:
                     correct += 1
             correct_list.append(correct)
@@ -179,11 +186,7 @@ def test_agent_concurrency(dataset, lg):
             else:
                 i = futures.index(future)
                 dataset[i]["completion"] = dataset[i]["completion_list"][idx]
-    
-    # # This doesnt work either way
-    # print("==============Start Agent Testing==============")
-    # print(f"test_report: {(total_correct/len(dataset)*100):.1f}")
-    # print(f"test_for_completion: {(_for_completion/len(dataset)*100):.1f}")
+
     return dataset
 
 def executor_main():
