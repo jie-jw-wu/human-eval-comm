@@ -911,8 +911,8 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
 
                 for message in messages:
                 # Check if 'clarity_prompt' exists in the dictionary and then remove it for third round
-                if 'clarity_prompt' in message:
-                    del message['clarity_prompt']
+                    if 'clarity_prompt' in message:
+                        del message['clarity_prompt']
 
                 # # directly send third round request to GPT
                 # messages.clear()
