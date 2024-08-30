@@ -12,6 +12,7 @@ import argparse
 import random
 import string
 from nltk.corpus import stopwords
+from peft import PeftModel
 
 # Standard Library Modules
 import argparse
@@ -777,12 +778,7 @@ def generate_response_str(model, msgs, temperature, args, open_source_model, tok
     
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = '', prompt = ''):
     response_list = []
-    if args.model.startswith('starcoder'):
-        user_input = tokenizer.apply_chat_template(msgs, tokenize=False)
-        for i in range(topn):
-            response_list.append(get_completion_starcoder('', user_input, open_source_model, tokenizer, args))
-        return response_list        
-    elif 'Llama' in args.model or 'deepseek' in args.model or 'CodeQwen' in args.model:
+    if 'Llama' in args.model or 'deepseek' in args.model or 'CodeQwen' in args.model:
         user_input = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
         for i in range(topn):
             if 'two-shot' in args.model:
@@ -1155,6 +1151,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--model_name_or_path', type=str, help='Path to the model')
     parser.add_argument('--saved_model_path', type=str, help='Path to save the model files')
+    parser.add_argument('--finetuned_model_path', type=str, help='Path to save the finetuned model files')
     parser.add_argument('--hf_dir', type=str, help='Path to the huggingface cache directory')
     parser.add_argument('--input_path', type=str, help='Path to the input file')
     parser.add_argument('--user_input', type=str, help='user input for LLM (testing)')
@@ -1232,6 +1229,10 @@ if __name__ == "__main__":
                 offload_folder=offload_folder,            
             )
         
+
+        if (args.model.contain('finetuned')):
+            model = PeftModel.from_pretrained(model, args.finetuned_model_path)
+
         # If you want to use multiple GPUs
         #if torch.cuda.device_count() > 1:
         #    model = torch.nn.DataParallel(model)
