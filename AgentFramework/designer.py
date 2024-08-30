@@ -88,7 +88,10 @@ def designer_main(model, language, new_dataset, api_key):
 def call_fetch_test_completion_helper(dataset, model,lg):
     print("Fixing bug...")
     with ThreadPoolExecutor(max_workers=5) as executor:
-        future_to_entry = {executor.submit(fetch_completion, copy.deepcopy(entry), model, lg): entry for entry in tqdm(dataset)}
+        future_to_entry = {
+            executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry
+            for entry in tqdm(dataset)
+        }
         for future in tqdm(concurrent.futures.as_completed(future_to_entry)):
             entry = future_to_entry[future]
             try:
