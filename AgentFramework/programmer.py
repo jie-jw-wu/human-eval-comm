@@ -13,7 +13,7 @@ import os
 
 print("Current Working Directory:", os.getcwd())
 
-prompt_path = "/home/mnv2138/projects/def-fard/mnv2138/1. human-eval-comm/human-eval-comm/prompts/humaneval_prompt_update.txt"
+prompt_path = "./prompts/humaneval_prompt_update.txt"
 with open(prompt_path, "r") as f:
     construct_few_shot_prompt = f.read()
 
