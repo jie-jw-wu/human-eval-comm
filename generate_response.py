@@ -830,13 +830,6 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         results = executor_main()
         response_list.append(str(results[0]['completion']))
         return response_list
-        '''
-        input msgs {role: ,content:} round 1
-        msgs {{}, {}, {}}
-        msgs{prompt:, entry_point:, task_id:}
-        output: {string}
-        output: {string}
-        '''
     else:
         completion = openai.ChatCompletion.create(
             model=model,
@@ -857,10 +850,6 @@ def description_2_code_multi_rounds(task_id, entry_point, prompt, user_input, or
     if model == "AgentCoder":
         # Adding the following: entry_point, task_id, original_prompt for AgentCoder
         messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point})
-        if args.log_phase_output >= 2:
-            response_list.append(cached_response)
-        else:
-            response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input, prompt)
     else:
         ## 1st round: initial code generation
         full_prompt = OK_PROMPT_CODEGEN + user_input if model == 'Okanagan' else prompt + user_input
@@ -870,10 +859,10 @@ def description_2_code_multi_rounds(task_id, entry_point, prompt, user_input, or
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
         
         messages.append({"role": "user","content": full_prompt})
-        if args.log_phase_output >= 2:
-            response_list.append(cached_response)
-        else:
-            response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input, prompt)
+    if args.log_phase_output >= 2:
+        response_list.append(cached_response)
+    else:
+        response_list = generate_response(model, messages, topn, temperature, args, open_source_model, tokenizer, user_input, prompt)
         
     if args.log_phase_output == 1:
         return response_list, [], [], []
