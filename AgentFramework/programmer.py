@@ -31,9 +31,11 @@ def fetch_completion(data_entry, model, times=5):
         return data_entry
 
     prompt = data_entry["prompt"]
+    # clarity will only be added to the prompt if the question is modified
+    clarity = "" if "clarity_prompt" not in data_entry else data_entry["clarity_prompt"]
     text = f"""
 {construct_few_shot_prompt}
-
+{clarity}
 **Input Code Snippet**:
 ```python
 {prompt}

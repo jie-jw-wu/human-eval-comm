@@ -38,6 +38,7 @@ PROMPT_START_3 = 'You are an expert software developer. Generate Python3 code (c
 PROMPT_START_3_v2 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n'
 # TODO: try this new prompt
 PROMPT_START_3_v3 = 'You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (only one code block with markdown in response), or ask clarifying questions (no markdown in response): \n'
+PROMPT_START_3_v4 = '\n Based on the information below, you can choose to either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions. \n'
 ORIGINAL_PROMPT_START_0 = 'You are an expert software developer who writes high quality code. With below information, please generate Python3 code (Respond directly with code only with markdown): \n'
 
 PROMPT_EVALUATE_QUESTIONS_V1 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the questions. Please provide an integer representing the quality of questions (3: Good questions that recover all missing info. 2: Fair questions that recover some missing info. 1: Bad questions or irrelevant content).\n  QUALITY=[your int] \n Please also provide answers to the questions to recover the missing requirements! Be sure to add what is new or different in the original descrpition in your answer, compared with the modified problem description! \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markup! \n\n ### Questions: {clarifying_questions} \n ### Problem Description: {problem} \n ### Original Description: {missing_information} \n'
@@ -841,7 +842,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(i['message']['content'])
         return response_list
 
-def description_2_code_multi_rounds(task_id, entry_point, prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_response, cached_qq, cached_answer):
+def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_response, cached_qq, cached_answer):
     
     messages = []
     response_list = []
@@ -849,7 +850,10 @@ def description_2_code_multi_rounds(task_id, entry_point, prompt, user_input, or
     # ROUND 1
     if model == "AgentCoder":
         # Adding the following: entry_point, task_id, original_prompt for AgentCoder
-        messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point})
+        if prompt_modified == False:
+            messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point})
+        else:
+            messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point, "clarity_prompt": PROMPT_START_3_v4})
     else:
         ## 1st round: initial code generation
         full_prompt = OK_PROMPT_CODEGEN + user_input if model == 'Okanagan' else prompt + user_input
@@ -901,8 +905,14 @@ def description_2_code_multi_rounds(task_id, entry_point, prompt, user_input, or
             if model == "AgentCoder":
                 # We can only send one prompt to AgentCoder for now. Adding multiple roles requires major code changes in the original AgentCoder repo
                 new_prompt = "Original Question: " + original_prompt + " First Response: " + response + " Feedback: " + answer + " " + PROMPT_2ND_ROUND
+                # For the third round, we dont tell the model that our prompt contained the phrase "generate clarifying questions, that is why we send original question"
                 messages[-1]["prompt"] = new_prompt
                 msgs_i = messages.copy()
+
+                for message in messages:
+                # Check if 'clarity_prompt' exists in the dictionary and then remove it for third round
+                if 'clarity_prompt' in message:
+                    del message['clarity_prompt']
 
                 # # directly send third round request to GPT
                 # messages.clear()
@@ -1031,8 +1041,16 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     original_prompt = problem['prompt']
                     entry_point = problem['entry_point']
                     task_id = problem['name']
-                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
-                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
+                    # prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
+                    # We will use "Prompt_Modified" to check whether AgentCoder is getting a modified prompt or an original prompt, based on which, we decide whether to send in a "generate clarifying questions" prompt or not.
+                    # A new prompt called PROMPT_START_3_v4 has been created for the same.
+                    Prompt_Modified = False
+                    if input_prompt == 'prompt':
+                        prompt_start = ORIGINAL_PROMPT_START_0
+                    else:
+                        prompt_start = PROMPT_START_3_v2
+                        Prompt_Modified = True
+                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(Prompt_Modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)
                 continue

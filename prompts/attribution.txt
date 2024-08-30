@@ -2,3 +2,5 @@ Please note that these prompts have been copied and modified from the following 
 Repository: https://github.com/huangd1999/AgentCoder/tree/main
 Original Author: Dong Huang, Jie M.Zhang, Michael Luck, Qingwen Bu, Yuhao Qing, Heming Cui
 License: MIT
+
+Please note that the humaneval_prompt_update has been changed from a CoT FewShot approach to just a CoT approach because of dataset rendering issues. Moreoever, the keyword "Markdown" has been added to follow the format of HumanEvalComm.
