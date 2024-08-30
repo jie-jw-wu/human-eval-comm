@@ -85,6 +85,10 @@ def programmer_main(model, language, new_dataset, api_key):
             except Exception as e:
                 print(repr(e))
     
+    # create folder if it does't already exist
+    os.makedirs(f"./dataset", exist_ok=True)
+
+    # Then open the file and write the JSON data
     with open(f"./dataset/{model}_{language}.json", "w") as f:
         json.dump(new_dataset, f, indent=4)
     
