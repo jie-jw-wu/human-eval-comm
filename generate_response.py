@@ -1042,15 +1042,11 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     entry_point = problem['entry_point']
                     task_id = problem['name']
                     # prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
-                    # We will use "Prompt_Modified" to check whether AgentCoder is getting a modified prompt or an original prompt, based on which, we decide whether to send in a "generate clarifying questions" prompt or not.
+                    # We will use "prompt_modified" to check whether AgentCoder is getting a modified prompt or an original prompt, based on which, we decide whether to send in a "generate clarifying questions" prompt or not.
                     # A new prompt called PROMPT_START_3_v4 has been created for the same.
-                    Prompt_Modified = False
-                    if input_prompt == 'prompt':
-                        prompt_start = ORIGINAL_PROMPT_START_0
-                    else:
-                        prompt_start = PROMPT_START_3_v2
-                        Prompt_Modified = True
-                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(Prompt_Modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
+                    prompt_modified = False if input_prompt == 'prompt' else True
+                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
+                    response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)
                 continue
