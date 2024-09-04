@@ -823,14 +823,21 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(communicator_response)    
         return response_list  
     elif model == 'AgentCoder':
+
+        task_id = msgs[0]["task_id"]
+        task_id = task_id.replace("/", "_")
+        
         print("Running Programmer")
-        responses = programmer_main(model, "python", msgs, openai.api_key)
-        if msgs["clarity_prompt"]!="":
+        responses = programmer_main(model, "python", msgs, openai.api_key, task_id)
+
+        if msgs[0]["clarity_prompt"]=="":
             # no clarifying questions being generated through the prompt
             print("Running Designer")
-            test_cases = designer_main(model, "python", responses, openai.api_key)
+            test_cases = designer_main(model, "python", responses, openai.api_key, task_id)
+            
             print("Running Executor")
-            results = executor_main(msgs["task_id"])
+            results = executor_main(task_id)
+            
             response_list.append(str(results[0]['completion']))
         else:
             # we have asked the model to generate clarifying questions
@@ -908,21 +915,15 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
 
             ## 3rd round: generate final code: generate 2nd-round code with chat history (Q&A)
             if model == "AgentCoder":
+                print("This is the original message:", messages)
                 # We can only send one prompt to AgentCoder for now. Adding multiple roles requires major code changes in the original AgentCoder repo
                 new_prompt = "Original Question: " + original_prompt + " First Response: " + response + " Feedback: " + answer + " " + PROMPT_2ND_ROUND
-                # For the third round, we dont tell the model that our prompt contained the phrase "generate clarifying questions, that is why we send original question"
                 messages[-1]["prompt"] = new_prompt
+                for message in messages:
+                    message['clarity_prompt'] = ""
+
                 msgs_i = messages.copy()
 
-                for message in messages:
-                # Check if 'clarity_prompt' exists in the dictionary and then remove it for third round
-                    if 'clarity_prompt' in message:
-                        del message['clarity_prompt']
-
-                # # directly send third round request to GPT
-                # messages.clear()
-                # messages.append({"role": "user","content": full_prompt})
-                # model_2nd_round = "AgentCoder2_so_this_runs_GPT3.5_directly"
             else:
                 msgs_i = messages.copy()
                 msgs_i.append({"role":"assistant","content": response})

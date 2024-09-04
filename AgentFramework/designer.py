@@ -62,10 +62,10 @@ def fetch_completion(data_entry, model, times=10):
     data_entry["test_case_list"] = test_case_list
     return data_entry
 
-def designer_main(model, language, new_dataset, api_key):
+def designer_main(model, language, new_dataset, api_key, task_id):
     openai.api_key = api_key
     
-    with ThreadPoolExecutor(max_workers=5) as executor:
+    with ThreadPoolExecutor(max_workers=1) as executor:
         future_to_entry = {
             executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry
             for entry in tqdm(new_dataset)
@@ -78,8 +78,6 @@ def designer_main(model, language, new_dataset, api_key):
                 new_dataset[idx] = updated_entry
             except Exception as e:
                 print(repr(e))
-    
-    task_id = new_dataset["task_id"]
     # Then open the file and write the JSON data
     with open(f"./dataset/{model}_{language}_{task_id}.json", "w") as f:
         json.dump(new_dataset, f, indent=4)
@@ -88,7 +86,7 @@ def designer_main(model, language, new_dataset, api_key):
 
 def call_fetch_test_completion_helper(dataset, model,lg):
     print("Fixing bug...")
-    with ThreadPoolExecutor(max_workers=5) as executor:
+    with ThreadPoolExecutor(max_workers=1) as executor:
         future_to_entry = {
             executor.submit(fetch_completion, copy.deepcopy(entry), "gpt-3.5-turbo-1106"): entry
             for entry in tqdm(dataset)
