@@ -79,7 +79,7 @@ def designer_main(model, language, new_dataset, api_key):
             except Exception as e:
                 print(repr(e))
     
-   task_id = new_dataset["task_id"]
+    task_id = new_dataset["task_id"]
     # Then open the file and write the JSON data
     with open(f"./dataset/{model}_{language}_{task_id}.json", "w") as f:
         json.dump(new_dataset, f, indent=4)
