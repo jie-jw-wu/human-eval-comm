@@ -189,22 +189,23 @@ def test_agent_concurrency(dataset, lg):
 
     return dataset
 
-def executor_main():
+def executor_main(task_id):
     model_list = ["AgentCoder"]
     language = ["python"]
     for model in model_list:
         for lg in language:
-            path = f"./dataset/{model}_{lg}.json"
+            path = f"./dataset/{model}_{lg}_{task_id}.json"
             with open(path, "r") as f:
                 dataset = json.load(f)
-            epoch = 1
-            for current_epoch in range(epoch):
-                dataset = test_agent_concurrency(dataset,lg)
-                test_report(dataset,lg)
-                dataset = call_fetch_completion_helper(dataset,model,lg)
-                dataset = call_fetch_test_completion_helper(dataset,model,lg)
-                with open(f"./dataset/{model}_{current_epoch}.json", "w") as f:
-                    json.dump(dataset, f, indent=4)
+            # epoch = 1
+            # for current_epoch in range(epoch):
+            # # We choose to run only one epoch for our baseline
+            dataset = test_agent_concurrency(dataset,lg)
+            test_report(dataset,lg)
+            dataset = call_fetch_completion_helper(dataset,model,lg)
+            dataset = call_fetch_test_completion_helper(dataset,model,lg)
+            with open(f"./dataset/{model}_{task_id}.json", "w") as f:
+                json.dump(dataset, f, indent=4)
             dataset = test_agent_concurrency(dataset,lg)
             test_report(dataset,lg)
     return dataset

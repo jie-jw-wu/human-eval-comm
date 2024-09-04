@@ -89,9 +89,9 @@ def programmer_main(model, language, new_dataset, api_key):
     
     # create folder if it does't already exist
     os.makedirs(f"./dataset", exist_ok=True)
-
+    task_id = new_dataset["task_id"]
     # Then open the file and write the JSON data
-    with open(f"./dataset/{model}_{language}.json", "w") as f:
+    with open(f"./dataset/{model}_{language}_{task_id}.json", "w") as f:
         json.dump(new_dataset, f, indent=4)
     
     return new_dataset

@@ -825,11 +825,16 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
     elif model == 'AgentCoder':
         print("Running Programmer")
         responses = programmer_main(model, "python", msgs, openai.api_key)
-        print("Running Designer")
-        test_cases = designer_main(model, "python", responses, openai.api_key)
-        print("Running Executor")
-        results = executor_main()
-        response_list.append(str(results[0]['completion']))
+        if msgs["clarity_prompt"]!="":
+            # no clarifying questions being generated through the prompt
+            print("Running Designer")
+            test_cases = designer_main(model, "python", responses, openai.api_key)
+            print("Running Executor")
+            results = executor_main(msgs["task_id"])
+            response_list.append(str(results[0]['completion']))
+        else:
+            # we have asked the model to generate clarifying questions
+            response_list.append(str(responses[0]['completion_list']))
         return response_list
     else:
         completion = openai.ChatCompletion.create(
@@ -851,7 +856,7 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
     if model == "AgentCoder":
         # Adding the following: entry_point, task_id, original_prompt for AgentCoder
         if prompt_modified == False:
-            messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point})
+            messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point, "clarity_prompt": ""})
         else:
             messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point, "clarity_prompt": PROMPT_START_3_v4})
     else:
