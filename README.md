@@ -55,17 +55,6 @@ Here are some examples:
 
 In this work, for open-source models in phase 0-2, we run sockeye scripts (./scripts/sockeye_scripts/*.sh) to run model inferences in Sockeye (https://arc.ubc.ca/compute-storage/ubc-arc-sockeye), due to resource limitations of the authors' desktop.
 
-## Running AgentCoder baseline
-
-- Requires CodeGeeX library and a few changes to its files.
-- Inside the human-eval-comm directory, run the following command:
-```
-git clone https://github.com/THUDM/CodeGeeX
-```
-- Then navigate to CodeGeeX/codegeex/benchmark/execution.py and make the following changes:
-    - change every instance of "test_code" to "full_code"
-    - change every instance of "generation" to "completion"
-
 ## Acknowledgements
 This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
 
