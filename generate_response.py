@@ -1230,7 +1230,7 @@ if __name__ == "__main__":
             )
         
 
-        if (args.model.contain('finetuned')):
+        if 'finetuned' in args.model:
             model = PeftModel.from_pretrained(model, args.finetuned_model_path)
 
         # If you want to use multiple GPUs
