@@ -12,7 +12,16 @@ import argparse
 import random
 import string
 from nltk.corpus import stopwords
-
+# START imports By Erfan
+import sys
+import yaml
+config = []
+try:
+    with open(os.path.join('config.yaml'), 'r') as f:
+        config = yaml.safe_load(f)
+except Exception:
+    print("cannot find config.yaml!!")
+# END imports By Erfan
 # Standard Library Modules
 import argparse
 
@@ -23,14 +32,32 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 # set random seed
 set_seed(42)
 
-from AgentFramework.programmer import programmer_main
-from AgentFramework.designer import designer_main
-# working on the assumption that executor_main reads from generated files
-from AgentFramework.executor import executor_main
+# START By Erfan: temporary changes for easier compile
+    # I'll comment out these for now
+    #from AgentFramework.programmer import programmer_main
+    #from AgentFramework.designer import designer_main
+    # working on the assumption that executor_main reads from generated files
+    #from AgentFramework.executor import executor_main
+
+# Hardcoding the arguments:
+problem_numbers = config['problem_numbers']
+sys.argv = [sys.argv[0]] + [
+    "-d", "HumanEvalComm",
+    "-m", "gpt-3.5-turbo-0125",
+    "-n", "1",
+    "-t", "1",
+    "-o", "manualRemove",
+    "-minp", "0",
+    "-maxp", "5",
+    "--log_phase_input", "0",
+    "--log_phase_output", "1"
+]
+# END By Erfan: temporary changes for easier compile
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 openai.api_key = os.environ['OPENAI_KEY']
+PROMPT_START = config['phase1_prompts']['prompt1'] # Added By Erfan
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -643,6 +670,7 @@ def create_prompt(description, option='original', percentage=0):
     elif option.startswith('randRemove'):
         return PROMPT_START_3 + split_and_remove_chunk(description, percentage)
     elif option.startswith('manualRemove'): # TODO(jwu): WIP
+        #return PROMPT_START_3_v2 + description
         return PROMPT_START_3_v2 + description
     else:
         return PROMPT_START_3 + split_and_replace_with_random_words(description, percentage)
@@ -994,14 +1022,25 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
     
     problem_list = []
     line_cnt = 0
+
+    # START By Erfan
     with open(dataset_loc, 'r') as f:
         for line in f.readlines():
-            if args.min_problem_idx < 0 or line_cnt >= args.min_problem_idx:
-                problem_list.append(json.loads(line))
+            p = json.loads(line)
+            if(int(p['name'][10:]) in problem_numbers):
+                problem_list.append(p)
+    # END By Erfan
+
+    # START the below lines commented By Erfan:
+    #with open(dataset_loc, 'r') as f:
+    #    for line in f.readlines():
+    #        if args.min_problem_idx < 0 or line_cnt >= args.min_problem_idx:
+    #            problem_list.append(json.loads(line))
             # added by JW
-            line_cnt += 1
-            if args.max_num_problems >= 0 and line_cnt >= args.max_num_problems:
-                break
+    #        line_cnt += 1
+    #        if args.max_num_problems >= 0 and line_cnt >= args.max_num_problems:
+    #            break
+    # START the above lines commented By Erfan
     # names with prompt type (e.g. 'HumanEval/X_promptX')
     cached_names = set()
     cached_responses = {}
@@ -1051,7 +1090,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     # We will use "prompt_modified" to check whether AgentCoder is getting a modified prompt or an original prompt, based on which, we decide whether to send in a "generate clarifying questions" prompt or not.
                     # A new prompt called PROMPT_START_3_v4 has been created for the same.
                     prompt_modified = False if input_prompt == 'prompt' else True
-                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
+                    #prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
+                    prompt_start = PROMPT_START
                     response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)

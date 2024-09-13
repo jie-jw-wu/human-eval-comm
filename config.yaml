@@ -1,0 +1,9 @@
+phase1_prompts:
+  prompt1: "You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n"
+  prompt2: "You are an expert software developer specialized in Python3. Review the problem description and: -If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR - If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.\n ### Problem Description:"
+problem_numbers:
+  - 18
+  - 49
+  - 90
+  - 155
+  - 83

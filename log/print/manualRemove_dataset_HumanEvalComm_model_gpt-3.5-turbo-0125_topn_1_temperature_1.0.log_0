@@ -16718,3 +16718,1435 @@ def generate_integers(a, b):
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+********************************************************************
+****** new problem (name=HumanEval/0 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(numbers: List[float], threshold: float) -> bool:
+    """ Check if in given list of numbers, are any two numbers meeting a certain condition (e.g. closer to or larger than each other than
+    given threshold).
+    >>> candidate([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> candidate([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+    True
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/0 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def has_close_elements(numbers: List[float], threshold: float) -> bool:
+    """ Check if in given list of numbers, are any two numbers larger than each other than
+    given threshold.
+    >>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+    False
+    >>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+    True
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/0 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(...) -> bool:
+ """ Check given a list of number."""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/0 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(numbers: List[float], x: float) -> bool:
+ """ given a list of number."""
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/1 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(paren_string: str) -> List[str]:
+    """ Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+    separate those group into separate strings and return the list of those.
+    Separate groups are balanced (each open brace has a certain requirement to meet) and not nested within each other
+   Keep or ignore any spaces in the input string.
+    >>> separate_paren_groups('( ) (( )) (( )( ))')
+    ['()', '(())', '(()())']
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/1 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    """ Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+    separate those group into separate strings and return the list of those.
+    Separate groups are balanced (each open brace is properly closed) and not nested within each other
+    Ignore any spaces in the input string.
+    >>> separate_paren_groups('( ) (( )) (( )( ))')
+    ['(', '(', '(']
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/1 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def separate_paren_groups(paren_string: str) -> List[str]:
+    """ Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+ """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/1 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(paren_string: str) -> List[str]:
+    """ Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+    separate those group into separate strings and return the list of those.
+    Separate groups are balanced (each open brace has a certain requirement to meet) and not nested within each other
+   Keep or ignore any spaces in the input string.
+    >>> separate_paren_groups('( ) (( )) (( )( ))')
+    ['(', '(', '(']
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/1 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(paren_string: str) -> List[str]:
+    """ Input to this function is a string containing multiple groups of nested parentheses. Your goal is to
+    separate those group into separate strings and return the list of those.
+    Separate groups are balanced (each open brace has a certain requirement to meet) and not nested within each other
+ """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/2 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(number: float) -> float:
+    """ Given a positive floating point number, it can be decomposed into
+    and integer part (largest integer smaller than given number) and decimals
+    (leftover part always smaller than 1).
+
+    Return a certain part of the number (e.g. integer or decimal or another).
+    >>> candidate(3.5)
+    0.5
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/2 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def truncate_number(number: float) -> float:
+    """ Given a positive floating point number, it can be decomposed into
+    and integer part (largest integer smaller than given number) and decimals
+    (leftover part always smaller than 1).
+
+    Return the decimal part of the number.
+    >>> truncate_number(3.5)
+    3
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/2 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def truncate_number(number: float) -> float:
+    """ Given a positive floating point number, it can be decomposed into
+    and integer part (largest integer smaller than given number) and decimals
+    (leftover part always smaller than 1).
+
+        """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/2 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(number: float) -> float:
+    """ Given a positive floating point number, it can be decomposed into
+    and integer part (largest integer smaller than given number) and decimals
+    (leftover part always smaller than 1).
+
+    Return a certain part of the number (e.g. integer or decimal or another)
+    >>> candidate(3.5)
+    3
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/2 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(number: float) -> float:
+    """ Given a positive floating point number, it can be decomposed into
+    and integer part (largest integer smaller than given number) and decimals
+    (leftover part always smaller than 1).
+
+        """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/3 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def below_zero(operations: List[int]) -> bool:
+    """ You're given a list of deposit and withdrawal operations on a bank account that starts with
+   a given balance (e.g. positive or zero). Your task is to detect if at any point the balance of account fallls below zero, and
+    at that point function should return True. Otherwise it should return False.
+    >>> below_zero([1, 2, 3])
+    False
+    >>> below_zero([1, 2, -4, 5])
+    False
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/3 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def below_zero(operations: List[int]) -> bool:
+    """ You're given a list of deposit and withdrawal operations on a bank account that starts with
+    zero balance. Your task is to detect if at any point the balance of account fallls below zero, and
+    at that point function should return True. Otherwise it should return False.
+    >>> below_zero([1, 2, 3])
+    True
+    >>> below_zero([1, 2, -4, 5])
+    False
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/3 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def below_zero(operations: List[int]) -> bool:
+    """ You're given a list of deposit and withdrawal operations on a bank account that starts with
+    zero balance. Your task is to detect if at any point the balance of account fallls below zero.   """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/3 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def below_zero(operations: List[int]) -> bool:
+    """ You're given a list of deposit and withdrawal operations on a bank account that starts with
+   a given balance (e.g. positive or zero). Your task is to detect if at any point the balance of account fallls below zero, and
+    at that point function should return True. Otherwise it should return False.
+    >>> below_zero([1, 2, 3])
+    True
+    >>> below_zero([1, 2, -4, 5])
+    False
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/3 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def below_zero(operations: List[int]) -> bool:
+    """ You're given a list of deposit and withdrawal operations on a bank account that starts with
+   a given balance (e.g. positive or zero). Your task is to detect if at any point the balance of account fallls below zero.   """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation
+    around a certain attribute (e.g. max or mean or other) of this dataset.
+    Mean Absolute Deviation is the average absolute difference between each
+    element and a centerpoint (e.g. max or mean in this case):
+    MAD = average | x - (e.g. max or mean or other) |
+    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.0
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def mean_absolute_deviation(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation
+    around the mean of this dataset.
+    Mean Absolute Deviation is the average absolute difference between each
+    element and a centerpoint (mean in this case):
+    MAD = average | x - x_mean |
+    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.5
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def mean_absolute_deviation(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation. 
+ >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.0
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation
+    around a certain attribute (e.g. max or mean or other) of this dataset.
+    Mean Absolute Deviation is the average absolute difference between each
+    element and a centerpoint (e.g. max or mean in this case):
+    MAD = average | x - (e.g. max or mean or other) |
+    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.5
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation
+    MAD = average | x - (e.g. max or mean or other) |
+    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.0
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt2cp) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def mean_absolute_deviation(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation. 
+    >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.5
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/4 input_prompt=prompt3acp) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+from typing import List
+
+
+def candidate(numbers: List[float]) -> float:
+    """ For a given list of input numbers, calculate Mean Absolute Deviation.   >>> mean_absolute_deviation([1.0, 2.0, 3.0, 4.0])
+    1.5
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def candidate(a: str, b: str) -> int:
+    """ Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> how_many_times('', 'a')
+    0
+    >>> how_many_times('aaa', 'a')
+    3
+    >>> how_many_times('aaaa', 'aa')
+    3
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def how_many_times(string: str, substring: str) -> int:
+    """ Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> how_many_times('', 'a')
+    0
+    >>> how_many_times('aaa', 'a')
+    3
+    >>> how_many_times('aaaa', 'aa')
+    2
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def how_many_times(string: str, substring: str) -> int:
+    """ Find how many times a given substring can be found in the original string.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def candidate(a: str, b: str) -> int:
+    """ Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> how_many_times('', 'a')
+    0
+    >>> how_many_times('aaa', 'a')
+    3
+    >>> how_many_times('aaaa', 'aa')
+    3
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def candidate(a: str, b: str) -> int:
+    """ Find how many times a given substring can be found in the original string.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def candidate(x: int, y: int):
+    """Return 2^n modulo p (be aware of numerics).
+    >>> candidate(3, 5)
+    3
+    >>> candidate(1101, 101)
+    2
+    >>> candidate(0, 101)
+    1
+    >>> candidate(3, 11)
+    8
+    >>> candidate(100, 101)
+    1
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def modp(n: int, p: int):
+    """Return 2^n modulo p (be aware of numerics).
+    >>> modp(3, 5)
+    5
+    >>> modp(1101, 101)
+    101
+    >>> modp(0, 101)
+    101
+    >>> modp(3, 11)
+    11
+    >>> modp(100, 101)
+    101
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def modp(n: int, p: int):
+    """Return 2^n modulo.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def candidate(x: int, y: int):
+    """Return 2^n modulo p (be aware of numerics).
+    >>> candidate(3, 5)
+    5
+    >>> candidate(1101, 101)
+    101
+    >>> candidate(0, 101)
+    101
+    >>> candidate(3, 11)
+    11
+    >>> candidate(100, 101)
+    101
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+
+def candidate(x: int, y: int):
+    """Return 2^n modulo.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of 
+    integers that start or end with 1.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of n-digit
+    positive integers that start or end with 5.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of n-digit
+    positive integers.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of 
+    integers that start or end with 5.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of 
+    positive integers.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest() that returns the 1st, or 2nd, or 3rd smallest element of the list.
+    Return None if there is no such element.
+    
+    next_smallest([1, 2, 3, 4, 5]) == 2
+    next_smallest([5, 1, 4, 3, 2]) == 2
+    next_smallest([]) == None
+    next_smallest([1, 1]) == None
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest() that returns the 2nd smallest element of the list.
+    Return None if there is no such element.
+    
+    next_smallest([1, 2, 3, 4, 5]) == 1
+    next_smallest([5, 1, 4, 3, 2]) == 1
+    next_smallest([]) == None
+    next_smallest([1, 1]) == 1
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest()
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest() that returns the 1st, or 2nd, or 3rd smallest element of the list.
+    Return None if there is no such element.
+    
+    next_smallest([1, 2, 3, 4, 5]) == 1
+    next_smallest([5, 1, 4, 3, 2]) == 1
+    next_smallest([]) == None
+    next_smallest([1, 1]) == 1
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def candidate(num):
+    """Given an integer. return a tuple that has the number of odd or even digits, and odd or even digits, respectively.
+
+     Example:
+        candidate(-12) ==> (1, 1)
+        candidate(123) ==> (1, 2)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def even_odd_count(num):
+    """Given an integer. return a tuple that has the number of even and odd digits respectively.
+
+     Example:
+        even_odd_count(-12) ==> (1, 1)
+        even_odd_count(123) ==> (2, 1)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def candidate(num):
+    """Example:
+        candidate(-12) ==> (1, 1)
+        candidate(123) ==> (1, 2)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt2cp) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer tasked with writing high-quality Python3 code. Review the problem description and do either: 1. If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR 2. If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.
+ ### Problem Description:
+def candidate(num):
+    """Example:
+        candidate(-12) ==> (1, 1)
+        candidate(123) ==> (2, 1)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(a: str, b: str) -> int:
+    """ Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> how_many_times('', 'a')
+    0
+    >>> how_many_times('aaa', 'a')
+    3
+    >>> how_many_times('aaaa', 'aa')
+    3
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def how_many_times(string: str, substring: str) -> int:
+    """ Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> how_many_times('', 'a')
+    0
+    >>> how_many_times('aaa', 'a')
+    3
+    >>> how_many_times('aaaa', 'aa')
+    2
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def how_many_times(string: str, substring: str) -> int:
+    """ Find how many times a given substring can be found in the original string.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(a: str, b: str) -> int:
+    """ Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> how_many_times('', 'a')
+    0
+    >>> how_many_times('aaa', 'a')
+    3
+    >>> how_many_times('aaaa', 'aa')
+    3
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/18 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(a: str, b: str) -> int:
+    """ Find how many times a given substring can be found in the original string.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(x: int, y: int):
+    """Return 2^n modulo p (be aware of numerics).
+    >>> candidate(3, 5)
+    3
+    >>> candidate(1101, 101)
+    2
+    >>> candidate(0, 101)
+    1
+    >>> candidate(3, 11)
+    8
+    >>> candidate(100, 101)
+    1
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def modp(n: int, p: int):
+    """Return 2^n modulo p (be aware of numerics).
+    >>> modp(3, 5)
+    5
+    >>> modp(1101, 101)
+    101
+    >>> modp(0, 101)
+    101
+    >>> modp(3, 11)
+    11
+    >>> modp(100, 101)
+    101
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def modp(n: int, p: int):
+    """Return 2^n modulo.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(x: int, y: int):
+    """Return 2^n modulo p (be aware of numerics).
+    >>> candidate(3, 5)
+    5
+    >>> candidate(1101, 101)
+    101
+    >>> candidate(0, 101)
+    101
+    >>> candidate(3, 11)
+    11
+    >>> candidate(100, 101)
+    101
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/49 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+
+def candidate(x: int, y: int):
+    """Return 2^n modulo.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of 
+    integers that start or end with 1.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of n-digit
+    positive integers that start or end with 5.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of n-digit
+    positive integers.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of 
+    integers that start or end with 5.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/83 input_prompt=prompt2ap) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def starts_one_ends(n):
+    """
+    Given a positive integer n, return the count of the numbers of 
+    positive integers.
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest() that returns the 1st, or 2nd, or 3rd smallest element of the list.
+    Return None if there is no such element.
+    
+    next_smallest([1, 2, 3, 4, 5]) == 2
+    next_smallest([5, 1, 4, 3, 2]) == 2
+    next_smallest([]) == None
+    next_smallest([1, 1]) == None
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest() that returns the 2nd smallest element of the list.
+    Return None if there is no such element.
+    
+    next_smallest([1, 2, 3, 4, 5]) == 1
+    next_smallest([5, 1, 4, 3, 2]) == 1
+    next_smallest([]) == None
+    next_smallest([1, 1]) == 1
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest()
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/90 input_prompt=prompt2ac) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def next_smallest(lst):
+    """
+    You are given a list of integers.
+    Write a function next_smallest() that returns the 1st, or 2nd, or 3rd smallest element of the list.
+    Return None if there is no such element.
+    
+    next_smallest([1, 2, 3, 4, 5]) == 1
+    next_smallest([5, 1, 4, 3, 2]) == 1
+    next_smallest([]) == None
+    next_smallest([1, 1]) == 1
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt1a) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def candidate(num):
+    """Given an integer. return a tuple that has the number of odd or even digits, and odd or even digits, respectively.
+
+     Example:
+        candidate(-12) ==> (1, 1)
+        candidate(123) ==> (1, 2)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt1c) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def even_odd_count(num):
+    """Given an integer. return a tuple that has the number of even and odd digits respectively.
+
+     Example:
+        even_odd_count(-12) ==> (1, 1)
+        even_odd_count(123) ==> (2, 1)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt1p) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def candidate(num):
+    """Example:
+        candidate(-12) ==> (1, 1)
+        candidate(123) ==> (1, 2)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+********************************************************************
+****** new problem (name=HumanEval/155 input_prompt=prompt2cp) ******
+********************************************************************
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!! prompt:
+You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: 
+
+def candidate(num):
+    """Example:
+        candidate(-12) ==> (1, 1)
+        candidate(123) ==> (2, 1)
+    """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
