@@ -13,6 +13,12 @@ else
     DATASET="$5"
 fi
 
+if [ -z "$6" ]; then
+    PHASE1_PROMPT="prompt1"
+else
+    PHASE1_PROMPT="$6"
+fi
+
 # Split the string list into an array
 string_of_strings="$1"
 string_of_strings=${string_of_strings//\"/}
@@ -21,7 +27,7 @@ string_of_strings=${string_of_strings//\"/}
 for i in $string_of_strings; do
     if [ "$2" == "0" ]; then
         # Only for Okanagan, GPT 3.5 and GPT 4
-        python generate_response.py -d "$DATASET" -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 0 --log_phase_output 1 --phase1_prompt "$6"
+        python generate_response.py -d "$DATASET" -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 0 --log_phase_output 1 --phase1_prompt "$PHASE1_PROMPT"
     elif [ "$2" == "1" ]; then
         python generate_response.py -d HumanEvalComm -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 1 --log_phase_output 2
     elif [ "$2" == "2" ]; then
