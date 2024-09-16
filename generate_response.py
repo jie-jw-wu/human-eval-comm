@@ -48,16 +48,17 @@ sys.argv = [sys.argv[0]] + [
     "-t", "1",
     "-o", "manualRemove",
     "-minp", "0",
-    "-maxp", "5",
+    "-maxp", "1",
     "--log_phase_input", "0",
-    "--log_phase_output", "1"
+    "--log_phase_output", "1",
+    "--phase1_prompt", "prompt3_one_shot"
 ]
 # END By Erfan: temporary changes for easier compile
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 openai.api_key = os.environ['OPENAI_KEY']
-PROMPT_START = config['phase1_prompts']['prompt1'] # Added By Erfan
+PROMPT_START = ""#config['phase1_prompts']['prompt1'] # Added By Erfan
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -896,7 +897,13 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
             messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point, "clarity_prompt": PROMPT_START_3_v4})
     else:
         ## 1st round: initial code generation
-        full_prompt = OK_PROMPT_CODEGEN + user_input if model == 'Okanagan' else prompt + user_input
+        if(model == 'Okanagan'):
+            full_prompt = OK_PROMPT_CODEGEN + user_input
+        elif("{{problem}}" in prompt):
+            full_prompt = prompt.replace("{{problem}}", user_input)
+        else:
+            print('Coudn\'t find {{problem}} in the prompt for phase1, it should have been added to the prompt after processing its argument. Halting code ...')
+            raise SystemExit(1)
         
         print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
         print('!!!!!!!!!!!!! prompt:\n' + full_prompt, file=print_file)
@@ -1023,24 +1030,15 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
     problem_list = []
     line_cnt = 0
 
-    # START By Erfan
+
     with open(dataset_loc, 'r') as f:
         for line in f.readlines():
-            p = json.loads(line)
-            if(int(p['name'][10:]) in problem_numbers):
-                problem_list.append(p)
-    # END By Erfan
-
-    # START the below lines commented By Erfan:
-    #with open(dataset_loc, 'r') as f:
-    #    for line in f.readlines():
-    #        if args.min_problem_idx < 0 or line_cnt >= args.min_problem_idx:
-    #            problem_list.append(json.loads(line))
+            if args.min_problem_idx < 0 or line_cnt >= args.min_problem_idx:
+                problem_list.append(json.loads(line))
             # added by JW
-    #        line_cnt += 1
-    #        if args.max_num_problems >= 0 and line_cnt >= args.max_num_problems:
-    #            break
-    # START the above lines commented By Erfan
+            line_cnt += 1
+            if args.max_num_problems >= 0 and line_cnt >= args.max_num_problems:
+                break
     # names with prompt type (e.g. 'HumanEval/X_promptX')
     cached_names = set()
     cached_responses = {}
@@ -1273,6 +1271,7 @@ if __name__ == "__main__":
     parser.add_argument('--resume_task_run', type=int, default=0, help='task to resume at')
     parser.add_argument('--skip_bootstrap', action='store_true', help='whether to skip the bootstrap stage')
     parser.add_argument('--version', type=str, default='v1', help='version of the identity chain')
+    parser.add_argument('--phase1_prompt', type=str, default='prompt1', help='The prompt used in phase 1, choose from config.yaml') # By Erfan
 
     args = parser.parse_args()
     model = None
@@ -1351,6 +1350,18 @@ if __name__ == "__main__":
                 offload_folder=offload_folder,
             )
     
+    try: # Added By Erfan
+        if args.phase1_prompt in config['phase1_prompts'].keys():
+            PROMPT_START = config['phase1_prompts'][args.phase1_prompt]
+            PROMPT_START += '\n{{problem}}'
+            if(args.phase1_prompt.endswith('one_shot')):
+                PROMPT_START += '\n\n### Response:'
+        else:
+            print(f'The value specified for prompt1 is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file. Halting Code ...')
+            raise SystemExit(1)
+    except Exception as e:
+        print(f'Failed to load prompt1, exception: ', e, 'Halting code ...')
+        raise SystemExit(1)
     if args.do_test_only:
         test_codellama(tokenizer, model, args.user_input, args.seq_length)
     elif args.do_save_model:
