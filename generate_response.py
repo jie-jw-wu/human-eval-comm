@@ -32,33 +32,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 # set random seed
 set_seed(42)
 
-# START By Erfan: temporary changes for easier compile
-    # I'll comment out these for now
-    #from AgentFramework.programmer import programmer_main
-    #from AgentFramework.designer import designer_main
-    # working on the assumption that executor_main reads from generated files
-    #from AgentFramework.executor import executor_main
 
-# Hardcoding the arguments:
-problem_numbers = config['problem_numbers']
-sys.argv = [sys.argv[0]] + [
-    "-d", "HumanEvalComm",
-    "-m", "gpt-3.5-turbo-0125",
-    "-n", "1",
-    "-t", "1",
-    "-o", "manualRemove",
-    "-minp", "0",
-    "-maxp", "1",
-    "--log_phase_input", "0",
-    "--log_phase_output", "1",
-    "--phase1_prompt", "prompt3_one_shot"
-]
-# END By Erfan: temporary changes for easier compile
+from AgentFramework.programmer import programmer_main
+from AgentFramework.designer import designer_main
+# working on the assumption that executor_main reads from generated files
+from AgentFramework.executor import executor_main
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 openai.api_key = os.environ['OPENAI_KEY']
-PROMPT_START = None # Added By Erfan
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -899,11 +881,11 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
         ## 1st round: initial code generation
         if(model == 'Okanagan'):
             full_prompt = OK_PROMPT_CODEGEN + user_input
-        elif("{{problem}}" in prompt):
-            full_prompt = prompt.replace("{{problem}}", user_input)
         else:
-            print('Coudn\'t find {{problem}} in the prompt for phase1, it should have been added to the prompt after processing its argument. Halting code ...')
-            raise SystemExit(1)
+            full_prompt = prompt.format(
+                        problem=user_input
+                    )
+
         
         print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
         print('!!!!!!!!!!!!! prompt:\n' + full_prompt, file=print_file)
@@ -1054,6 +1036,17 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                 cached_answers[key] = content['answer']
                 cached_qqs[key] = content['question_quality']
 
+
+    try: # Added By Erfan
+        if args.phase1_prompt in config['phase1_prompts'].keys():
+            config_phase1_prompt = config['phase1_prompts'][args.phase1_prompt]
+        else:
+            print(f'The value specified for prompt1 is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file.')
+            raise SystemExit(1)
+    except Exception as e:
+        print(f'Failed to load prompt1, exception: ', e)
+        raise SystemExit(1)
+    
     response_list = []
     for problem in problem_list:
         print('----------------------problem name: %s--------------------------------' % (problem['name']), flush=True)
@@ -1089,7 +1082,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     # A new prompt called PROMPT_START_3_v4 has been created for the same.
                     prompt_modified = False if input_prompt == 'prompt' else True
                     #prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
-                    prompt_start = PROMPT_START
+                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else config_phase1_prompt
                     response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)
@@ -1350,18 +1343,6 @@ if __name__ == "__main__":
                 offload_folder=offload_folder,
             )
     
-    try: # Added By Erfan
-        if args.phase1_prompt in config['phase1_prompts'].keys():
-            PROMPT_START = config['phase1_prompts'][args.phase1_prompt]
-            PROMPT_START += '\n{{problem}}'
-            if(args.phase1_prompt.endswith('one_shot')):
-                PROMPT_START += '\n\n### Response:'
-        else:
-            print(f'The value specified for prompt1 is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file. Halting Code ...')
-            raise SystemExit(1)
-    except Exception as e:
-        print(f'Failed to load prompt1, exception: ', e, 'Halting code ...')
-        raise SystemExit(1)
     if args.do_test_only:
         test_codellama(tokenizer, model, args.user_input, args.seq_length)
     elif args.do_save_model:
