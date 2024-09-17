@@ -12,7 +12,16 @@ import argparse
 import random
 import string
 from nltk.corpus import stopwords
-
+# START imports By Erfan
+import sys
+import yaml
+config = []
+try:
+    with open(os.path.join('config.yaml'), 'r') as f:
+        config = yaml.safe_load(f)
+except Exception:
+    print("cannot find config.yaml!!")
+# END imports By Erfan
 # Standard Library Modules
 import argparse
 
@@ -22,6 +31,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 
 # set random seed
 set_seed(42)
+
 
 from AgentFramework.programmer import programmer_main
 from AgentFramework.designer import designer_main
@@ -868,7 +878,13 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
             messages.append({"task_id": task_id,"prompt": original_prompt, "entry_point": entry_point, "clarity_prompt": PROMPT_START_3_v4})
     else:
         ## 1st round: initial code generation
-        full_prompt = OK_PROMPT_CODEGEN + user_input if model == 'Okanagan' else prompt + user_input
+        if(model == 'Okanagan'):
+            full_prompt = OK_PROMPT_CODEGEN + user_input
+        else:
+            full_prompt = prompt.format(
+                        problem=user_input
+                    )
+
         
         print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
         print('!!!!!!!!!!!!! prompt:\n' + full_prompt, file=print_file)
@@ -994,6 +1010,8 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
     
     problem_list = []
     line_cnt = 0
+
+
     with open(dataset_loc, 'r') as f:
         for line in f.readlines():
             if args.min_problem_idx < 0 or line_cnt >= args.min_problem_idx:
@@ -1017,6 +1035,17 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                 cached_answers[key] = content['answer']
                 cached_qqs[key] = content['question_quality']
 
+
+    try: # Added By Erfan
+        if args.phase1_prompt in config['phase1_prompts'].keys():
+            config_phase1_prompt = config['phase1_prompts'][args.phase1_prompt]
+        else:
+            print(f'The value specified for prompt1 is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file.')
+            raise SystemExit(1)
+    except Exception as e:
+        print(f'Failed to load prompt1, exception: ', e)
+        raise SystemExit(1)
+    
     response_list = []
     for problem in problem_list:
         print('----------------------problem name: %s--------------------------------' % (problem['name']), flush=True)
@@ -1051,7 +1080,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     # We will use "prompt_modified" to check whether AgentCoder is getting a modified prompt or an original prompt, based on which, we decide whether to send in a "generate clarifying questions" prompt or not.
                     # A new prompt called PROMPT_START_3_v4 has been created for the same.
                     prompt_modified = False if input_prompt == 'prompt' else True
-                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
+                    prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else config_phase1_prompt
                     response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:
                 print('%s---------%s' % (problem['name'], e), flush=True)
@@ -1233,6 +1262,7 @@ if __name__ == "__main__":
     parser.add_argument('--resume_task_run', type=int, default=0, help='task to resume at')
     parser.add_argument('--skip_bootstrap', action='store_true', help='whether to skip the bootstrap stage')
     parser.add_argument('--version', type=str, default='v1', help='version of the identity chain')
+    parser.add_argument('--phase1_prompt', type=str, default='prompt1', help='The prompt used in phase 1, choose from config.yaml') # By Erfan
 
     args = parser.parse_args()
     model = None
