@@ -653,7 +653,6 @@ def create_prompt(description, option='original', percentage=0):
     elif option.startswith('randRemove'):
         return PROMPT_START_3 + split_and_remove_chunk(description, percentage)
     elif option.startswith('manualRemove'): # TODO(jwu): WIP
-        #return PROMPT_START_3_v2 + description
         return PROMPT_START_3_v2 + description
     else:
         return PROMPT_START_3 + split_and_replace_with_random_words(description, percentage)
@@ -1081,7 +1080,6 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                     # We will use "prompt_modified" to check whether AgentCoder is getting a modified prompt or an original prompt, based on which, we decide whether to send in a "generate clarifying questions" prompt or not.
                     # A new prompt called PROMPT_START_3_v4 has been created for the same.
                     prompt_modified = False if input_prompt == 'prompt' else True
-                    #prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else PROMPT_START_3_v2
                     prompt_start = ORIGINAL_PROMPT_START_0 if input_prompt == 'prompt' else config_phase1_prompt
                     response_list, code_list, qq_list, ans_list = description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt_start, description, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_responses.get(key, ''), cached_qqs.get(key, 0), cached_answers.get(key, ''))
             except Exception as e:

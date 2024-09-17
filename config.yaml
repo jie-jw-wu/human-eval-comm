@@ -2,15 +2,11 @@ phase1_prompts:
   prompt1: "You are an expert software developer who writes high quality code. With below information, please either generate Python3 code (Respond directly with code only with markdown), or ask clarifying questions: \n {problem}"
   prompt2: "You are an expert software developer specialized in Python3. Review the problem description and: -If the description provides enough detail, proceed by writing the required Python3 code using markdown. OR - If further details are needed to ensure the solution is accurate and complete, please list any specific questions you have about the problem.\n ### Problem Description: \n {problem}"
   prompt3_one_shot:  "You are an expert software developer specialized in Python3. In each turn, review the problem description and:\n - If the description provides accurate detail, proceed by writing the required Python3 code using markdown.
-OR \n - If further details are needed to ensure the solution is accurate and complete, list clarifying questions about the problem without writing code.
-### Problem Description:\n\n ```python
+OR \n - If further details are needed to ensure the solution is accurate and complete, list clarifying questions about the problem without writing code.\n### Problem Description:\n\n ```python
 def candidate(x: int, y: int):\n \"\"\"\n Return 2^n modulo p (be aware of numerics).\n >>> candidate(3, 5)\n 3\n >>> candidate(1101, 101)\n 2\n >>> candidate(0, 101)\n 1\n >>> candidate(3, 11)\n 8\n >>> candidate(100, 101)\n 1\n\n 
-```
-\"\"\"
-### Response:
-The problem description seems to be incomplete. It provides a function signature and some test cases, but it doesn’t specify what the function is supposed to do. The docstring suggests that the function should return 2^n modulo p, but the function parameters (x, y) don’t match with the variables in the docstring (n, p).
-Here are my questions to clarify the problem:
-1. What are the roles of the parameters x and y in the function?
-2. Should the function return 2^n modulo p as suggested in the docstring? If so, which parameter corresponds to n and which corresponds to p?
-3. The test cases provided in the docstring don’t seem to match the function description. Could you please provide correct test cases?\n\n### Problem Description:\n {problem} \n\n ### Response:
+\"\"\"\n```\n### Response:\nThe problem description seems to be incomplete. It provides a function signature and some test cases, but it doesn’t specify what the function is supposed to do. The docstring suggests that the function should return 2^n modulo p, but the function parameters (x, y) don’t match with the variables in the docstring (n, p).
+\nHere are my questions to clarify the problem:
+\n1. What are the roles of the parameters x and y in the function?
+\n2. Should the function return 2^n modulo p as suggested in the docstring? If so, which parameter corresponds to n and which corresponds to p?
+\n3. The test cases provided in the docstring don’t seem to match the function description. Could you please provide correct test cases?\n\n### Problem Description:\n {problem} \n\n ### Response:
 "
