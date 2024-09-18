@@ -6,3 +6,4 @@ demo*.py
 __pycache__/*
 tables/*
 recycle_bin/*
+log/
