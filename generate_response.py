@@ -33,10 +33,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 set_seed(42)
 
 
-#from AgentFramework.programmer import programmer_main
-#from AgentFramework.designer import designer_main
+from AgentFramework.programmer import programmer_main
+from AgentFramework.designer import designer_main
 # working on the assumption that executor_main reads from generated files
-#from AgentFramework.executor import executor_main
+from AgentFramework.executor import executor_main
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
