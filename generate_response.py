@@ -33,10 +33,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 set_seed(42)
 
 
-from AgentFramework.programmer import programmer_main
-from AgentFramework.designer import designer_main
+#from AgentFramework.programmer import programmer_main
+#from AgentFramework.designer import designer_main
 # working on the assumption that executor_main reads from generated files
-from AgentFramework.executor import executor_main
+#from AgentFramework.executor import executor_main
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
@@ -603,7 +603,24 @@ def get_completion_starcoder_fim(
     print(completion)
     return completion
 
-
+def load_prompt_from_config(phase): # Added By Erfan
+    if(phase == 1):
+        prompt_id = args.phase1_prompt
+    elif(phase == 2):
+        prompt_id = args.phase2_prompt
+    else:
+        print(f'Invalid phase number passed to "load_prompt_from_config" function')
+        raise SystemExit(1)
+    try:
+        if prompt_id in config[f'phase{phase}_prompts'].keys():
+            loaded_prompt = config[f'phase{phase}_prompts'][prompt_id]
+            return loaded_prompt
+        else:
+            print(f'"{prompt_id}" does not exist in the list of phase{phase} prompts in config.yaml file.')
+            raise SystemExit(1)
+    except Exception as e:
+        print(f'Failed to load phase{phase} prompt, exception: ', e)
+        raise SystemExit(1)
 
 def evaluate_clarifying_questions(
     missing_information='',
@@ -615,15 +632,7 @@ def evaluate_clarifying_questions(
     topn = 1
     temperature = 1.0
     model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
-    try: # Added By Erfan
-        if args.phase2_prompt in config['phase2_prompts'].keys():
-            prompt_evaluate_questions = config['phase2_prompts'][args.phase2_prompt]
-        else:
-            print(f'The value specified for phase2 prompt is invalid, "{args.phase2_prompt}" does not exist in the list of phase2 prompts in config.yaml file.')
-            raise SystemExit(1)
-    except Exception as e:
-        print(f'Failed to load phase2 prompt, exception: ', e)
-        raise SystemExit(1)
+    prompt_evaluate_questions = load_prompt_from_config(phase = 2)
     content = prompt_evaluate_questions.format(
                 missing_information=missing_information,
                 clarifying_questions=clarifying_questions,
@@ -1044,16 +1053,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                 cached_answers[key] = content['answer']
                 cached_qqs[key] = content['question_quality']
 
-
-    try: # Added By Erfan
-        if args.phase1_prompt in config['phase1_prompts'].keys():
-            config_phase1_prompt = config['phase1_prompts'][args.phase1_prompt]
-        else:
-            print(f'The value specified for phase1 prompt is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file.')
-            raise SystemExit(1)
-    except Exception as e:
-        print(f'Failed to load phase1 prompt, exception: ', e)
-        raise SystemExit(1)
+    config_phase1_prompt = load_prompt_from_config(phase = 1)
     
     response_list = []
     for problem in problem_list:
