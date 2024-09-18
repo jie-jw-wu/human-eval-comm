@@ -615,7 +615,16 @@ def evaluate_clarifying_questions(
     topn = 1
     temperature = 1.0
     model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
-    content = PROMPT_EVALUATE_QUESTIONS.format(
+    try: # Added By Erfan
+        if args.phase2_prompt in config['phase2_prompts'].keys():
+            prompt_evaluate_questions = config['phase2_prompts'][args.phase2_prompt]
+        else:
+            print(f'The value specified for phase2 prompt is invalid, "{args.phase2_prompt}" does not exist in the list of phase2 prompts in config.yaml file.')
+            raise SystemExit(1)
+    except Exception as e:
+        print(f'Failed to load phase2 prompt, exception: ', e)
+        raise SystemExit(1)
+    content = prompt_evaluate_questions.format(
                 missing_information=missing_information,
                 clarifying_questions=clarifying_questions,
                 problem=problem
@@ -1040,10 +1049,10 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
         if args.phase1_prompt in config['phase1_prompts'].keys():
             config_phase1_prompt = config['phase1_prompts'][args.phase1_prompt]
         else:
-            print(f'The value specified for prompt1 is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file.')
+            print(f'The value specified for phase1 prompt is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file.')
             raise SystemExit(1)
     except Exception as e:
-        print(f'Failed to load prompt1, exception: ', e)
+        print(f'Failed to load phase1 prompt, exception: ', e)
         raise SystemExit(1)
     
     response_list = []
@@ -1263,6 +1272,7 @@ if __name__ == "__main__":
     parser.add_argument('--skip_bootstrap', action='store_true', help='whether to skip the bootstrap stage')
     parser.add_argument('--version', type=str, default='v1', help='version of the identity chain')
     parser.add_argument('--phase1_prompt', type=str, default='prompt1', help='The prompt used in phase 1, choose from config.yaml') # By Erfan
+    parser.add_argument('--phase2_prompt', type=str, default='prompt1', help='The prompt used in phase 2, choose from config.yaml') # By Erfan
 
     args = parser.parse_args()
     model = None

@@ -53,7 +53,7 @@ for %%i in (!string_of_strings!) do (
         python generate_response.py -d %DATASET% -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 0 --log_phase_output 1 --phase1_prompt %PHASE1_PROMPT%
 
     ) else if "%2"=="1" (
-        python generate_response.py -d HumanEvalComm -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 1 --log_phase_output 2
+        python generate_response.py -d HumanEvalComm -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 1 --log_phase_output 2 --phase2_prompt %5
     ) else if "%2"=="2" (
         REM only for Okanagan, GPT 3.5 and GPT 4
         python generate_response.py -d HumanEvalComm -m %%i -n 1 -t 1 -o manualRemove -minp %3 -maxp %4 --log_phase_input 2 --log_phase_output 3
