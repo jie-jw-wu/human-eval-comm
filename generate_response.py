@@ -605,7 +605,24 @@ def get_completion_starcoder_fim(
     print(completion)
     return completion
 
-
+def load_prompt_from_config(phase): # Added By Erfan
+    if(phase == 1):
+        prompt_id = args.phase1_prompt
+    elif(phase == 2):
+        prompt_id = args.phase2_prompt
+    else:
+        print(f'Invalid phase number passed to "load_prompt_from_config" function')
+        raise SystemExit(1)
+    try:
+        if prompt_id in config[f'phase{phase}_prompts'].keys():
+            loaded_prompt = config[f'phase{phase}_prompts'][prompt_id]
+            return loaded_prompt
+        else:
+            print(f'"{prompt_id}" does not exist in the list of phase{phase} prompts in config.yaml file.')
+            raise SystemExit(1)
+    except Exception as e:
+        print(f'Failed to load phase{phase} prompt, exception: ', e)
+        raise SystemExit(1)
 
 def evaluate_clarifying_questions(
     missing_information='',
@@ -617,7 +634,8 @@ def evaluate_clarifying_questions(
     topn = 1
     temperature = 1.0
     model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
-    content = PROMPT_EVALUATE_QUESTIONS.format(
+    prompt_evaluate_questions = load_prompt_from_config(phase = 2)
+    content = prompt_evaluate_questions.format(
                 missing_information=missing_information,
                 clarifying_questions=clarifying_questions,
                 problem=problem
@@ -1032,16 +1050,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
                 cached_answers[key] = content['answer']
                 cached_qqs[key] = content['question_quality']
 
-
-    try: # Added By Erfan
-        if args.phase1_prompt in config['phase1_prompts'].keys():
-            config_phase1_prompt = config['phase1_prompts'][args.phase1_prompt]
-        else:
-            print(f'The value specified for prompt1 is invalid, "{args.phase1_prompt}" does not exist in the list of prompts in config.yaml file.')
-            raise SystemExit(1)
-    except Exception as e:
-        print(f'Failed to load prompt1, exception: ', e)
-        raise SystemExit(1)
+    config_phase1_prompt = load_prompt_from_config(phase = 1)
     
     response_list = []
     for problem in problem_list:
@@ -1261,6 +1270,7 @@ if __name__ == "__main__":
     parser.add_argument('--skip_bootstrap', action='store_true', help='whether to skip the bootstrap stage')
     parser.add_argument('--version', type=str, default='v1', help='version of the identity chain')
     parser.add_argument('--phase1_prompt', type=str, default='prompt1', help='The prompt used in phase 1, choose from config.yaml') # By Erfan
+    parser.add_argument('--phase2_prompt', type=str, default='prompt1', help='The prompt used in phase 2, choose from config.yaml') # By Erfan
 
     args = parser.parse_args()
     model = None

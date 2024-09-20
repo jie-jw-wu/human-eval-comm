@@ -10,3 +10,24 @@ def candidate(x: int, y: int):\n \"\"\"\n Return 2^n modulo p (be aware of numer
 \n2. Should the function return 2^n modulo p as suggested in the docstring? If so, which parameter corresponds to n and which corresponds to p?
 \n3. The test cases provided in the docstring don’t seem to match the function description. Could you please provide correct test cases?\n\n### Problem Description:\n {problem} \n\n ### Response:
 "
+
+phase2_prompts:
+  prompt1: "The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n"
+  prompt2: "A MODIFIED version of a coding problem description was given to a coder. The coder has raised some clarifying questions about the problem description.  Given both the modified, and original version of the problem description, provide answers to the questions raised by the coder strictly following the format: ANSWERS=[your answer], then provide an integer representing the quality of questions (3: Good questions that help recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions or completely irrelevant questions), to provide the quality of questions, strictly follow the format: QUALITY=[1, 2, or 3].\n\n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n ### Questions: {clarifying_questions}\n"
+  prompt3_one_shot: "A MODIFIED version of a coding problem description was given to a coder. The coder has raised some clarifying questions about the problem description.  Given both the modified, and original version of the problem description, provide answers to the questions raised by the coder strictly following the format: ANSWERS=[your answer], then provide an integer representing the quality of questions (3: Good questions that help recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions or completely irrelevant questions), to provide the quality of questions, strictly follow the format: QUALITY=[1, 2, or 3].\n
+Here is an example of sample input and output for you:
+### Sample input:\n
+#### Modified Problem Description:\n python def candidate(x: int, y: int):\n \"\"\"\n Return 2^n modulo p (be aware of numerics).\n >>> candidate(3, 5)\n 3\n >>> candidate(1101, 101)\n 2\n >>> candidate(0, 101)\n 1\n >>> candidate(3, 11)\n 8\n >>> candidate(100, 101)\n 1\n\n  \"\"\"\n
+#### Original Description:\n python def modp(n: int, p: int):\n    \"\"\"Return 2^n modulo p (be aware of numerics).\n    >>> modp(3, 5)\n    3\n    >>> modp(1101, 101)\n    2\n    >>> modp(0, 101)\n    1\n    >>> modp(3, 11)\n    8\n    >>> modp(100, 101)\n    1\n    \"\"\"\n
+#### Questions: \n - Can you clarify the relationship between the function parameters 'x' and 'y' and the operation parameters \"2^n modulo p\" mentioned in the docstring?\n
+- Are there any constraints on the input values for 'x' and 'y' that I should be aware of?\n
+- The docstring mentions \"be aware of numerics\". Are there any specific numerical considerations or edge cases I should keep in mind while implementing this function?\n\n
+### Sample output:\n
+ANSWERS= ```\n
+- 'x' represents the exponent (n), and 'y' represents the modulus (p).\n
+- There are no explicitly stated constraints on 'x' and 'y'.\n
+- There is no extra information about the \"be aware of numerics\" note.\n\n
+QUALITY= 3\n
+## Now give the output for the problem below:
+### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n ### Questions: {clarifying_questions}\n
+"
