@@ -25,6 +25,7 @@ def get_ask_question_rate_with_qq(question_quality):
 
 def analyze_among_top0_5(experiment, model, temperature):
     save_dir = './result_data/%s_%s_%s/' % (experiment, model, temperature)
+    save_dir = os.path.join(save_dir)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
@@ -150,6 +151,9 @@ def analyze_among_top0_5(experiment, model, temperature):
 
 def analyze_among_among5(experiment, model, temperature, topn, log_phase):
     save_dir = './result_data/%s_%s_%s/' % (experiment, model, temperature)
+    save_dir = os.path.join(save_dir)
+    print("################\n###############")
+    print(save_dir)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
