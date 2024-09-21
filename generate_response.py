@@ -37,7 +37,7 @@ set_seed(42)
 
 # .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 0 0 1 HumanEvalComm prompt2
 # .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 1 0 1 prompt2
-# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 2
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 2 0 1
 # .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 3
 # .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 4
 # .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 5
@@ -1034,8 +1034,7 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
         log_file = './log/%s_dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
                    (option, dataset, model + args.model_postfix if args.model_postfix not in model else model, topn, temperature, str(args.log_phase_input))
         remove_percentage = string_to_int(get_ith_element(option, 1))
-    print("#########################\n######################")
-    print(log_file)
+        
     # write printed output to a file (print_file)
     print_file_str = './log/print' + log_file[5:]
     global print_file
