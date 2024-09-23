@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Editable variables for minp and maxp
-minp=0
-maxp=1
+minp=1
+maxp=165
 
 # Check if both arguments are provided
 if [ $# -ne 2 ]; then
@@ -31,67 +31,32 @@ get_postfixed_models() {
 #########################                              Phase 0
 models=(
     "gpt-3.5-turbo-0125"
-    "Okanagan"
     )
 postfixed_models=$(get_postfixed_models "${models[@]}")
-./scripts/script_stepwise_phase123_unix.sh $postfixed_models 0 $minp $maxp HumanEvalComm $phase1_prompt
+#./scripts/script_stepwise_phase123_unix.sh $postfixed_models 0 $minp $maxp HumanEvalComm $phase1_prompt
 
-postfixed_models=$(get_postfixed_models "${models[@]}")
-./scripts/script_stepwise_phase123_unix.sh $postfixed_models 0 $minp $maxp HumanEval $phase1_prompt
+#./scripts/script_stepwise_phase123_unix.sh $postfixed_models 0 $minp $maxp HumanEval $phase1_prompt
 
 #########################                              Phase 1
-models=(
-    "gpt-3.5-turbo-0125"
-    "Okanagan"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
-./scripts/script_stepwise_phase123_unix.sh $postfixed_models 1 $minp $maxp $phase2_prompt
+#./scripts/script_stepwise_phase123_unix.sh $postfixed_models 1 $minp $maxp $phase2_prompt
 
 #########################                              Phase 2
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
-./scripts/script_stepwise_phase123_unix.sh $postfixed_models 2 $minp $maxp
+#./scripts/script_stepwise_phase123_unix.sh $postfixed_models 2 $minp $maxp
 
 #########################                              Phase 3
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
 ./scripts/script_stepwise_phase123_unix.sh $postfixed_models 3
 
 #########################                              Phase 4
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
 ./scripts/script_stepwise_phase123_unix.sh $postfixed_models 4
 
 #########################                              Phase 3-1
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
 ./scripts/script_stepwise_phase123_unix.sh $postfixed_models 3-1
 
 #########################                              Phase 4-1
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
 ./scripts/script_stepwise_phase123_unix.sh $postfixed_models 4-1
 
 #########################                              Phase 5
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
 ./scripts/script_stepwise_phase123_unix.sh $postfixed_models 5
 
 #########################                              Phase 6
-models=(
-    "gpt-3.5-turbo-0125"
-    )
-postfixed_models=$(get_postfixed_models "${models[@]}")
 ./scripts/script_stepwise_phase123_unix.sh $postfixed_models 6
