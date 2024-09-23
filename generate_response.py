@@ -25,7 +25,7 @@ except Exception:
     print("cannot find config.yaml!!")
 # END imports By Erfan
 # Standard Library Modules
-import argparse
+import argparse 
 
 # External Modules
 import torch
@@ -33,12 +33,20 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 
 # set random seed
 set_seed(42)
+# python generate_response.py -d HumanEvalComm -m gpt-3.5-turbo-0125_prompt2 -n 1 -t 1 -o manualRemove -minp 0 -maxp 1 --log_phase_input 0 --log_phase_output 1 --phase1_prompt prompt2
 
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 0 0 1 HumanEvalComm prompt2
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 1 0 1 prompt2
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 2 0 1
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 3
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 4
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 5
+# .\scripts\script_stepwise_phase123.bat gpt-3.5-turbo-0125_prompt2 6
 
-from AgentFramework.programmer import programmer_main
-from AgentFramework.designer import designer_main
+#from AgentFramework.programmer import programmer_main
+#from AgentFramework.designer import designer_main
 # working on the assumption that executor_main reads from generated files
-from AgentFramework.executor import executor_main
+#from AgentFramework.executor import executor_main
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
@@ -605,6 +613,15 @@ def get_completion_starcoder_fim(
     print(completion)
     return completion
 
+def extract_model_postfix(s):
+    matches = re.findall(r'_prompt\S*', s)
+    match = matches[-1] if matches else None
+    return match
+
+def trim_postfix(s, match):
+    index = s.find(match)
+    return s[:index] if index != -1 else s
+
 def load_prompt_from_config(phase): # Added By Erfan
     if(phase == 1):
         prompt_id = args.phase1_prompt
@@ -1012,12 +1029,12 @@ def HumanEval_experiment(dataset, dataset_loc, option, model, topn, temperature,
     log_file = ''
     if option == 'original':
         log_file = './log/dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (dataset, model, topn, temperature, str(args.log_phase_input))
+                   (dataset, model + args.model_postfix if args.model_postfix not in model else model, topn, temperature, str(args.log_phase_input))
     else:
         log_file = './log/%s_dataset_%s_model_%s_topn_%s_temperature_%s.log_%s' % \
-                   (option, dataset, model, topn, temperature, str(args.log_phase_input))
+                   (option, dataset, model + args.model_postfix if args.model_postfix not in model else model, topn, temperature, str(args.log_phase_input))
         remove_percentage = string_to_int(get_ith_element(option, 1))
-    
+        
     # write printed output to a file (print_file)
     print_file_str = './log/print' + log_file[5:]
     global print_file
@@ -1273,6 +1290,8 @@ if __name__ == "__main__":
     parser.add_argument('--phase2_prompt', type=str, default='prompt1', help='The prompt used in phase 2, choose from config.yaml') # By Erfan
 
     args = parser.parse_args()
+    args.model_postfix = extract_model_postfix(args.model)
+    args.model = trim_postfix(args.model, args.model_postfix)
     model = None
     tokenizer = None
     device = "cuda" if torch.cuda.is_available() else "cpu"
