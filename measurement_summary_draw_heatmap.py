@@ -74,8 +74,10 @@ def semantic_syntactic_structural_similarity(prompt_type):
             with open(file_path + '/%s_dataset_%s_%s_%s/intermediate_result_top0_5.json' % (experiment, dataset, model, temperature), 'r') as f:
                 intermediate_result = json.load(f)
     
-    with open(file_path + '/%s_dataset_%s_%s_%s/intermediate_result_among5.json' % (experiment, 'HumanEval', model, temperature), 'r') as fo:
-        original_result = json.load(fo)
+    ori_file_name = file_path + '/%s_dataset_%s_%s_%s/intermediate_result_among5.json' % (experiment, 'HumanEval', model, temperature)
+    if os.path.exists(ori_file_name):
+        with open(ori_file_name, 'r') as fo:
+            original_result = json.load(fo)
 
     test_case_pass_rate = []
     OER = []
