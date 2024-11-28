@@ -1,0 +1,24 @@
+we are in dir /home/jie/human-eval-comm
+The `load_in_4bit` and `load_in_8bit` arguments are deprecated and will be removed in the future versions. Please, pass a `BitsAndBytesConfig` object in `quantization_config` argument instead.
+device:  cuda
+Loading model...
+**********************************
+**** Using 8-bit quantization ****
+**********************************
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [01:00<01:00, 60.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:17<00:00, 34.67s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:17<00:00, 38.54s/it]
+Traceback (most recent call last):
+  File "/home/jie/human-eval-comm/generate_response.py", line 1328, in <module>
+    model = PeftModel.from_pretrained(model, args.finetuned_model_path)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jie/ENV/lib/python3.11/site-packages/peft/peft_model.py", line 545, in from_pretrained
+    model.load_adapter(
+  File "/home/jie/ENV/lib/python3.11/site-packages/peft/peft_model.py", line 1113, in load_adapter
+    adapters_weights = load_peft_weights(model_id, device=torch_device, **hf_hub_download_kwargs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jie/ENV/lib/python3.11/site-packages/peft/utils/save_and_load.py", line 486, in load_peft_weights
+    adapters_weights = safe_load_file(filename, device=device)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jie/ENV/lib/python3.11/site-packages/safetensors/torch.py", line 311, in load_file
+    with safe_open(filename, framework="pt", device=device) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+safetensors_rust.SafetensorError: Error while deserializing header: InvalidHeaderDeserialization
