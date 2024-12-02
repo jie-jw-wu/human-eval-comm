@@ -1,0 +1,7 @@
+we are in dir /home/jie/human-eval-comm
+Traceback (most recent call last):
+  File "/home/jie/human-eval-comm/generate_response.py", line 45, in <module>
+    openai.api_key = os.environ['OPENAI_KEY']
+                     ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "<frozen os>", line 679, in __getitem__
+KeyError: 'OPENAI_KEY'
