@@ -1,8 +1,21 @@
-![1632041413-huge-scaled-1-1440x466](https://github.com/jie-jw-wu/human-eval-comm/assets/122728498/14395bdb-c82d-42a6-a2d6-8b9453d9e321)
 
-# HumanEvalComm: Evaluating the Communication Skill of Code LLMs and LLM Agent (Okanagan)
+# HumanEvalComm: Evaluating the Communication Skill of Code LLMs and LLM Agent
+![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square)
+[![Research Paper](https://img.shields.io/badge/Paper-brightgreen.svg?style=flat-square)](https://arxiv.org/abs/2406.00215)
+[![Huggingface Dataset](https://img.shields.io/badge/Dataset-blue.svg?style=flat-square)](https://huggingface.co/datasets/)
 
-## Overview
+## Dataset Description
+
+HumanEvalComm is a benchmark dataset for evaluating the communication skills of Large Language Models (LLMs) in code generation tasks. It is built upon the widely used [HumanEval benchmark](https://github.com/openai/human-eval) and focuses on evaluating the degree of communication skills when generating code.
+
+HumanEvalComm modifies the original problem descriptions in the HumanEval dataset to trigger clarifying questions, which are necessary to generate the correct code. This modification is done using a taxonomy of clarification types: Ambiguity, Inconsistency, and Incompleteness.
+- Ambiguity: Statements in the problem descriptions are modified to have multiple interpretations. For example, changing "sort the array descendingly" to "sort the array (descendingly or ascendingly)".
+- Inconsistency: Modifications are made to create contradictions between the problem description and examples. For instance, changing the output of test examples to contradict the provided textual description.
+- Incompleteness: Parts of the problem description are removed to make it incomplete, requiring the model to ask questions to recover the missing content.
+
+HumanEvalComm contains 762 modified problem descriptions based on the 164 problems in the HumanEval dataset. The modifications are created by applying one or a combination of the aforementioned clarification types. Each modified problem description is manually verified to ensure it triggers clarifying questions. The goal of HumanEvalComm is to evaluate the ability of LLMs to ask clarifying questions when faced with incomplete, inconsistent, or ambiguous requirements in coding problems.
+
+## Evaluation on HumanEvalComm
 
 Large language models (LLMs) have significantly improved their ability to perform tasks in the field of code generation. However, there is still a gap between LLMs being capable coders and being top-tier software engineers. The most recent trends involve using LLM-based agents to iterate the code generation process.
 Based on the observation that top-level software engineers often ask clarifying questions to reduce *Ambiguity* in both requirements and coding solutions, we argue that the same should be applied to LLMs for code generation tasks. For this purpose, we define the communication skills of LLMs as "being able to ask clarifying questions when the description of the code generation problem has issues." In this study, we restrict these issues to three matters from the software requirement engineering field: inconsistent requirements, ambiguous requirements, and incomplete requirements. By asking probing questions about the requirements of problem descriptions before generating the final code, the challenges of programming with LLMs, such as unclear intent specification, may be alleviated, resulting in correct code in the initial iterations.
