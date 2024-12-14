@@ -15,7 +15,33 @@ HumanEvalComm modifies the original problem descriptions in the HumanEval datase
 
 HumanEvalComm contains 762 modified problem descriptions based on the 164 problems in the HumanEval dataset. The modifications are created by applying one or a combination of the aforementioned clarification types. Each modified problem description is manually verified to ensure it triggers clarifying questions. The goal of HumanEvalComm is to evaluate the ability of LLMs to ask clarifying questions when faced with incomplete, inconsistent, or ambiguous requirements in coding problems.
 
+## Getting Started
+### Setup
+
 ## Evaluation on HumanEvalComm
+
+
+## Acknowledgements
+This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
+
+## Reference
+Please consider citing this paper if you find this useful: 
+
+Wu, Jie JW, and Fatemeh H. Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." arXiv preprint arXiv:2406.00215 (2024).
+
+```
+@article{wu2024benchmarking,
+  title={Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
+  author={Wu, Jie JW and Fard, Fatemeh H},
+  journal={arXiv preprint arXiv:2406.00215},
+  year={2024}
+}
+```
+
+
+
+
+## TO BE UPDATED
 
 Large language models (LLMs) have significantly improved their ability to perform tasks in the field of code generation. However, there is still a gap between LLMs being capable coders and being top-tier software engineers. The most recent trends involve using LLM-based agents to iterate the code generation process.
 Based on the observation that top-level software engineers often ask clarifying questions to reduce *Ambiguity* in both requirements and coding solutions, we argue that the same should be applied to LLMs for code generation tasks. For this purpose, we define the communication skills of LLMs as "being able to ask clarifying questions when the description of the code generation problem has issues." In this study, we restrict these issues to three matters from the software requirement engineering field: inconsistent requirements, ambiguous requirements, and incomplete requirements. By asking probing questions about the requirements of problem descriptions before generating the final code, the challenges of programming with LLMs, such as unclear intent specification, may be alleviated, resulting in correct code in the initial iterations.
@@ -68,19 +94,3 @@ Here are some examples:
 
 In this work, for open-source models in phase 0-2, we run sockeye scripts (./scripts/sockeye_scripts/*.sh) to run model inferences in Sockeye (https://arc.ubc.ca/compute-storage/ubc-arc-sockeye), due to resource limitations of the authors' desktop.
 
-## Acknowledgements
-This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
-
-## Reference
-Please consider citing this paper if you find this useful: 
-
-Wu, Jie JW, and Fatemeh H. Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." arXiv preprint arXiv:2406.00215 (2024).
-
-```
-@article{wu2024benchmarking,
-  title={Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
-  author={Wu, Jie JW and Fard, Fatemeh H},
-  journal={arXiv preprint arXiv:2406.00215},
-  year={2024}
-}
-```
