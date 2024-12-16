@@ -6,56 +6,36 @@
 
 ## Dataset Description
 
-HumanEvalComm is a benchmark dataset for evaluating the communication skills of Large Language Models (LLMs) in code generation tasks. It is built upon the widely used [HumanEval benchmark](https://github.com/openai/human-eval) and focuses on evaluating the degree of communication skills when generating code.
-
-HumanEvalComm modifies the original problem descriptions in the HumanEval dataset to trigger clarifying questions, which are necessary to generate the correct code. This modification is done using a taxonomy of clarification types: Ambiguity, Inconsistency, and Incompleteness.
+HumanEvalComm is a benchmark dataset for evaluating the communication skills of Large Language Models (LLMs) in code generation tasks. It is built upon the widely used [HumanEval benchmark](https://github.com/openai/human-eval). HumanEvalComm contains 762 modified problem descriptions based on the 164 problems in the HumanEval dataset. The modifications are created by applying one or a combination of the aforementioned clarification types. Each modified problem description is manually verified to ensure it triggers clarifying questions. The goal of HumanEvalComm is to evaluate the ability of LLMs to ask clarifying questions when faced with incomplete, inconsistent, or ambiguous requirements in coding problems:
 - Ambiguity: Statements in the problem descriptions are modified to have multiple interpretations. For example, changing "sort the array descendingly" to "sort the array (descendingly or ascendingly)".
 - Inconsistency: Modifications are made to create contradictions between the problem description and examples. For instance, changing the output of test examples to contradict the provided textual description.
 - Incompleteness: Parts of the problem description are removed to make it incomplete, requiring the model to ask questions to recover the missing content.
 
-HumanEvalComm contains 762 modified problem descriptions based on the 164 problems in the HumanEval dataset. The modifications are created by applying one or a combination of the aforementioned clarification types. Each modified problem description is manually verified to ensure it triggers clarifying questions. The goal of HumanEvalComm is to evaluate the ability of LLMs to ask clarifying questions when faced with incomplete, inconsistent, or ambiguous requirements in coding problems.
+| Clarification Category | *Ambiguity* | *Inconsistency* | *Incompleteness* | **Count** |
+|------------------------|:-----------:|:---------------:|:----------------:|:---------:|
+| 1a                     |      ✔️      |                 |                  |    164    |
+| 1c                     |              |       ✔️        |                  |    164    |
+| 1p                     |              |                 |        ✔️        |    164    |
+| 2ac                    |      ✔️      |       ✔️        |                  |    162    |
+| 2cp                    |              |       ✔️        |        ✔️        |     34    |
+| 2ap                    |      ✔️      |                 |        ✔️        |     74    |
+| **Total**              |          |              |               |    762    |
+
+*Note*: The smaller size for 2ac (same applies for 2cp and 2ap) is because we directly applied a combination of two clarification types from 1a, 1c strictly, and we create a new modified problem as 2ac only if applying a combination of 1a and 1c leads to a new problem description that is different from either 1a or 1c. 2cp and 2ap have smaller counts because the ambiguous (a) or inconsistent (c) parts are removed in (p) for a large number of problems.
+
+## Example
+Below is an example of HumanEvalComm built upon HumanEval. The modified problem descriptions are shown in this table for problem number 42 of HumanEval. Specifically, the descriptions of the problem were modified to be inconsistent, ambiguous, or incomplete. The main goal of the HumanEvalComm dataset is to evaluate the degree of communication.
+
+<img src="image.png" alt="alt text" width="800"/>
+
 
 ## Getting Started
 ### Setup
-
-## Evaluation on HumanEvalComm
-
-
-## Acknowledgements
-This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including StarCoderBase and CodeLlama.
-
-## Reference
-Please consider citing this paper if you find this useful: 
-
-Wu, Jie JW, and Fatemeh H. Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." arXiv preprint arXiv:2406.00215 (2024).
-
+To use LLM-based evaluator, you need to set `OPENAI_KEY` variables. 
+```bash
+export OPENAI_KEY='...'
 ```
-@article{wu2024benchmarking,
-  title={Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
-  author={Wu, Jie JW and Fard, Fatemeh H},
-  journal={arXiv preprint arXiv:2406.00215},
-  year={2024}
-}
-```
-
-
-
-
-## TO BE UPDATED
-
-Large language models (LLMs) have significantly improved their ability to perform tasks in the field of code generation. However, there is still a gap between LLMs being capable coders and being top-tier software engineers. The most recent trends involve using LLM-based agents to iterate the code generation process.
-Based on the observation that top-level software engineers often ask clarifying questions to reduce *Ambiguity* in both requirements and coding solutions, we argue that the same should be applied to LLMs for code generation tasks. For this purpose, we define the communication skills of LLMs as "being able to ask clarifying questions when the description of the code generation problem has issues." In this study, we restrict these issues to three matters from the software requirement engineering field: inconsistent requirements, ambiguous requirements, and incomplete requirements. By asking probing questions about the requirements of problem descriptions before generating the final code, the challenges of programming with LLMs, such as unclear intent specification, may be alleviated, resulting in correct code in the initial iterations.
-
-
-In this work, we conducted an empirical study on the benchmark and analysis of the communication skills of LLMs for code generation. We created a new benchmark, HumanEvalComm, by modifying problem descriptions according to three issues mentioned above: *Inconsistency*, *Ambiguity*, and *Incompleteness*. We then experimented on HumanEvalComm with different Code LLMs and a new LLM agent approach, **C<ins>o</ins>de <ins>C</ins>l<ins>a</ins>rificatio<ins>n</ins> <ins>a</ins>nd <ins>G</ins>eneration <ins>A</ins>ge<ins>n</ins>t (Okanagan)**, to identify and ask questions in ambiguous parts of code and descriptions for further refining the generated code.
-In the evaluation, we introduced an *LLM-based evaluator* and created *Communication Rate* and *Good Question Rate* as the evaluation metrics to represent the ratio of questions asked and questions with good quality in responses. We found that more than 60% of responses from Code LLMs still generate code rather than ask questions when the problem descriptions are manually modified according to different clarification categories.
-The Pass@1 and Test Pass Rate of most Code LLMs drop by 35% to 52% and by 17% to 35% respectively, with statistical significance in each category for over 75% numbers. Okanagan, as an LLM agent approach that uses LLMs such as ChatGPT 3.5, effectively increases the Communication Rate and Good Question Rate by an absolute 58% and 38% respectively, and thus boosts Pass@1 and Test Pass Rate by an absolute 8% and 7% respectively, when the problem descriptions are modified based on given clarification categories. This indicates the potential for achieving more effective communication capability using the LLM agent.
-
-
-
-<img width="1501" alt="HumanEvalComm" src="https://github.com/jie-jw-wu/human-eval-comm/assets/122728498/9a7d2142-7ac5-4f64-8557-225e8b221dc7">
-
-## Run
+### Inference and Evaluation
 The main script to run the evaluation is `./scripts/script_stepwise_phase123.bat`. Below is the command:
 ```bash
 ./scripts/script_stepwise_phase123.bat {models} {phase} {starting_problem_num} {ending_problem_num}
@@ -71,11 +51,11 @@ The main script to run the evaluation is `./scripts/script_stepwise_phase123.bat
 
 Here are some examples:
 ```bash
+#phase 0:
+    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
 #phase 1:
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct CodeLlama-13b-Instruct-hf" 1 0 165
 #phase 1:
-    ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
-#phase 2:
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
 #analyze remaining open models:
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 3
@@ -92,5 +72,50 @@ Here are some examples:
 
 ```
 
-In this work, for open-source models in phase 0-2, we run sockeye scripts (./scripts/sockeye_scripts/*.sh) to run model inferences in Sockeye (https://arc.ubc.ca/compute-storage/ubc-arc-sockeye), due to resource limitations of the authors' desktop.
 
+### Evaluation Methods and Results
+The figure below shows the flowchart for the evaluation of models. For each programming problem in the HumanEvalComm, there are up to six modified problem descriptions as described earlier in Table 1. For
+each modified problem, a prompt is used as the input of the model to either generate code or ask clarifying questions if needed. Then, if the model asks clarifying questions rather than generates code directly, the questions are sent to
+an LLM-based Evaluator, which evaluates the questions and generates a reply to answer the questions, based on all of the available information, including the modified problem, original problem, and the clarifying questions. Finally, the
+answers and the previous conversations are sent to the model to generate the code again directly. 
+
+Besides the LLMs, we also released and evaluated a LLM agent approach, *Code Clarification and Generation Agent* (**Okanagan**), as an LLM-based agent with a multi-round structure and customized prompt for the code generation task. A key feature of Okanagan is the ability to ask clarifying questions about the input problem descriptions needed for generating correct code.
+
+<p align="center">
+  <img width="1000" alt="HumanEvalComm" src="https://github.com/jie-jw-wu/human-eval-comm/assets/122728498/9a7d2142-7ac5-4f64-8557-225e8b221dc7">
+  <br>
+  <i>Figure: Flowchart for the evaluation of models, either Code LLMs or Okanagan (LLM agent), in communication capability.</i>
+</p>
+
+The table below shows the evaluation result across all clarification categories on Pass@1, Test Pass Rate, communication rate, and Good Question Rate with different models on HumanEvalComm (*HmEvalComm* in the table). Additionally, the Pass@1 and Test Pass Rate on the original problems in HumanEval (*HmEval* in the table) are also shown. Top 4 results are marked as **bold**.
+
+
+| Model                            | **Pass@1** | **Pass@1** | **Test Pass Rate** | **Test Pass Rate** | **Comm. Rate** | **Good Question Rate** |
+|----------------------------------|------------|------------|--------------------|--------------------|----------------|------------------------|
+|                                  | *HmEval*   | *HmEvalComm* | *HmEval*          | *HmEvalComm*       |            |          |
+| **ChatGPT**                      | 65.58%     | 31.34%     | 76.42%             | 49.39%             | 14.21%         | 13.43%                 |
+| **CodeLlama**                    | 29.88%     | 19.35%     | 45.71%             | 37.79%             | 10.16%         | 37.55%                 |
+| **CodeQwen1.5 Chat**             | 76.83%     | **47.61%** | 84.4%              | **62.89%**         | 4.82%          | 41.68%                 |
+| **DeepSeek Coder**               | 71.78%     | **45.68%** | 79.44%             | **62.25%**         | **30.76%**     | **61.42%**             |
+| **DeepSeek Chat**                | 12.8%      | 26.32%     | 13.86%             | 44.52%             | **37.93%**     | **58.71%**             |
+| **Okanagan (Base=ChatGPT)**      | 27.45%     | **39.62%** | 33.45%             | **56.98%**         | **72.73%**     | **52.24%**             |
+| **Okanagan (Base=DeepSeek Coder)** | 21.25%     | **38.06%** | 24.3%              | **52.72%**         | **82.51%**     | **60.13%**             |
+
+
+
+## Acknowledgements
+This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including CodeLlama.
+
+## Reference
+Please consider citing this paper if you find this useful: 
+
+Wu, Jie JW, and Fatemeh H. Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." arXiv preprint arXiv:2406.00215 (2024).
+
+```
+@article{wu2024benchmarking,
+  title={Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
+  author={Wu, Jie JW and Fard, Fatemeh H},
+  journal={arXiv preprint arXiv:2406.00215},
+  year={2024}
+}
+```
