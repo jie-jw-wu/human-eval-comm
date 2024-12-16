@@ -19,15 +19,15 @@ HumanEvalComm is a benchmark dataset for evaluating the communication skills of 
 | 2ac                    |      ✔️      |       ✔️        |                  |    162    |
 | 2cp                    |              |       ✔️        |        ✔️        |     34    |
 | 2ap                    |      ✔️      |                 |        ✔️        |     74    |
-| **Total**              |          |              |               |    762    |
-
+| **Total**              |     --     |      --        |        --       |    762    |
+<sub>
 *Note*: The smaller size for 2ac (same applies for 2cp and 2ap) is because we directly applied a combination of two clarification types from 1a, 1c strictly, and we create a new modified problem as 2ac only if applying a combination of 1a and 1c leads to a new problem description that is different from either 1a or 1c. 2cp and 2ap have smaller counts because the ambiguous (a) or inconsistent (c) parts are removed in (p) for a large number of problems.
+</sub>
 
 ## Example
 Below is an example of HumanEvalComm built upon HumanEval. The modified problem descriptions are shown in this table for problem number 42 of HumanEval. Specifically, the descriptions of the problem were modified to be inconsistent, ambiguous, or incomplete. The main goal of the HumanEvalComm dataset is to evaluate the degree of communication.
 
-<img src="image.png" alt="alt text" width="800"/>
-
+<img width="728" alt="ex" src="https://github.com/user-attachments/assets/123a2de8-0da5-429b-80e3-a9637caafcaa" />
 
 ## Getting Started
 ### Setup
