@@ -73,7 +73,7 @@ Here are some examples:
 ```
 
 
-### Evaluation Methods and Results
+## Evaluation Methods and Results
 The figure below shows the flowchart for the evaluation of models. For each programming problem in the HumanEvalComm, there are up to six modified problem descriptions as described earlier in Table 1. For
 each modified problem, a prompt is used as the input of the model to either generate code or ask clarifying questions if needed. Then, if the model asks clarifying questions rather than generates code directly, the questions are sent to
 an LLM-based Evaluator, which evaluates the questions and generates a reply to answer the questions, based on all of the available information, including the modified problem, original problem, and the clarifying questions. Finally, the
@@ -87,8 +87,8 @@ Besides the LLMs, we also released and evaluated a LLM agent approach, *Code Cla
   <i>Figure: Flowchart for the evaluation of models, either Code LLMs or Okanagan (LLM agent), in communication capability.</i>
 </p>
 
-The table below shows the evaluation result across all clarification categories on Pass@1, Test Pass Rate, communication rate, and Good Question Rate with different models on HumanEvalComm (*HmEvalComm* in the table). Additionally, the Pass@1 and Test Pass Rate on the original problems in HumanEval (*HmEval* in the table) are also shown. Top 4 results are marked as **bold**.
 
+The table below shows the evaluation result across all clarification categories on Pass@1, Test Pass Rate, communication rate, and Good Question Rate with different models on HumanEvalComm (*HmEvalComm* in the table). Additionally, the Pass@1 and Test Pass Rate on the original problems in HumanEval (*HmEval* in the table) are also shown. Top 4 results are marked as **bold**.
 
 | Model                            | **Pass@1** | **Pass@1** | **Test Pass Rate** | **Test Pass Rate** | **Comm. Rate** | **Good Question Rate** |
 |----------------------------------|------------|------------|--------------------|--------------------|----------------|------------------------|
@@ -101,7 +101,13 @@ The table below shows the evaluation result across all clarification categories 
 | **Okanagan (Base=ChatGPT)**      | 27.45%     | **39.62%** | 33.45%             | **56.98%**         | **72.73%**     | **52.24%**             |
 | **Okanagan (Base=DeepSeek Coder)** | 21.25%     | **38.06%** | 24.3%              | **52.72%**         | **82.51%**     | **60.13%**             |
 
+The figure below shows the comparison of the effectiveness of the models in Communication Rate, Good Question Rate (left), and Pass@1, Test Pass Rate (right). Note that in the right figure, the stars represent the original performance of the corresponding model with the same color in the HumanEval benchmark. This shows visually how the performance has changed when the problem description is modified.
 
+<p align="center">
+ <img width="1718" alt="scatter_plot" src="https://github.com/user-attachments/assets/c08f3d7b-e0e4-453f-93a8-8a63a8119e20" />
+</p>
+
+**_Key Finding_: More than 60% of responses from Code LLMs still generate code rather than ask questions when the problem descriptions are manually modified according to different clarification categories. Incompleteness category results in higher communication rates and Good Question Rates, but lower Pass@1 and Test Pass Rate for Code LLMs.**
 
 ## Acknowledgements
 This code is heavily influenced by the Nondeterminism evaluation research of ChatGPT (https://github.com/CodeHero0/Nondeterminism-of-ChatGPT-in-Code-Generation), and by IdentityChain(https://github.com/marcusm117/IdentityChain/tree/main) on testing models including CodeLlama.
