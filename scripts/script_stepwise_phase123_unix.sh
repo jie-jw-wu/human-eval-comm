@@ -29,7 +29,7 @@ for i in $string_of_strings; do
         # Only for Okanagan, GPT 3.5 and GPT 4
         python generate_response.py -d "$DATASET" -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 0 --log_phase_output 1 --phase1_prompt "$PHASE1_PROMPT"
     elif [ "$2" == "1" ]; then
-        python generate_response.py -d HumanEvalComm -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 1 --log_phase_output 2 --phase2_prompt "$5"
+        python generate_response.py -d HumanEvalComm -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 1 --log_phase_output 2 --phase2_prompt "$6"
     elif [ "$2" == "2" ]; then
         # Only for Okanagan, GPT 3.5 and GPT 4
         python generate_response.py -d HumanEvalComm -m "$i" -n 1 -t 1 -o manualRemove -minp "$3" -maxp "$4" --log_phase_input 2 --log_phase_output 3
