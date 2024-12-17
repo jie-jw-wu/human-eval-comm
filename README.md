@@ -2,7 +2,7 @@
 # HumanEvalComm: Evaluating the Communication Skill of Code LLMs and LLM Agent
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square)
 [![Research Paper](https://img.shields.io/badge/Paper-brightgreen.svg?style=flat-square)](https://arxiv.org/abs/2406.00215)
-[![Huggingface Dataset](https://img.shields.io/badge/Dataset-blue.svg?style=flat-square)](https://huggingface.co/datasets/)
+[![Huggingface Dataset](https://img.shields.io/badge/Dataset-blue.svg?style=flat-square)](https://huggingface.co/datasets/jie-jw-wu/HumanEvalComm)
 
 ## Dataset Description
 
