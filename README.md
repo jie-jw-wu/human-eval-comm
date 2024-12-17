@@ -85,6 +85,9 @@ Here are some examples:
 
 If you want to run the same commands but for linux environment, you must change the script_stepwise_phase123.bat file with script_stepwise_phase123_unix.sh
 
+The steps 0 and 2 require GPU in order to run the model inference while evaluating on the provided benchmark. The rest of the steps do not require GPU power, and can be simply run on CPU.
+
+For that reason, we present below scripts on how to run the steps 0 and 2 on GPU.
 If you want to run an evaluation in Alliance Canada servers (or possibly other servers that support job running using sbatch) use the following commands:
 
 In order to run the step 0 (do the initial evaluation using your model) you should use the file scripts/alliance_scripts/submit_evaluation_step_0.sh. Before running, please make the necessary modifications in them such as specifying the your model file path, etc.
