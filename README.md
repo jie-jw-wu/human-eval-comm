@@ -1,5 +1,5 @@
 
-# HumanEvalComm: Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent
+# HumanEvalComm: Benchmarking the Communication Skills of Code Generation for LLMs and LLM Agent
 
 <div align="center">
 
