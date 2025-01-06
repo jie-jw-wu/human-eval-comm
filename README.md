@@ -44,15 +44,26 @@ To use LLM-based evaluator, you need to set `OPENAI_KEY` variables.
 ```bash
 export OPENAI_KEY='...'
 ```
+
+### Install the necessary requirements
+Install the dependencies that you need to run the code:
+```bash
+pip install requirements.txt
+```
+
 ### Inference and Evaluation
 The main script to run the evaluation is `./scripts/script_stepwise_phase123.bat`. Below is the command:
 ```bash
 ./scripts/script_stepwise_phase123.bat {models} {phase} {starting_problem_num} {ending_problem_num}
 ```
-`{phase}` defines the phase to be executed in the evaluation. Below are the values of `phase` in the evaluation:
-- 0: run models to get the initial response for either HumanEvalComm or HumanEval. output: file in log/
-- 1: the initial responses are evaluated by the LLM-based evaluator (for HumanEvalComm only). output: file in log/
-- 2: run models again to get the 2nd response based on LLM-based evaluator output (for HumanEvalComm only). output: file in log/
+`{models}` must point to the model that you want to use to run the evaluation.
+`{phase}` defines the phase to be executed in the evaluation. Below are the values of `phase` in the 
+`{starting_problem_num} {ending_problem_num}` define the indices of the first and last problems that the evaluation must be run on.
+
+evaluation:
+- 0: run models to get the initial response of the given model for either HumanEvalComm or HumanEval. output: file in log/
+- 1: the initial responses of the model from the previous step are evaluated by the LLM-based evaluator (for HumanEvalComm only). output: file in log/
+- 2: run models again to get the 2nd response based on the responses got from LLM-based evaluator output (for HumanEvalComm only). output: file in log/
 - 3: extract code and run test cases and other metrics for each problem. input: file in log/  output: file in log/record/
 - 4: compute more metrics for each problem, such as test pass rate, question quality rate, comm. rate, etc. input: file in ./log/record/ output: file in ./result_data/
 - 5: aggregate and display metrics for all problems. output: files in table/
@@ -63,10 +74,10 @@ Here are some examples:
 #phase 0:
     ./scripts/script_stepwise_phase123.bat "gpt-3.5-turbo-0125 Okanagan" 0 0 5 HumanEval
 #phase 1:
-    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct CodeLlama-13b-Instruct-hf" 1 0 165
-#phase 1:
-    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 1 0 165
-#analyze remaining open models:
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat Meta-Llama-3-8B-Instruct CodeLlama-13b-Instruct-hf" 1 0 -1 HumanEvalComm prompt1
+#phase 2 (for HumanEvalComm):
+    ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeQwen1.5-7B-Chat" 2 0 5 HumanEvalComm
+#analyze remaining open models (on HumanEvalComm):
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 3
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 4
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf" 5
@@ -80,6 +91,29 @@ Here are some examples:
     ./scripts/script_stepwise_phase123.bat "deepseek-coder-6.7b-instruct deepseek-llm-7b-chat CodeQwen1.5-7B-Chat CodeLlama-13b-Instruct-hf CodeLlama-7b-Instruct-hf gpt-3.5-turbo-0125 Okanagan" 5
 
 ```
+
+If you want to run the same commands but for linux environment, you must change the script_stepwise_phase123.bat file with script_stepwise_phase123_unix.sh
+
+The steps 0 and 2 require GPU in order to run the model inference while evaluating on the provided benchmark. The rest of the steps do not require GPU power, and can be simply run on CPU.
+
+For that reason, we present below scripts on how to run the steps 0 and 2 on GPU.
+If you want to run an evaluation in Alliance Canada servers (or possibly other servers that support job running using sbatch) use the following commands:
+
+In order to run the step 0 (do the initial evaluation using your model) you should use the file scripts/alliance_scripts/submit_evaluation_step_0.sh. Before running, please make the necessary modifications in them such as specifying the your model file path, etc.
+
+Use the following command to run step 0
+
+```
+sbatch scripts/alliance_scripts/submit_evaluation_step_0.sh
+```
+
+Use the following command to run step 2
+
+```
+sbatch scripts/alliance_scripts/submit_evaluation_step_2.sh
+```
+
+For all other steps, the command is the same as mentioned above.
 
 
 ## Evaluation Methods and Results
