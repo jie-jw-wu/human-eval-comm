@@ -265,6 +265,12 @@ def store_data_in_xlsx(correlation, file_suffix, first_round_empty_code_rate):
     # store in .xlsx
     workbook = openpyxl.Workbook()
     sheet = workbook.active
+
+    sheet.cell(row=1, column=1).value = "Pass@k"               # 1st column
+    sheet.cell(row=1, column=3).value = "Test Pass Rate Mean"  # 3rd column
+    sheet.cell(row=1, column=5).value = "Empty Code Rate"      # 5th column
+    sheet.cell(row=1, column=6).value = "Question Quality"     # 6th column
+    
     data = [[]]
 
 
