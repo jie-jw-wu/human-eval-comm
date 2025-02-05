@@ -8,7 +8,7 @@
 step=1
 dataset="HumanEvalComm"
 use_alliance=1
-minp=0
+minp=110
 maxp=165
 step1_prompt="prompt1"
 step2_prompt="prompt1"
@@ -16,6 +16,8 @@ step2_prompt="prompt1"
 MODEL="deepseek-coder-6.7b-instruct-finetuned-0202"
 FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b-instruct-finetuned-0202"
 MODEL_NAME_OR_PATH="/project/def-fard/jie/deepseek-ai/deepseek-coder-6.7b-instruct"
+# note sure if this is needed
+export OPENAI_KEY=''
 ####################################################################
 
 # script paths
