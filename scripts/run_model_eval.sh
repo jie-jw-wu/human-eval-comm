@@ -20,7 +20,8 @@ MODEL_NAME_OR_PATH="/project/def-fard/jie/deepseek-ai/deepseek-coder-6.7b-instru
 
 # script paths
 SCRIPT_PATH="./scripts/script_stepwise_phase123_unix.sh"
-ALLIANCE_SCRIPT_PATH="./scripts/alliance_scripts/submit_evaluation_step_0.sh"
+ALLIANCE_SCRIPT_STEP1_PATH="./scripts/alliance_scripts/submit_evaluation_step_1.sh"
+ALLIANCE_SCRIPT_STEP3_PATH="./scripts/alliance_scripts/submit_evaluation_step_3.sh"
 phase=0
 
 if [ ! -f "$SCRIPT_PATH" ]; then
@@ -38,7 +39,7 @@ chmod +x "$SCRIPT_PATH"
 run_humanevalcomm() {
     if [ "$step" -eq 1 ]; then
         if [ "$use_alliance" -eq 1 ]; then
-            sbatch "$ALLIANCE_SCRIPT_PATH" "$MODEL" "$FINETUNED_MODEL_PATH" "$MODEL_NAME_OR_PATH"
+            sbatch "$ALLIANCE_SCRIPT_STEP1_PATH" "$MODEL" "$FINETUNED_MODEL_PATH" "$MODEL_NAME_OR_PATH"
         elif [ "$use_alliance" -eq 0 ]; then
             phase=0
             "$SCRIPT_PATH" "$MODEL" "$phase" "$minp" "$maxp" "$dataset" "$step1_prompt"
@@ -49,7 +50,7 @@ run_humanevalcomm() {
     elif [ "$step" -eq 3 ]; then
         phase=2
         if [ "$use_alliance" -eq 1 ]; then
-            sbatch "$ALLIANCE_SCRIPT_PATH" "$MODEL" "$FINETUNED_MODEL_PATH" "$MODEL_NAME_OR_PATH"
+            sbatch "$ALLIANCE_SCRIPT_STEP3_PATH" "$MODEL" "$FINETUNED_MODEL_PATH" "$MODEL_NAME_OR_PATH"
         elif [ "$use_alliance" -eq 0 ]; then
             "$SCRIPT_PATH" "$MODEL" "$phase" "$minp" "$maxp" "$dataset"
         fi
