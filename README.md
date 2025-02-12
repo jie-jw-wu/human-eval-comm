@@ -7,10 +7,10 @@
 <img src="https://github.com/user-attachments/assets/3f62b151-d08f-4641-8d10-cc53024ec2c4" alt="HumanEvalComm" height=300></img>
 </a>
 <br></br>
-
-![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square)
-[![Research Paper](https://img.shields.io/badge/Paper-brightgreen.svg?style=flat-square)](https://arxiv.org/abs/2406.00215)
-[![Huggingface Dataset](https://img.shields.io/badge/Dataset-blue.svg?style=flat-square)](https://huggingface.co/datasets/jie-jw-wu/HumanEvalComm)
+  <a href="https://arxiv.org/abs/2406.00215"><img src="https://img.shields.io/badge/Paper%20on%20Arxiv-000?logoColor=FFE165&logo=arxiv&style=for-the-badge" alt="Paper on Arxiv"></a>
+  <a href="https://huggingface.co/datasets/jie-jw-wu/HumanEvalComm"><img src="https://img.shields.io/badge/Benchmark%20score-000?logoColor=FFE165&logo=huggingface&style=for-the-badge" alt="Dataset"></a>
+  <a href="https://github.com/All-Hands-AI/OpenHands/stargazers"><img src="https://img.shields.io/github/stars/jie-jw-wu/human-eval-comm?style=for-the-badge&color=blue" alt="Stargazers"></a>
+  <hr>
 </div>
 
 ## Dataset Description
