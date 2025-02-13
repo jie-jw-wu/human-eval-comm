@@ -11,8 +11,6 @@ source ~/ENV/bin/activate
 cd $SLURM_SUBMIT_DIR
 echo "we are in dir $SLURM_SUBMIT_DIR"
 
-# note sure if this is needed
-export OPENAI_KEY=''
 
 # command-line argument
 MODEL=$1
