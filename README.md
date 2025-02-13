@@ -9,6 +9,7 @@
 <br></br>
   <a href="https://arxiv.org/abs/2406.00215"><img src="https://img.shields.io/badge/Paper%20on%20Arxiv-000?logoColor=FFE165&logo=arxiv&style=for-the-badge" alt="Paper on Arxiv"></a>
   <a href="https://huggingface.co/datasets/jie-jw-wu/HumanEvalComm"><img src="https://img.shields.io/badge/HuggingFace%20Dataset-000?logoColor=FFE165&logo=huggingface&style=for-the-badge" alt="Dataset"></a>
+  <a href="https://jie-jw-wu.github.io/assets/PosterHumanEvalComm.pdf"><img src="https://img.shields.io/badge/One%20Pager-000?logo=googledocs&logoColor=FFE165&style=for-the-badge" alt="Check out the poster"></a>
   <a href="https://github.com/jie-jw-wu/human-eval-comm/stargazers"><img src="https://img.shields.io/github/stars/jie-jw-wu/human-eval-comm?style=for-the-badge&color=blue" alt="Stargazers"></a>
   <hr>
 </div>
