@@ -19,6 +19,7 @@ export OPENAI_KEY=''
 ####################################################################
 
 # 02052025
+# previous run failed at 110 due to time limit, restarting it from 110.
 ######################## DEFINE THESE VALUES########################
 # step is {1,2,3} （When datset is HumanEvalComm） or {1,2} (When dataset is HumanEval)
 # run this script when step is 1, 2, ... (sequentially with increasing step)
