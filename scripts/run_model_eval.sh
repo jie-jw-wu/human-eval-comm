@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# run this script under root folder
+# run this script under root folder (human-eval-comm)
 
 ######################## DEFINE THESE VALUES########################
 # step is {1,2,3} （When datset is HumanEvalComm） or {1,2} (When dataset is HumanEval)
@@ -13,9 +13,11 @@ maxp=165
 step1_prompt="prompt1"
 step2_prompt="prompt1"
 # alliance arguments
-MODEL="deepseek-coder-6.7b-instruct-finetuned-0202"
-FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b-instruct-finetuned-0202"
+MODEL="deepseek-coder-6.7b-instruct-finetuned-02052025"
+FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b-instruct-finetuned-02052025"
 MODEL_NAME_OR_PATH="/project/def-fard/jie/deepseek-ai/deepseek-coder-6.7b-instruct"
+# note sure if this is needed
+export OPENAI_KEY=''
 ####################################################################
 
 # script paths
@@ -39,7 +41,7 @@ chmod +x "$SCRIPT_PATH"
 run_humanevalcomm() {
     if [ "$step" -eq 1 ]; then
         if [ "$use_alliance" -eq 1 ]; then
-            sbatch "$ALLIANCE_SCRIPT_STEP1_PATH" "$MODEL" "$FINETUNED_MODEL_PATH" "$MODEL_NAME_OR_PATH"
+            sbatch "$ALLIANCE_SCRIPT_STEP1_PATH" "$MODEL" "$FINETUNED_MODEL_PATH" "$MODEL_NAME_OR_PATH" "$minp"
         elif [ "$use_alliance" -eq 0 ]; then
             phase=0
             "$SCRIPT_PATH" "$MODEL" "$phase" "$minp" "$maxp" "$dataset" "$step1_prompt"
