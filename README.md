@@ -159,13 +159,14 @@ This code is heavily influenced by the Nondeterminism evaluation research of Cha
 ## Reference
 Please consider citing this paper if you find this useful: 
 
-Wu, Jie JW, and Fatemeh H. Fard. "Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." arXiv preprint arXiv:2406.00215 (2024).
-
+Wu, Jie JW, and Fatemeh H. Fard. "HumanEvalComm: Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent." ACM Trans. Softw. Eng. Methodol. (2025).
 ```
-@article{wu2024benchmarking,
-  title={Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
-  author={Wu, Jie JW and Fard, Fatemeh H},
-  journal={arXiv preprint arXiv:2406.00215},
-  year={2024}
+@article{Wu2025HumanEvalComm,
+  author = {Wu, Jie JW and Fard, Fatemeh H.},
+  title = {HumanEvalComm: Benchmarking the Communication Competence of Code Generation for LLMs and LLM Agent},
+  journal = {ACM Trans. Softw. Eng. Methodol.},
+  year = {2025},
+  doi = {10.1145/3715109},
+  url = {https://doi.org/10.1145/3715109}
 }
 ```
