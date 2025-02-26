@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -x
+# This script is used to run the evaluation of a model on the HumanEvalComm dataset.
 
 # run this script under root folder (human-eval-comm)
 
@@ -13,8 +14,8 @@ maxp=165
 step1_prompt="prompt1"
 step2_prompt="prompt1"
 # alliance arguments
-MODEL="deepseek-coder-6.7b-instruct-finetuned-02052025"
-FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b-instruct-finetuned-02052025"
+MODEL="deepseek-coder-6.7b-instruct-finetuned-02212025"
+FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b-instruct-finetuned-02212025"
 MODEL_NAME_OR_PATH="/project/def-fard/jie/deepseek-ai/deepseek-coder-6.7b-instruct"
 # note sure if this is needed
 export OPENAI_KEY=''

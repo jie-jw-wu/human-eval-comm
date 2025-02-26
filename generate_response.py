@@ -31,6 +31,9 @@ import argparse
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 
+# Import for Gemini
+import genai
+
 # set random seed
 set_seed(42)
 
@@ -43,6 +46,9 @@ set_seed(42)
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 openai.api_key = os.environ['OPENAI_KEY']
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=gemini_api_key)
+gemini_model = genai.GenerativeModel("gemini-pro")
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -63,6 +69,8 @@ PROMPT_EVALUATE_QUESTIONS_V3 = 'The original description of a coding problem is 
 PROMPT_EVALUATE_QUESTIONS_V4 = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: Certainly! Can you please provide more specific details on what the `candidate` function needs to do with the input list of strings and the string `x`? This will help me generate the Python3 code according to your requirements. \n ### Modified Problem Description: def candidate(strings: List[str], x: str) -> List[str]:\n    """ Process an input list of strings\n    """ \n ### Original Description: def filter_by_substring(strings: List[str], substring: str) -> List[str]:\n    """ Filter an input list of strings only for ones that contain given substring\n    >>> filter_by_substring([], \'a\')\n    []\n    >>> filter_by_substring([\'abc\', \'bacd\', \'cde\', \'array\'], \'a\')\n    [\'abc\', \'bacd\', \'array\']\n    """ \n ### Response: QUALITY=3\nANSWERS=```The `candidate` function needs to filter the input list of strings such that only strings containing the substring `x` are included in the output list.```\n\n ### Questions: Sure, I can help you with that! Here\'s the Python 3 code for the `candidate` function:\n```python\ndef candidate(num):\n    if num < 0:\n        return (1, 1)\n    else:\n        return (1, num)\n```\n ### Modified Problem Description: def candidate(num):\n    """Example:\n        candidate(-12) ==> (1, 1)\n        candidate(123) ==> (1, 2)\n    """\n ### Original Description: def even_odd_count(num):\n    """Given an integer. return a tuple that has the number of even and odd digits respectively.\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    """\n ### Response: QUALITY=1\nANSWERS=```no questions```\n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n ### Response: \n'
 
 PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+
+PROMPT_EVALUATE_QUESTION_QUALITY = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Respond with an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions). \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
@@ -624,13 +632,49 @@ def load_prompt_from_config(phase): # Added By Erfan
         print(f'Failed to load phase{phase} prompt, exception: ', e)
         raise SystemExit(1)
 
+def call_gemini(prompt):
+    response = model.generate_content(prompt)
+    return int(response.text.strip())
+
+def call_chatgpt_o1(prompt):
+    response = openai.Completion.create(
+        engine="o1-2024-12-17",
+        prompt=prompt,
+        max_tokens=1,
+        n=1,
+        stop=None,
+        temperature=0
+    )
+    return int(response.choices[0].text.strip())
+
 def evaluate_clarifying_questions(
     missing_information='',
     clarifying_questions='',
-    problem=''
+    problem='',
+    eval_protocol='',
 ):
     print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", file=print_file)
     print('!!!!!!! 2nd evaluate_clarifying_questions START !!!!!!!!!!!', file=print_file)
+    
+    # generate new LLM-based metrics here
+    if eval_protocol == 'llm_metric_v2':
+        prompt_comm_rate = f"Is the following response a code or a question? Respond with 0 for code and 1 for question.\n\nResponse:\n{clarifying_questions}"
+        comm_rate = call_chatgpt_o1(prompt_comm_rate)
+        prompt_qq = PROMPT_EVALUATE_QUESTION_QUALITY.format(
+                missing_information=missing_information,
+                clarifying_questions=clarifying_questions,
+                problem=problem
+            )
+        quality = call_chatgpt_o1(prompt_qq)
+        answer_str = "comm_rate_" + comm_rate + "_question_quality_v2_" + quality
+        
+        print('!!!!!!!answer_str',answer_str, file=print_file)
+        print('!!!!!!!question_quality_str',quality, file=print_file)
+        
+        print('!!!!!!! 2nd evaluate_clarifying_questions END !!!!!!!!!!!', file=print_file)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n", file=print_file)
+        return answer_str, quality
+    
     topn = 1
     temperature = 1.0
     model = 'gpt-3.5-turbo-0125' #'gpt-3.5-turbo'
@@ -937,7 +981,7 @@ def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, promp
                 answer = cached_answer
                 question_quality = cached_qq
             else:
-                answer, question_quality = evaluate_clarifying_questions(original_prompt,response,user_input)
+                answer, question_quality = evaluate_clarifying_questions(original_prompt,response,user_input,args.eval_protocol)
             
             if args.log_phase_output == 2:
                 ans_list.append(answer)
@@ -1271,7 +1315,7 @@ if __name__ == "__main__":
     parser.add_argument('--version', type=str, default='v1', help='version of the identity chain')
     parser.add_argument('--phase1_prompt', type=str, default='prompt1', help='The prompt used in phase 1, choose from config.yaml') # By Erfan
     parser.add_argument('--phase2_prompt', type=str, default='prompt1', help='The prompt used in phase 2, choose from config.yaml') # By Erfan
-
+    parser.add_argument("--eval_protocol", type=str, help="Evaluation protocol to use", default='')
     args = parser.parse_args()
     model = None
     tokenizer = None
