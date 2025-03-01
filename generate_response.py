@@ -30,9 +30,9 @@ import argparse
 # External Modules
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
-
 # Import for Gemini
-import genai
+import google.generativeai as genai
+from openai import OpenAI
 
 # set random seed
 set_seed(42)
@@ -46,9 +46,11 @@ set_seed(42)
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 openai.api_key = os.environ['OPENAI_KEY']
+openai.api_key = os.environ['OPENAI_API_KEY']
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=gemini_api_key)
 gemini_model = genai.GenerativeModel("gemini-pro")
+client = OpenAI()
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -635,19 +637,27 @@ def load_prompt_from_config(phase): # Added By Erfan
 
 def call_gemini(prompt):
     response = model.generate_content(prompt)
-    return int(response.text.strip())
+    try:
+        return int(response.text.strip())
+    except ValueError:
+        return -1
 
 def call_chatgpt_o1(prompt):
-    response = openai.Completion.create(
-        engine="o1-2024-12-17",
-        prompt=prompt,
-        max_tokens=1,
-        n=1,
-        stop=None,
-        temperature=0
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
     )
-    return int(response.choices[0].text.strip())
-
+    try:
+        return int(completion.choices[0].message.content.strip())
+    except ValueError:
+        return -1
+    
 def evaluate_clarifying_questions(
     missing_information='',
     clarifying_questions='',
@@ -670,7 +680,7 @@ def evaluate_clarifying_questions(
                 problem=problem
             )
         quality = call_chatgpt_o1(prompt_qq)
-        answer_str = "comm_rate_" + comm_rate + "_question_quality_v2_" + quality
+        answer_str = "comm_rate_" + str(comm_rate) + "_question_quality_v2_" + str(quality)
         
         print('!!!!!!!answer_str',answer_str, file=print_file)
         print('!!!!!!!question_quality_str',quality, file=print_file)
