@@ -73,7 +73,7 @@ PROMPT_EVALUATE_QUESTIONS_V4 = 'The original description of a coding problem is 
 PROMPT_EVALUATE_QUESTIONS = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Please provide an integer representing the quality of questions (3: Good questions that recover the modified requirements; 2: Fair questions but they cannot help recover the modified requirements; 1: No questions).\n  QUALITY=[your int] \n Please also provide answers to the clarifying questions to recover the modified requirements in the original problem description compared to the modified one. If there is no clarifying questions at all, return empty answers. \n ANSWERS=```[your answer]```  \n Please strictly follow the format QUALITY=[the int] and ANSWERS=```[the answer]``` in the response! Surround your answer with markdown! \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
 
 PROMPT_LLM_BASED_COMM_RATE = 'Is the following response a code or a question? Respond with 0 for code and 1 for question.\n\nResponse:\n{clarifying_questions}'
-PROMPT_EVALUATE_QUESTION_QUALITY = 'The original description of a coding problem is modified so that the requirements become inconsistent, incomplete, or ambiguous. Given the modified description, some clarifying questions were raised to clarify the description. Given the original and modified problem description, evaluate the quality of the clarifying questions. Respond with an integer representing the quality of questions (2: Good questions that recover the modified requirements; 1: Fair questions but they cannot help recover the modified requirements; 0: No questions). \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information} \n'
+PROMPT_EVALUATE_QUESTION_QUALITY = 'The original description of a coding problem is modified such that the modified version is either  inconsistent, incomplete, ambiguous, or a combination of any of them. The modified problem is provided to an expert, where he will either answer with a question asking for clarifications or a direct code answer. You are provided the original and modified problem descriptions together with the expert answer. Your task is to evaluate the quality of expert questions on a scale from 1 to 2, where 1 indicates that fair questions were asked but they cannot help recover the modified requirements, and 2 indicates good questions that recover the modified requirements. Please respond with a signle integer 1, or 2 based on the grading schema that I outlined. No explanation needed, just a single integer. \n\n ### Questions: {clarifying_questions} \n ### Modified Problem Description: {problem} \n ### Original Description: {missing_information}'
 
 PROMPT_2ND_ROUND = '\n Given above conversations, generate Python code directly (Markdown) to solve the coding problem:\n'
 OK_PROMPT_CODEGEN = 'Generate Python code directly (Markdown) to solve the coding problem. \n\n'
@@ -674,12 +674,16 @@ def evaluate_clarifying_questions(
             )
         comm_rate = call_chatgpt_o1(prompt_comm_rate)
         
-        prompt_qq = PROMPT_EVALUATE_QUESTION_QUALITY.format(
-                missing_information=missing_information,
-                clarifying_questions=clarifying_questions,
-                problem=problem
-            )
-        quality = call_chatgpt_o1(prompt_qq)
+        if str(comm_rate) == "1":
+            prompt_qq = PROMPT_EVALUATE_QUESTION_QUALITY.format(
+                    missing_information=missing_information,
+                    clarifying_questions=clarifying_questions,
+                    problem=problem
+                )
+            quality = call_chatgpt_o1(prompt_qq)
+        else:
+            quality = 0
+            
         answer_str = "comm_rate_" + str(comm_rate) + "_question_quality_v2_" + str(quality)
         
         print('!!!!!!!answer_str',answer_str, file=print_file)
