@@ -1335,6 +1335,8 @@ if __name__ == "__main__":
     tokenizer = None
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print('device: ', device)
+
+    os.environ["TRANSFORMERS_CACHE"] = "/scratch/jie"
     if ('Llama' in args.model 
         or args.model.startswith('starcoder')
         or args.model.startswith('deepseek')
@@ -1358,7 +1360,8 @@ if __name__ == "__main__":
                 load_in_8bit=True,
                 device_map="auto",
                 cache_dir=HF_HOME,
-                offload_folder=offload_folder,     
+                offload_folder=offload_folder, 
+                local_files_only=True,     
             )
         # if specified, use fp16 precision
         elif args.use_fp16:
@@ -1371,6 +1374,7 @@ if __name__ == "__main__":
                 torch_dtype=torch.float16,
                 cache_dir=HF_HOME,
                 offload_folder=offload_folder,     
+                local_files_only=True,     
             )
         # otherwise, use default precision
         else:
@@ -1378,7 +1382,8 @@ if __name__ == "__main__":
                 args.model_name_or_path,
                 device_map="auto",
                 cache_dir=HF_HOME,
-                offload_folder=offload_folder,            
+                offload_folder=offload_folder,   
+                local_files_only=True,              
             )
         
 
