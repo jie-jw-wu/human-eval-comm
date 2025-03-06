@@ -1359,4 +1359,4 @@ if __name__ == "__main__":
         tokenizer.save_pretrained(args.saved_model_path)
         model.save_pretrained(args.saved_model_path)
     elif args.dataset.startswith('HumanEval'):
-        HumanEval_experiment(args.dataset, './Benchmark/HumanEvalComm.jsonl', args.option, args.model, args.topn, args.temperature, args, model, tokenizer)
+        HumanEval_experiment(args.dataset, './Benchmark/HumanEvalComm_v2.jsonl', args.option, args.model, args.topn, args.temperature, args, model, tokenizer)
