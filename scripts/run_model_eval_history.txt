@@ -40,6 +40,7 @@ export OPENAI_KEY=''
 
 
 
+
 ######################## DEFINE THESE VALUES########################
 step=1
 dataset="HumanEvalComm"
@@ -54,4 +55,28 @@ FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b
 MODEL_NAME_OR_PATH="/project/def-fard/jie/deepseek-ai/deepseek-coder-6.7b-instruct"
 # note sure if this is needed
 export OPENAI_KEY=''
+<<<<<<< HEAD
+####################################################################
+=======
+####################################################################
+
+######################## DEFINE THESE VALUES########################
+# step is {1,2,3} （When datset is HumanEvalComm） or {1,2} (When dataset is HumanEval)
+# run this script when step is 1, 2, ... (sequentially with increasing step)
+step=2
+dataset="HumanEvalComm"
+use_alliance=1
+minp=0
+maxp=2
+step1_prompt="prompt1"
+step2_prompt="prompt1"
+# alliance arguments
+MODEL="deepseek-coder-6.7b-instruct-finetuned-02212025"
+FINETUNED_MODEL_PATH="/project/def-fard/jie/finetuned_models/deepseek-coder-6.7b-instruct-finetuned-02212025"
+MODEL_NAME_OR_PATH="/project/def-fard/jie/deepseek-ai/deepseek-coder-6.7b-instruct"
+eval_protocol="llm_metric_v2"
+# note sure if this is needed
+export OPENAI_API_KEY=''
+export OPENAI_KEY=$OPENAI_API_KEY
+export GEMINI_API_KEY=''
 ####################################################################
