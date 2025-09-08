@@ -3,6 +3,7 @@ tmp/*
 APPS.tar.gz
 call_demo*.py
 demo*.py
-__pycache__/*
+__pycache__
 tables/*
 recycle_bin/*
+.idea/

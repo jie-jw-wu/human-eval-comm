@@ -1,0 +1,28 @@
+# Model Configuration
+model:
+  name: "AgentCoder"
+  agent_path: ""
+
+# Evaluator Configuration  
+evaluator:
+  gemini_api_key: ""
+  model: "gemini-2.5-flash"
+
+# Open AI Configuration
+api_keys:
+  # Set to "" if not using OpenAI, or provide real keys if using OpenAI
+  openai_key: ""
+  openai_api_key: ""
+
+# Experiment Configuration
+experiment:
+  dataset: "HumanEvalComm"
+  min_problem: 0
+  max_problem: 0
+
+# Phase Settings
+phases:
+  temperature: 1.0
+  top_n: 1
+  option: "manualRemove"
+  eval_protocol: "llm_metric_v2"

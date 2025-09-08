@@ -8,6 +8,8 @@ import copy
 import openai
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
+import google.generativeai as genai
+import os
 import time
 
 prompt_path = "./prompts/test_designer_humaneval_prompt_update.txt"
@@ -37,27 +39,53 @@ def fetch_completion(data_entry, model, times=10):
 ```
 """
     test_case_list = []
-    for _ in range(times):
-        while True:
-            try:
-                completions = openai.ChatCompletion.create(
-                    model=model,
-                    stream=False,
-                    messages=[
-                        {"role": "system", "content": "You are a code developer assistant."},
-                        {"role": "user", "content": text},
-                    ],
-                    request_timeout=100,
-                )
-                test_case = completions.choices[0]["message"]["content"]
-                test_case = preprocess_data(test_case)
-            except Exception as e:
-                time.sleep(20)
-                print(e)
-                test_case = ""
-            if test_case:
-                break
-        test_case_list.append(test_case)
+
+    # Use Gemini if GEMINI_API_KEY is available, otherwise fallback to OpenAI
+    use_gemini = os.getenv("GEMINI_API_KEY") and os.getenv("GEMINI_API_KEY") != ""
+
+    if use_gemini:
+        # Configure Gemini
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        gemini_model = genai.GenerativeModel(os.getenv('EVALUATOR_MODEL'))
+
+        for _ in range(times):
+            while True:
+                try:
+                    full_prompt = f"You are a code developer assistant.\n\n{text}"
+                    response = gemini_model.generate_content(full_prompt)
+                    test_case = response.text
+                    test_case = preprocess_data(test_case)
+                except Exception as e:
+                    print(f"Gemini error: {e}")
+                    time.sleep(20)
+                    test_case = ""
+                if test_case:
+                    break
+            test_case_list.append(test_case)
+    else:
+        # Fallback to OpenAI (original code)
+        for _ in range(times):
+            while True:
+                try:
+                    client = openai.OpenAI()
+                    completions = client.chat.completions.create(
+                        model=model,
+                        stream=False,
+                        messages=[
+                            {"role": "system", "content": "You are a code developer assistant."},
+                            {"role": "user", "content": text},
+                        ],
+                        request_timeout=100,
+                    )
+                    test_case = completions.choices[0].message.content
+                    test_case = preprocess_data(test_case)
+                except Exception as e:
+                    time.sleep(20)
+                    print(e)
+                    test_case = ""
+                if test_case:
+                    break
+            test_case_list.append(test_case)
     
     data_entry["test_case_list"] = test_case_list
     return data_entry

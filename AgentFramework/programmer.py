@@ -8,6 +8,10 @@ import copy
 import openai
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
+import google.generativeai as genai
+import os
+import time
+import time
 import time
 import os
 
@@ -43,27 +47,53 @@ def fetch_completion(data_entry, model, times=5):
 ## Completion 3:
 """
     completions_code = []
-    for _ in range(times):
-        while True:
-            try:
-                completions = openai.ChatCompletion.create(
-                    model=model,
-                    stream=False,
-                    messages=[
-                        {"role": "system", "content": "You are a software programmer."},
-                        {"role": "user", "content": text},
-                    ],
-                    request_timeout=100,
-                )
-                completion = completions.choices[0]["message"]["content"]
-                completion = preprocess_data(completion)
-            except Exception as e:
-                print(e)
-                time.sleep(10)
-                completion = ""
-            if completion:
-                break
-        completions_code.append(completion)
+
+    # Use Gemini if GEMINI_API_KEY is available, otherwise fallback to OpenAI
+    use_gemini = os.getenv("GEMINI_API_KEY") and os.getenv("GEMINI_API_KEY") != ""
+
+    if use_gemini:
+        # Configure Gemini
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        gemini_model = genai.GenerativeModel(os.getenv('EVALUATOR_MODEL'))
+
+        for _ in range(times):
+            while True:
+                try:
+                    full_prompt = f"You are a software programmer.\n\n{text}"
+                    response = gemini_model.generate_content(full_prompt)
+                    completion = response.text
+                    completion = preprocess_data(completion)
+                except Exception as e:
+                    print(f"Gemini error: {e}")
+                    time.sleep(10)
+                    completion = ""
+                if completion:
+                    break
+            completions_code.append(completion)
+    else:
+        # Fallback to OpenAI (original code)
+        for _ in range(times):
+            while True:
+                try:
+                    client = openai.OpenAI()
+                    completions = client.chat.completions.create(
+                        model=model,
+                        stream=False,
+                        messages=[
+                            {"role": "system", "content": "You are a software programmer."},
+                            {"role": "user", "content": text},
+                        ],
+                        request_timeout=100,
+                    )
+                    completion = completions.choices[0].message.content
+                    completion = preprocess_data(completion)
+                except Exception as e:
+                    print(e)
+                    time.sleep(10)
+                    completion = ""
+                if completion:
+                    break
+            completions_code.append(completion)
 
     data_entry["completion_list"] = completions_code
     # print("Completion List is created?")
