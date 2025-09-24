@@ -871,6 +871,29 @@ def description_2_code_one_round(prompt, model, topn, temperature, args, open_so
 def generate_response_str(model, msgs, temperature, args, open_source_model, tokenizer):
     response_list = generate_response(model, msgs, 1, temperature, args, open_source_model, tokenizer)
     return response_list[0]
+
+def generate_response_finetuned_lora(msgs, temperature, args):
+    # Load base DeepSeek model
+    model = AutoModelForCausalLM.from_pretrained(
+        args.model_name_or_path,
+        device_map="auto",
+        torch_dtype=torch.float16,
+        trust_remote_code=True
+    )
+    # Attach LoRA adapter
+    model = PeftModel.from_pretrained(model, args.finetuned_model_path)
+
+    # Load tokenizer for DeepSeek
+    tokenizer = AutoTokenizer.from_pretrained(
+        args.model_name_or_path,
+        trust_remote_code=True
+    )
+
+    # Generate response using the standard pipeline
+    user_input = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, return_tensors="pt")
+    response = get_completion_codellama_instruct_nl_to_pl('', user_input, model, tokenizer, args)
+
+    return response
     
 def generate_response(model, msgs, topn, temperature, args, open_source_model, tokenizer, user_input_without_prompt = '', prompt = ''):
     response_list = []
@@ -908,7 +931,29 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(coder_response)
         else:
             response_list.append(communicator_response)    
-        return response_list  
+        return response_list
+    elif model == 'ClarifyCoder':
+        # this code assume topn=1
+        print("**********************************")
+        print("*** Using DeepSeek with LoRA for ClarifyCoder ***")
+        print("**********************************")
+
+        # Step 1: Generate initial coder response using DeepSeek LoRA (same as Okanagan's coder step)
+        coder_response = generate_response_finetuned_lora(msgs, temperature, args)
+
+        # Step 2: Reflection - Ask if clarifying questions are needed (same as Okanagan's reflection step)
+        reflect_messages = [{"role": "user","content": OK_PROMPT_CLARIFY_Q.format(problem=user_input_without_prompt)}]
+        communicator_response = generate_response_finetuned_lora(reflect_messages, temperature, args)
+
+        print("!!!!!!!!!!!!!!! ClarifyCoder !!!!!! communicator_response: \n" + communicator_response, file=print_file)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n", file=print_file)
+
+        # Step 3: Decision logic (same as Okanagan) - if no questions needed, return code; otherwise return questions
+        if re.search('no_questions', communicator_response, re.IGNORECASE):
+            response_list.append(coder_response)
+        else:
+            response_list.append(communicator_response)
+        return response_list
     elif model == 'AgentCoder':
 
         task_id = msgs[0]["task_id"]
