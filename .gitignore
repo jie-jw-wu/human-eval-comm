@@ -5,9 +5,7 @@ call_demo*.py
 demo*.py
 __pycache__
 tables/*
+log/*
 result_data/*
 recycle_bin/*
 .idea
-log/print/*
-log/record/*
-log/*
