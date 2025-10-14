@@ -1,21 +1,13 @@
 # -*- coding: utf-8 -*-
-import math
 import time
-
-import nltk
-import openai
 import re
 import os
 import json
-import subprocess
 import argparse
 import random
-import string
-from nltk.corpus import stopwords
 from peft import PeftModel
 
 # START imports By Erfan
-import sys
 import yaml
 config = []
 try:
@@ -25,7 +17,6 @@ except Exception:
     print("cannot find config.yaml!!")
 # END imports By Erfan
 # Standard Library Modules
-import argparse
 
 # External Modules
 import torch
@@ -45,12 +36,11 @@ set_seed(42)
 
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
-openai.api_key = os.environ['OPENAI_KEY']
-openai.api_key = os.environ['OPENAI_API_KEY']
+# Set up OpenAI client with API key
+client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY'))
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=gemini_api_key)
 gemini_model = genai.GenerativeModel("gemini-pro")
-client = OpenAI()
 PROMPT_START_0 = 'Generate Python3 code (Markdown):\n'
 PROMPT_START_1 = 'Generate either Python3 code only (Markdown) or no code:\n'
 PROMPT_START_2 = 'Generate either Python3 code only (Markdown) or ask questions:\n'
@@ -702,7 +692,7 @@ def evaluate_clarifying_questions(
                 clarifying_questions=clarifying_questions,
                 problem=problem
             )
-    completion = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
         model=model,
         n=topn,
         temperature=temperature,
@@ -712,9 +702,9 @@ def evaluate_clarifying_questions(
         }]
     )
     print('!!!!!!!PROMPT_EVALUATE_QUESTIONS='+content, file=print_file)
-    print('!!!!!!!Completion='+completion['choices'][0]['message']['content'], file=print_file)
+    print('!!!!!!!Completion='+completion.choices[0].message.content, file=print_file)
     # Convert completion content to a string if it's not already a string
-    completion_content = str(completion['choices'][0]['message']['content'])
+    completion_content = str(completion.choices[0].message.content)
 
     # Use re.findall() with the completion content
     question_quality = re.findall(r'QUALITY\s*=?\s*(\d+)', completion_content)
@@ -830,7 +820,7 @@ def calculate_percentage_integer(value, percentage):
 # legacy code (randRemove) where only one-round evaluation is enabled
 def description_2_code_one_round(prompt, model, topn, temperature, args, open_source_model, tokenizer):
     if model=='comm':
-        completion = openai.ChatCompletion.create(
+        completion = client.chat.completions.create(
             model='gpt-3.5-turbo',
             n=1,
             temperature=temperature,
@@ -839,12 +829,12 @@ def description_2_code_one_round(prompt, model, topn, temperature, args, open_so
                       ]
         )
         first_response_list = []
-        for i in completion['choices']:
-            first_response_list.append(i['message']['content'])
+        for i in completion.choices:
+            first_response_list.append(i.message.content)
 
         new_prompt = "You are an expert in software engineering. You will be given the problem description and current code of a coding task. You will decide whether to ask clarifying questions or return the code with markup. \n ### Problem Description: \n"+ prompt + "\n ### Generated Code From Previous Iteration:\n" + first_response_list[0]
         
-        completion = openai.ChatCompletion.create(
+        completion = client.chat.completions.create(
             model='gpt-3.5-turbo',
             n=topn,
             temperature=temperature,
@@ -854,8 +844,8 @@ def description_2_code_one_round(prompt, model, topn, temperature, args, open_so
         )
         response_list = []
         # code_list = []
-        for i in completion['choices']:
-            response_list.append(i['message']['content'])
+        for i in completion.choices:
+            response_list.append(i.message.content)
 
     else:
         messages=[{"role": "user", "content": prompt}]
@@ -960,12 +950,12 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         task_id = task_id.replace("/", "_")
         
         print("Running Programmer")
-        responses = programmer_main(model, "python", msgs, openai.api_key, task_id)
+        responses = programmer_main(model, "python", msgs, os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY'), task_id)
 
         if msgs[0]["clarity_prompt"]=="":
             # no clarifying questions being generated through the prompt
             print("Running Designer")
-            test_cases = designer_main(model, "python", responses, openai.api_key, task_id)
+            test_cases = designer_main(model, "python", responses, os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY'), task_id)
             
             print("Running Executor")
             results = executor_main(task_id)
@@ -976,14 +966,14 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
             response_list.append(str(responses[0]['completion_list']))
         return response_list
     else:
-        completion = openai.ChatCompletion.create(
+        completion = client.chat.completions.create(
             model=model,
             n=topn,
             temperature=temperature,
             messages=msgs
         )
-        for i in completion['choices']:
-            response_list.append(i['message']['content'])
+        for i in completion.choices:
+            response_list.append(i.message.content)
         return response_list
 
 def description_2_code_multi_rounds(prompt_modified, task_id, entry_point, prompt, user_input, original_prompt, model, topn, temperature, args, open_source_model, tokenizer, cached_response, cached_qq, cached_answer):
