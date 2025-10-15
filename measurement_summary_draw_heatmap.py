@@ -238,7 +238,7 @@ def get_correlation(prompt_type):
 
 # Return the first triple code snippet. 
 def response_2_code(response):
-    code_template = re.compile('```.*\n([\s\S]+?)\n```', re.M)
+    code_template = re.compile(r'```.*\n([\s\S]+?)\n```', re.M)
     code = code_template.findall(response)
     if len(code) > 0:
         return code[0] # code[-1] is the last triple code snippet
