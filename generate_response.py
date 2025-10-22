@@ -37,7 +37,7 @@ set_seed(42)
 B_INST_CLLAMA, E_INST_CLLAMA = "[INST]", "[/INST]"
 B_SYS_CLLAMA, E_SYS_CLLAMA = "<<SYS>>\n", "\n<</SYS>>\n\n"
 # Set up OpenAI client with API key
-client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY'))
+client = OpenAI(api_key=get_api_key())
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=gemini_api_key)
 gemini_model = genai.GenerativeModel("gemini-pro")
@@ -278,6 +278,8 @@ ONE_SHOT_MBPP = (
     + '"""\n    res = tuple(set(test_tup1) & set(test_tup2))\n    return (res)\n\n'
 )
 
+def get_api_key():
+    return os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY')
 
 def generate_text(model, tokenizer, prompt_text, args, eos_token_id=None):
     if eos_token_id is None:
@@ -950,12 +952,12 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         task_id = task_id.replace("/", "_")
         
         print("Running Programmer")
-        responses = programmer_main(model, "python", msgs, os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY'), task_id)
+        responses = programmer_main(model, "python", msgs, get_api_key(), task_id)
 
         if msgs[0]["clarity_prompt"]=="":
             # no clarifying questions being generated through the prompt
             print("Running Designer")
-            test_cases = designer_main(model, "python", responses, os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI_KEY'), task_id)
+            test_cases = designer_main(model, "python", responses, get_api_key(), task_id)
             
             print("Running Executor")
             results = executor_main(task_id)
