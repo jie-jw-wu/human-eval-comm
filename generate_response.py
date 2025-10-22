@@ -924,7 +924,7 @@ def generate_response(model, msgs, topn, temperature, args, open_source_model, t
         else:
             response_list.append(communicator_response)    
         return response_list
-    elif model == 'ClarifyCoder':
+    elif model == 'ClarifyCoder+Okanagan':
         # this code assume topn=1
         print("**********************************")
         print("*** Using DeepSeek with LoRA for ClarifyCoder ***")
