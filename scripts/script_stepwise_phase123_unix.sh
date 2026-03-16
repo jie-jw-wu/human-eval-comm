@@ -39,6 +39,9 @@ for i in $string_of_strings; do
     elif [ "$2" == "3-1" ]; then
         # Extract code and run test cases and other metrics for each problem. input: file in log/  output: file in log/record/
         python intermedia_analyze.py -f log/manualRemove_dataset_HumanEval_model_"$i"_topn_1_temperature_1.0.log_1 -n 1
+    elif [ "$2" == "3-2" ]; then
+        # Extract code and run test cases and other metrics for each problem. input: file in log/  output: file in log/record/
+        python intermedia_analyze.py -f log/manualRemove_dataset_HumanEvalComm_model_"$i"_topn_1_temperature_1.0.log_1 -n 1
     elif [ "$2" == "4" ]; then
         # Compute more metrics for each problem. input: file in ./log/record/ output: file in ./result_data/
         python syntactic_similarity_OER.py -e manualRemove_dataset_HumanEvalComm -m "$i" -t 1 -o R1 -n 1 -s 3
